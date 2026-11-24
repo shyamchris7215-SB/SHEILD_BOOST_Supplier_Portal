@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script id="turnstileScript" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 
 <style>
 /* DESIGN SYSTEM */
@@ -324,6 +324,17 @@ input[type=checkbox]{
 .blank-view .input{
   max-width:440px;margin:8px auto;
   display:block;text-align:left;
+}
+
+/* TURNSTILE — FINAL REVIEW ONLY */
+.turnstile-section{
+  padding:18px 0 4px;
+  margin-top:25px;
+}
+.turnstile-section .kicker{margin-bottom:14px}
+.turnstile-section .turnstile-note{
+  margin:11px 0 0;color:#8d918b;
+  font-size:10px;line-height:1.8;
 }
 
 /* FOOTER */
@@ -659,6 +670,37 @@ let maximumStep = 0;
 let mode = "registration";
 const UAE = "Asia/Dubai";
 
+/* TURNSTILE — EXPLICIT RENDERING FOR DYNAMIC REVIEW */
+const TURNSTILE_SITE_KEY = "0x4AAAAAAGQe-FM1QfQ3Y1L0";
+let turnstileWidgetId = null;
+let turnstileToken = "";
+
+function removeTurnstile(){
+  if(turnstileWidgetId!==null && window.turnstile){
+    try{window.turnstile.remove(turnstileWidgetId)}catch{}
+  }
+  turnstileWidgetId=null;
+  turnstileToken="";
+}
+
+function mountTurnstile(){
+  const container=$("turnstileWidget");
+  if(!container || !window.turnstile || turnstileWidgetId!==null)return;
+  try{
+    turnstileWidgetId=window.turnstile.render(container,{
+      sitekey:TURNSTILE_SITE_KEY,
+      theme:"light",
+      callback:token=>{turnstileToken=token},
+      "expired-callback":()=>{turnstileToken=""},
+      "error-callback":()=>{turnstileToken=""}
+    });
+  }catch{
+    container.textContent="Verification is temporarily unavailable.";
+  }
+}
+
+$("turnstileScript").addEventListener("load",mountTurnstile);
+
 /* LIVE UAE CLOCK */
 function tick(){
   const now = new Date();
@@ -739,7 +781,7 @@ const sections=[
       }),
       area("activities","Licensed business activities",true),
 
-      /* UPDATED: COMPANY WEBSITE IS NORMAL TEXT */
+      /* COMPANY WEBSITE IS NORMAL TEXT */
       text("website","Company website",false,{wide:true}),
 
       text("contactName","Primary contact person name",true),
@@ -1306,6 +1348,7 @@ function updateNav(){
 
 /* SHOW CURRENT FORM SECTION */
 function render(){
+  removeTurnstile();
   closeCalendar();
   mode="registration";
   $("formMode").hidden=false;
@@ -1494,6 +1537,14 @@ function renderReview(){
       is being transmitted or saved to a database.
     </div>
 
+    <div class="turnstile-section">
+      <div class="kicker">SECURITY VERIFICATION</div>
+      <div id="turnstileWidget" aria-label="Cloudflare security verification"></div>
+      <p class="turnstile-note">
+        Verification preview only. Supplier information is not yet being submitted.
+      </p>
+    </div>
+
     <div class="actions">
       <button type="button" class="btn" id="previous">
         ← Previous
@@ -1502,6 +1553,8 @@ function renderReview(){
         Preview Submission →
       </button>
     </div>`;
+
+  mountTurnstile();
 
   $("stepContent").querySelectorAll("[data-edit]").forEach(button=>{
     button.onclick=()=>{
@@ -1534,6 +1587,7 @@ function markMode(){
 }
 
 function switchMode(which){
+  removeTurnstile();
   closeCalendar();
   mode=which;
   markMode();
