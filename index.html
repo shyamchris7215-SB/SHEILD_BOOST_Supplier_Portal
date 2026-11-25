@@ -686,11 +686,18 @@ const GROUP_WEBSITE_URL = "";
 const SUPPLIER_API_URL =
   "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
 const LIVE_SUBMISSIONS_ENABLED = false;
+// Annual KYC is also off until we explicitly finish the end-to-end review.
+// Worker LIVE_KYC_RENEWAL must remain unset independently of this setting.
+const LIVE_KYC_SUBMISSIONS_ENABLED = false;
 const $ = id => document.getElementById(id);
-const data = {};
+// Keep registration and renewal form answers isolated from each other.
+const registrationFlow = {data:{}, step:0, maximumStep:0};
+const renewalFlow = {data:{}, step:0, maximumStep:0};
+let data = registrationFlow.data;
 let step = 0;
 let maximumStep = 0;
 let mode = "registration";
+let renewalIdentity = null;
 const UAE = "Asia/Dubai";
 
 /* TURNSTILE — EXPLICIT RENDERING FOR DYNAMIC REVIEW */
@@ -1373,7 +1380,8 @@ function updateNav(){
 function render(){
   removeTurnstile();
   closeCalendar();
-  mode="registration";
+  // Use the existing seven-step form, but keep the active service selected.
+  mode=renewalIdentity ? "renewal" : "registration";
   $("formMode").hidden=false;
   $("alternateMode").hidden=true;
   $("sidebar").hidden=false;
@@ -1385,7 +1393,8 @@ function render(){
     :`${String(step+1).padStart(2,"0")} / 07`;
 
   $("progressTitle").textContent=step===7
-    ?"REGISTRATION REVIEW":"NEW SUPPLIER REGISTRATION";
+    ?(renewalIdentity ? "KYC RENEWAL REVIEW" : "REGISTRATION REVIEW")
+    :(renewalIdentity ? "ANNUAL KYC RENEWAL" : "NEW SUPPLIER REGISTRATION");
 
   $("progressFill").style.width=(
     step===7?100:((step+1)/8)*100
@@ -1655,8 +1664,116 @@ async function submitRegistration(button){
   }
 }
 
+/* ANNUAL KYC RENEWAL — NO OTP, NO DATA PREFILL
+   Reference number + registered email are collected locally.
+   Neither is authenticated at this step and no earlier record is exposed.
+   Matching occurs ONLY in the server-side INSERT when live renewal is enabled.
+*/
+async function checkKycGate(button){
+  button.disabled=true;
+  const initialText=button.textContent;
+  button.textContent="Checking KYC backend…";
+  try{
+    // Empty request; the closed renewal endpoint rejects it before parsing.
+    // Never sends form data, reference, email or Turnstile token in preview.
+    const response=await fetch(SUPPLIER_API_URL+"/kyc/renewal",{
+      method:"POST",mode:"cors",cache:"no-store",
+      headers:{"Content-Type":"application/json"},body:"{}"
+    });
+    const result=await response.json().catch(()=>({}));
+    if(response.status===503 &&
+       result.error==="KYC renewal submissions are not open yet"){
+      notify("KYC backend connection verified. Renewals remain closed. No supplier information was sent.");
+    }else{
+      notify("Unexpected KYC response (HTTP "+response.status+"). No supplier details were sent.");
+    }
+  }catch{
+    notify("Unable to verify KYC backend connection. No supplier information was sent.");
+  }finally{
+    button.disabled=false;
+    button.textContent=initialText;
+  }
+}
+
+async function submitKycRenewal(button){
+  if(!renewalIdentity){
+    notify("Enter your reference number and registered email to begin renewal.");
+    switchMode("renewal");
+    return;
+  }
+  if(!LIVE_KYC_SUBMISSIONS_ENABLED)return checkKycGate(button);
+
+  const invalidSection=firstInvalidSection();
+  if(invalidSection!==-1){
+    step=invalidSection;render();focusCard();
+    notify("Please complete the required renewal fields and declarations.");
+    return;
+  }
+  if(!turnstileToken){
+    notify("Complete the security verification before submitting.");
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent="Submitting renewal…";
+  let uncertain=false;
+  try{
+    const response=await fetch(SUPPLIER_API_URL+"/kyc/renewal",{
+      method:"POST",mode:"cors",cache:"no-store",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        supplierReference:renewalIdentity.reference,
+        registeredEmail:renewalIdentity.registeredEmail,
+        formData:buildRegistrationData(),
+        turnstileToken
+      })
+    });
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok){
+      notify(typeof result.error==="string" ? result.error :
+        "Renewal request could not be completed (HTTP "+response.status+").");
+      resetVerification();
+      return;
+    }
+    if(response.status!==202 || result.success!==true){
+      uncertain=true;
+      notify("Renewal response could not be confirmed. Please contact SHEILD BOOST before retrying.");
+      return;
+    }
+    // A uniform 202 response deliberately does NOT confirm if the
+    // supplied reference and registered email matched any record.
+    removeTurnstile();
+    for(const key of Object.keys(renewalFlow.data))delete renewalFlow.data[key];
+    step=7; maximumStep=7;
+    $("stepContent").innerHTML=`
+      <div class="submission-success" role="status">
+        <span class="success-mark" aria-hidden="true">✓</span>
+        <div class="kicker">ANNUAL KYC RENEWAL</div>
+        <h2>Renewal Request Received</h2>
+        <p>${esc(result.message || "If your supplier reference and registered email match an eligible supplier, your request will be reviewed by SHEILD BOOST.")}</p>
+        <p>No existing supplier or banking details were disclosed.</p>
+      </div>`;
+    $("progressTitle").textContent="KYC RENEWAL REQUEST";
+    $("counter").textContent="RECEIVED";
+    $("progressFill").style.width="100%";
+    $("stepNav").replaceChildren();
+    renewalIdentity=null;
+    focusCard();
+  }catch{
+    uncertain=true;
+    notify("Renewal status could not be confirmed. Contact SHEILD BOOST before retrying.");
+  }finally{
+    if(!uncertain && document.contains(button)){
+      button.disabled=false;
+      button.textContent="Submit KYC Renewal →";
+    }
+  }
+}
+
 /* FINAL REVIEW */
 function renderReview(){
+  const isKyc=Boolean(renewalIdentity);
+  const isLive=isKyc ? LIVE_KYC_SUBMISSIONS_ENABLED : LIVE_SUBMISSIONS_ENABLED;
   const blocks=sections.map((section,index)=>{
     const rows=section.fields
       .filter(visible)
@@ -1692,18 +1809,29 @@ function renderReview(){
   }).join("");
 
   $("stepContent").innerHTML=`
-    <div class="kicker">FINAL STAGE / REVIEW</div>
-    <h2>Review Your Information</h2>
+    <div class="kicker">${isKyc ? "ANNUAL KYC / REVIEW" : "FINAL STAGE / REVIEW"}</div>
+    <h2>${isKyc ? "Review Your KYC Renewal" : "Review Your Information"}</h2>
     <p class="introtext">
       Scroll through all seven sections below.
       Select Edit section to correct anything before submission.
     </p>
 
+    ${isKyc ? `
+      <div class="info">
+        <strong>Renewal Reference:</strong> ${esc(renewalIdentity.reference)}<br>
+        <strong>Registered Email:</strong> ${esc(renewalIdentity.registeredEmail)}<br>
+        These details are not verified at this stage. They are checked privately
+        by the backend when a live renewal is submitted. Previous supplier
+        information is never displayed.
+      </div>` : ""}
+
     ${blocks}
 
     <div class="info">
-      ${LIVE_SUBMISSIONS_ENABLED
-        ?"Your registration information will be sent securely for review when you submit."
+      ${isLive
+        ?(isKyc
+          ?"Your renewal request will be submitted for management review. A received response does not confirm the reference and email matched."
+          :"Your registration information will be sent securely for review when you submit.")
         :"This is a design preview. Live submissions are disabled, and preview checks do not send supplier information."}
     </div>
 
@@ -1711,8 +1839,8 @@ function renderReview(){
       <div class="kicker">SECURITY VERIFICATION</div>
       <div id="turnstileWidget" aria-label="Cloudflare security verification"></div>
       <p class="turnstile-note">
-        ${LIVE_SUBMISSIONS_ENABLED
-          ?"Complete verification before sending your registration."
+        ${isLive
+          ?"Complete verification before submitting your application."
           :"Verification preview only. Supplier information will not be submitted."}
       </p>
     </div>
@@ -1722,7 +1850,9 @@ function renderReview(){
         ← Previous
       </button>
       <button type="button" class="btn primary" id="demoSubmit">
-        ${LIVE_SUBMISSIONS_ENABLED?"Submit Registration →":"Preview Submission →"}
+        ${isLive
+          ?(isKyc ? "Submit KYC Renewal →" : "Submit Registration →")
+          :(isKyc ? "Preview KYC Renewal →" : "Preview Submission →")}
       </button>
     </div>`;
 
@@ -1742,7 +1872,10 @@ function renderReview(){
     focusCard();
   };
 
-  $("demoSubmit").onclick=()=>submitRegistration($("demoSubmit"));
+  $("demoSubmit").onclick=()=>{
+    if(isKyc)submitKycRenewal($("demoSubmit"));
+    else submitRegistration($("demoSubmit"));
+  };
 }
 
 /* SERVICE BUTTONS */
@@ -1755,12 +1888,23 @@ function markMode(){
 }
 
 function switchMode(which){
+  // Preserve previous form values separately when changing services.
+  if(!$("formMode").hidden){
+    if(step<7)store();
+    const currentFlow=mode==="renewal" ? renewalFlow : registrationFlow;
+    currentFlow.step=step;
+    currentFlow.maximumStep=maximumStep;
+  }
   removeTurnstile();
   closeCalendar();
   mode=which;
   markMode();
 
   if(which==="registration"){
+    renewalIdentity=null;
+    data=registrationFlow.data;
+    step=registrationFlow.step;
+    maximumStep=registrationFlow.maximumStep;
     render();
     focusCard();
     return;
@@ -1771,41 +1915,70 @@ function switchMode(which){
   $("alternateMode").hidden=false;
 
   if(which==="renewal"){
+    // A new renewal starts from its own reference-and-email screen.
+    renewalIdentity=null;
     $("alternateMode").innerHTML=`
       <div class="blank-view">
         <div class="kicker">EXISTING SUPPLIER</div>
         <h2>Annual KYC Renewal</h2>
         <p>
-          Enter your supplier reference number and registered email
-          to begin the verification process.
+          Enter your existing supplier reference number and the email
+          address registered with SHEILD BOOST. No OTP is required.
         </p>
 
         <input class="input" id="reference"
-          placeholder="Supplier reference number"
-          autocomplete="off">
+          placeholder="Supplier reference number (e.g. SB-...)"
+          autocomplete="off" maxlength="100"
+          aria-label="Supplier reference number">
 
         <input class="input" id="renewEmail"
-          type="email" placeholder="Registered company email">
+          type="email" maxlength="200" autocomplete="email"
+          placeholder="Registered company email"
+          aria-label="Registered company email">
 
         <div class="info">
-          Renewal lookup is not live yet.
-          Reference numbers alone will not reveal supplier data.
-          Secure identity verification will be required.
+          Complete a fresh seven-step KYC form. Your reference and email
+          will be checked privately by the backend when renewal submissions
+          open. Previously saved details will not be displayed or changed
+          automatically. Live KYC submissions are currently disabled.
         </div>
 
         <div style="margin-top:20px">
           <button type="button" class="btn primary" id="renewAction">
-            Verify &amp; Retrieve Details →
+            Continue to KYC Form →
           </button>
         </div>
       </div>`;
 
     $("renewAction").onclick=()=>{
-      notify(
-        "Renewal retrieval requires the secure database and email verification service."
-      );
+      const reference=$("reference").value.trim();
+      const registeredEmail=$("renewEmail").value.trim();
+      if(!/^[A-Za-z0-9_-]{5,100}$/.test(reference)){
+        $("reference").focus();
+        notify("Enter a valid existing supplier reference number.");
+        return;
+      }
+      if(registeredEmail.length>200 ||
+         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registeredEmail)){
+        $("renewEmail").focus();
+        notify("Enter your registered company email address.");
+        return;
+      }
+
+      // This is input formatting only, not a claim of verified identity.
+      // No backend matching request or stored supplier data retrieval occurs.
+      renewalIdentity={reference,registeredEmail};
+      data=renewalFlow.data;
+      for(const key of Object.keys(data))delete data[key];
+      step=0;
+      maximumStep=0;
+      renewalFlow.step=0;
+      renewalFlow.maximumStep=0;
+      render();
+      focusCard();
     };
   }else{
+    renewalIdentity=null;
     $("alternateMode").innerHTML=`
       <div class="blank-view">
         <div class="kicker">OFFICIAL GROUP INFORMATION</div>
