@@ -5,14 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f8f8f6">
+
 <title>Business Registration & KYC Portal | SHEILD BOOST Group</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Turnstile and submission APIs will be connected after management approval. -->
 
 <style>
-/* DESIGN SYSTEM */
+/* =====================================
+   SHEILD BOOST — ORIGINAL DESIGN SYSTEM
+===================================== */
 :root{
   --bg:#f8f8f6;
   --white:#fff;
@@ -23,11 +26,15 @@
   --dark:#222522;
   --shadow:0 20px 70px rgba(17,20,16,.055);
 }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--bg);color:var(--ink);
-  font-family:Poppins,Arial,sans-serif;font-size:13px;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Poppins,Arial,sans-serif;
+  font-size:13px;
   -webkit-font-smoothing:antialiased;
 }
 button,input,select,textarea{font:inherit}
@@ -40,23 +47,40 @@ a{color:inherit;text-decoration:none}
 /* HEADER */
 header{background:#fff;border-bottom:1px solid var(--line)}
 .header-inner{
-  min-height:122px;display:flex;align-items:center;
-  justify-content:space-between;gap:20px;
+  min-height:122px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 }
 .brand{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:3px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
 }
 .logo-wrap{
-  position:relative;overflow:hidden;isolation:isolate;
-  width:180px;height:80px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  width:180px;
+  height:80px;
 }
-.logo{width:100%;height:100%;object-fit:contain;display:block}
+.logo{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
 .logo-wrap:after{
-  content:"";position:absolute;inset:-5% -25%;
+  content:"";
+  position:absolute;
+  inset:-5% -25%;
   pointer-events:none;
   background:linear-gradient(
-    102deg,transparent 30%,
+    102deg,
+    transparent 30%,
     rgba(225,181,60,.05) 40%,
     rgba(255,241,181,.43) 49%,
     rgba(255,255,255,.62) 52%,
@@ -69,341 +93,510 @@ header{background:#fff;border-bottom:1px solid var(--line)}
   56%,100%{transform:translateX(155%) skewX(-14deg)}
 }
 .brand-countries{
-  color:#686d67;font-size:10px;letter-spacing:2.5px;
-  font-weight:600;white-space:nowrap;
+  color:#686d67;
+  font-size:10px;
+  letter-spacing:2.5px;
+  font-weight:600;
+  white-space:nowrap;
 }
 .brand-countries i{
-  font-style:normal;color:#c6a043;margin:0 5px;
+  font-style:normal;
+  color:#c6a043;
+  margin:0 5px;
 }
 .clock{
-  text-align:right;display:grid;gap:1px;
+  text-align:right;
+  display:grid;
+  gap:1px;
   font-variant-numeric:tabular-nums;
 }
 .clock .zone{
-  letter-spacing:2px;font-size:9px;
-  font-weight:700;color:#8d918a;
+  letter-spacing:2px;
+  font-size:9px;
+  font-weight:700;
+  color:#8d918a;
 }
 .clock .time{
-  font-size:23px;font-weight:600;
-  letter-spacing:.8px;line-height:1.2;
+  font-size:23px;
+  font-weight:600;
+  letter-spacing:.8px;
+  line-height:1.2;
 }
 .clock .date{color:#858985;font-size:11px}
 
 /* HERO */
 .hero{padding:75px 0 42px}
 .eyebrow{
-  display:flex;align-items:center;gap:12px;
-  color:#979a93;letter-spacing:3px;
-  text-transform:uppercase;font-size:10px;font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#979a93;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:700;
 }
 .eyebrow:before{
-  content:"";width:29px;height:2px;background:var(--gold);
+  content:"";
+  width:29px;
+  height:2px;
+  background:var(--gold);
 }
 .hero h1{
   font-size:clamp(33px,4.4vw,61px);
-  line-height:1.14;letter-spacing:-2.5px;
-  font-weight:600;max-width:950px;margin:22px 0;
+  line-height:1.14;
+  letter-spacing:-2.5px;
+  font-weight:600;
+  max-width:950px;
+  margin:22px 0;
 }
 .hero h1 strong{display:block;font-weight:700}
 .hero p{
-  color:#7c817c;line-height:2;
-  max-width:690px;margin:0;
+  color:#7c817c;
+  line-height:2;
+  max-width:690px;
+  margin:0;
 }
 
 /* THREE MAIN SERVICES */
 .select-label{
-  font-size:10px;color:#969a93;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;margin-bottom:15px;
+  font-size:10px;
+  color:#969a93;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:15px;
 }
 .modes{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:15px;margin-bottom:53px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:53px;
 }
 .mode{
-  border:1px solid var(--line);border-radius:14px;
-  padding:24px;background:#fff;text-align:left;min-height:148px;
-  display:flex;flex-direction:column;align-items:flex-start;
-  gap:8px;transition:.25s;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:24px;
+  background:#fff;
+  text-align:left;
+  min-height:148px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  transition:.25s;
 }
-.mode:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.mode:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+}
 .mode.active{
-  background:#202320;color:#fff;border-color:#202320;
+  background:#202320;
+  color:#fff;
+  border-color:#202320;
 }
 .mode .num{
-  font-size:10px;letter-spacing:1.5px;color:#999e97;
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:#999e97;
 }
 .mode.active .num{color:#e5c15c}
 .mode strong{font-size:15px;font-weight:600}
 .mode .desc{
-  color:#939992;font-size:11px;line-height:1.8;
+  color:#939992;
+  font-size:11px;
+  line-height:1.8;
 }
 .mode.active .desc{color:#c0c5be}
 
 /* LAYOUT */
 .layout{
-  display:grid;grid-template-columns:278px minmax(0,1fr);
-  align-items:start;gap:25px;margin-bottom:85px;
+  display:grid;
+  grid-template-columns:278px minmax(0,1fr);
+  align-items:start;
+  gap:25px;
+  margin-bottom:85px;
 }
 .sidebar{position:sticky;top:22px}
 .side-card,.main-card{
-  background:var(--white);border:1px solid var(--line);
+  background:var(--white);
+  border:1px solid var(--line);
   border-radius:19px;
 }
 .side-card{padding:25px 22px}
 .overline{
-  color:#999e97;font-size:10px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
+  color:#999e97;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
 .side-card h3{
-  font-size:17px;margin:10px 0 3px;font-weight:600;
+  font-size:17px;
+  margin:10px 0 3px;
+  font-weight:600;
 }
 .side-card p{
-  color:#8c918a;line-height:1.9;font-size:11px;margin:0 0 20px;
+  color:#8c918a;
+  line-height:1.9;
+  font-size:11px;
+  margin:0 0 20px;
 }
 .steps{display:grid}
 .step-btn{
-  width:100%;background:transparent;border:0;
+  width:100%;
+  background:transparent;
+  border:0;
   border-left:2px solid #e9ebe6;
-  padding:12px 13px;display:flex;gap:13px;
-  text-align:left;align-items:flex-start;
-  color:#a4a8a1;font-size:11px;
+  padding:12px 13px;
+  display:flex;
+  gap:13px;
+  text-align:left;
+  align-items:flex-start;
+  color:#a4a8a1;
+  font-size:11px;
 }
 .step-btn.current{
   border-left-color:var(--gold);
-  color:#222622;font-weight:700;
+  color:#222622;
+  font-weight:700;
 }
 .step-btn.done{color:#626961}
-.step-btn span:first-child{font-weight:700;font-size:10px}
+.step-btn span:first-child{
+  font-weight:700;
+  font-size:10px;
+}
 .side-note{
-  margin-top:17px;background:#222522;
-  color:#fff;border-radius:17px;padding:24px;
+  margin-top:17px;
+  background:#222522;
+  color:#fff;
+  border-radius:17px;
+  padding:24px;
 }
 .side-note small{
-  color:#e0bf54;font-size:10px;letter-spacing:2px;
+  color:#e0bf54;
+  font-size:10px;
+  letter-spacing:2px;
 }
 .side-note h4{
-  font-size:15px;font-weight:600;margin:10px 0;
+  font-size:15px;
+  font-weight:600;
+  margin:10px 0;
 }
 .side-note p{
-  color:#bcc1bb;font-size:11px;line-height:1.85;margin:0;
+  color:#bcc1bb;
+  font-size:11px;
+  line-height:1.85;
+  margin:0;
 }
 
 /* FORM */
 .main-card{
-  overflow:hidden;box-shadow:var(--shadow);
+  overflow:hidden;
+  box-shadow:var(--shadow);
   scroll-margin-top:20px;
 }
 .card-top{padding:35px 42px 0}
 .topline{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;color:#8b908a;font-size:10px;
-  text-transform:uppercase;letter-spacing:1.5px;font-weight:600;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  color:#8b908a;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  font-weight:600;
 }
 .topline #counter{
-  font-size:13px;letter-spacing:0;color:#373b37;
+  font-size:13px;
+  letter-spacing:0;
+  color:#373b37;
 }
 .bar{
-  height:4px;background:#f0f0ec;border-radius:8px;
-  overflow:hidden;margin-top:22px;
+  height:4px;
+  background:#f0f0ec;
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:22px;
 }
 .fill{
-  width:12.5%;height:100%;background:var(--gold);
+  width:12.5%;
+  height:100%;
+  background:var(--gold);
   transition:width .4s;
 }
 .content{
-  padding:35px 42px 40px;animation:appear .32s ease;
+  padding:35px 42px 40px;
+  animation:appear .32s ease;
 }
 .kicker{
-  font-size:10px;letter-spacing:2px;
-  color:#b18b2c;font-weight:700;text-transform:uppercase;
+  font-size:10px;
+  letter-spacing:2px;
+  color:#b18b2c;
+  font-weight:700;
+  text-transform:uppercase;
 }
 .content h2{
-  font-size:29px;letter-spacing:-1px;
-  line-height:1.3;font-weight:600;margin:10px 0;
+  font-size:29px;
+  letter-spacing:-1px;
+  line-height:1.3;
+  font-weight:600;
+  margin:10px 0;
 }
 .introtext{
-  font-size:12px;line-height:1.95;color:#8d918b;
-  max-width:680px;margin-bottom:30px;
+  font-size:12px;
+  line-height:1.95;
+  color:#8d918b;
+  max-width:680px;
+  margin-bottom:30px;
 }
 .fields{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:21px;
 }
 .field{
-  display:flex;flex-direction:column;gap:8px;min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:0;
 }
 .field.wide{grid-column:1/-1}
 .field label{
-  font-weight:600;color:#525651;font-size:11px;
+  font-weight:600;
+  color:#525651;
+  font-size:11px;
 }
 .required{color:#b7850c}
 .input{
-  background:#fbfbf9;width:100%;min-height:49px;
-  border:1px solid #e5e7e2;border-radius:8px;
-  outline:none;padding:12px 14px;color:#262a25;font-size:12px;
+  background:#fbfbf9;
+  width:100%;
+  min-height:49px;
+  border:1px solid #e5e7e2;
+  border-radius:8px;
+  outline:none;
+  padding:12px 14px;
+  color:#262a25;
+  font-size:12px;
 }
 .input:focus{
-  border-color:var(--gold);background:#fff;
+  border-color:var(--gold);
+  background:#fff;
   box-shadow:0 0 0 3px #f9efd5;
 }
 .input.error{
-  border-color:#cc6159;background:#fff8f7;
+  border-color:#cc6159;
+  background:#fff8f7;
 }
 .input::placeholder{color:#b0b5ae}
-textarea.input{min-height:98px;resize:vertical}
+textarea.input{
+  min-height:98px;
+  resize:vertical;
+}
 .check-row{
-  display:flex;align-items:flex-start;gap:10px;
-  font-size:11px;color:#626760;line-height:1.9;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:11px;
+  color:#626760;
+  line-height:1.9;
 }
 input[type=checkbox]{
-  accent-color:#b89228;width:16px;height:16px;
-  flex:none;margin-top:2px;
+  accent-color:#b89228;
+  width:16px;
+  height:16px;
+  flex:none;
+  margin-top:2px;
 }
 .actions{
-  display:flex;gap:12px;justify-content:flex-end;
-  align-items:center;border-top:1px solid var(--line);
-  margin-top:36px;padding-top:26px;
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  align-items:center;
+  border-top:1px solid var(--line);
+  margin-top:36px;
+  padding-top:26px;
 }
 .btn{
-  border-radius:8px;padding:13px 21px;min-height:44px;
-  border:1px solid #e2e4de;background:#fff;
-  font-size:11px;font-weight:700;
+  border-radius:8px;
+  padding:13px 21px;
+  min-height:44px;
+  border:1px solid #e2e4de;
+  background:#fff;
+  font-size:11px;
+  font-weight:700;
 }
 .btn.primary{
-  background:#242724;color:#fff;border-color:#242724;
+  background:#242724;
+  color:#fff;
+  border-color:#242724;
 }
 .btn:hover{filter:brightness(.96)}
 .btn:focus-visible,.mode:focus-visible{
-  outline:3px solid #e8c75d;outline-offset:3px;
+  outline:3px solid #e8c75d;
+  outline-offset:3px;
 }
 .message{
-  padding:13px 15px;margin-top:20px;
-  border:1px solid #f2d2cd;background:#fff6f5;
-  color:#a83e34;border-radius:9px;font-size:11px;
+  padding:13px 15px;
+  margin-top:20px;
+  border:1px solid #f2d2cd;
+  background:#fff6f5;
+  color:#a83e34;
+  border-radius:9px;
+  font-size:11px;
 }
 .info{
-  padding:15px 18px;background:#fffaf0;
+  padding:15px 18px;
+  background:#fffaf0;
   border-left:3px solid var(--gold);
-  font-size:11px;color:#84784f;line-height:1.9;margin-top:23px;
+  font-size:11px;
+  color:#84784f;
+  line-height:1.9;
+  margin-top:23px;
 }
 
 /* REVIEW */
 .review-card{
-  border:1px solid var(--line);border-radius:12px;
-  margin:15px 0;overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin:15px 0;
+  overflow:hidden;
 }
 .review-head{
-  padding:16px 18px;background:#fafaf8;
-  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;
+  background:#fafaf8;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap:10px;
 }
 .review-head strong{font-size:12px}
 .review-head button{
-  background:transparent;border:none;
-  color:#956f18;font-weight:700;font-size:11px;
+  background:transparent;
+  border:none;
+  color:#956f18;
+  font-weight:700;
+  font-size:11px;
 }
 .review-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:14px 20px;padding:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px 20px;
+  padding:20px;
 }
 .review-grid div{min-width:0}
 .review-grid small{
-  display:block;color:#969b94;font-size:10px;
+  display:block;
+  color:#969b94;
+  font-size:10px;
 }
 .review-grid p{
-  margin:3px 0 0;font-size:11px;overflow-wrap:anywhere;
-}
-.blank-view{text-align:center;padding:50px 30px}
-.blank-view h2{
-  font-size:27px;font-weight:600;letter-spacing:-.8px;
-}
-.blank-view p{
-  color:#8a8f88;line-height:1.9;
-  max-width:520px;margin:10px auto 25px;
-}
-.blank-view .input{
-  max-width:440px;margin:8px auto;
-  display:block;text-align:left;
+  margin:3px 0 0;
+  font-size:11px;
+  overflow-wrap:anywhere;
+  line-height:1.85;
 }
 
-/* TURNSTILE — FINAL REVIEW ONLY */
+/* SECURITY INFORMATION */
 .turnstile-section{
   padding:18px 0 4px;
   margin-top:25px;
 }
 .turnstile-section .kicker{margin-bottom:14px}
 .turnstile-section .turnstile-note{
-  margin:11px 0 0;color:#8d918b;
-  font-size:10px;line-height:1.8;
+  margin:11px 0 0;
+  color:#8d918b;
+  font-size:10px;
+  line-height:1.8;
 }
-
-/* SUBMISSION CONFIRMATION — matches original premium design */
-.submission-success{text-align:center;padding:35px 12px 45px}
-.submission-success h2{margin:12px 0 14px}
-.submission-success p{font-size:12px;color:#7c817c;line-height:1.9}
-.success-mark{display:grid;place-items:center;margin:0 auto 22px;
-  width:66px;height:66px;border-radius:50%;background:#e9f5ed;
-  color:#368451;font-size:32px;font-weight:700}
-.submission-reference{display:grid;gap:9px;margin:30px auto 16px;
-  padding:18px 20px;border:1px solid #e5e5da;background:#fffdf6;
-  border-radius:12px;max-width:500px;overflow-wrap:anywhere}
-.submission-reference span{font-size:10px;letter-spacing:1.7px;
-  color:#978d6a;font-weight:700}
-.submission-reference strong{font-size:19px;letter-spacing:.5px}
 
 /* FOOTER */
 .footer{
-  border-top:1px solid var(--line);background:#fff;
-  padding:33px 0;color:#939890;font-size:10px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  padding:33px 0;
+  color:#939890;
+  font-size:10px;
 }
 .footer-inner{
-  display:flex;justify-content:space-between;gap:15px;
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
 }
 .footer b{color:#3d423b}
 #toast{
-  position:fixed;bottom:25px;left:50%;
+  position:fixed;
+  bottom:25px;
+  left:50%;
   transform:translate(-50%,20px);
-  opacity:0;pointer-events:none;transition:.25s;
-  background:#252825;color:#fff;border-radius:9px;
-  padding:16px 22px;max-width:90%;font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  background:#252825;
+  color:#fff;
+  border-radius:9px;
+  padding:16px 22px;
+  max-width:90%;
+  font-size:11px;
   z-index:10000;
 }
 #toast.show{
-  opacity:1;transform:translate(-50%,0);
+  opacity:1;
+  transform:translate(-50%,0);
 }
 @keyframes appear{
   from{opacity:.2;transform:translateY(13px)}
   to{opacity:1;transform:translateY(0)}
 }
 
-/* PREMIUM CUSTOM CALENDAR */
+/* =====================================
+   PREMIUM CUSTOM CALENDAR
+===================================== */
 .date-control{
-  position:relative;display:flex;align-items:center;
+  position:relative;
+  display:flex;
+  align-items:center;
 }
 .date-control .date-input{
-  padding-right:58px;cursor:pointer;
-  caret-color:transparent;font-variant-numeric:tabular-nums;
+  padding-right:58px;
+  cursor:pointer;
+  caret-color:transparent;
+  font-variant-numeric:tabular-nums;
 }
 .date-trigger{
-  position:absolute;right:7px;top:50%;
+  position:absolute;
+  right:7px;
+  top:50%;
   transform:translateY(-50%);
-  display:grid;place-items:center;
-  width:38px;height:36px;border:0;
-  background:#f0efe9;color:#3b4039;border-radius:6px;
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:36px;
+  border:0;
+  background:#f0efe9;
+  color:#3b4039;
+  border-radius:6px;
   transition:background .2s,color .2s;
 }
-.date-trigger:hover,.date-trigger:focus-visible{
-  background:#e8d7a5;color:#25271d;
+.date-trigger:hover,
+.date-trigger:focus-visible{
+  background:#e8d7a5;
+  color:#25271d;
 }
 .date-trigger svg{width:19px;height:19px}
 .sb-calendar{
-  position:fixed;z-index:9999;
+  position:fixed;
+  z-index:9999;
   width:min(362px,calc(100vw - 24px));
-  border:1px solid #e5e4dd;border-radius:17px;
+  border:1px solid #e5e4dd;
+  border-radius:17px;
   background:#fff;
-  box-shadow:0 24px 75px rgba(26,31,24,.2),
-             0 4px 15px rgba(26,31,24,.06);
-  overflow:hidden;animation:calendarRise .2s ease both;
+  box-shadow:
+    0 24px 75px rgba(26,31,24,.2),
+    0 4px 15px rgba(26,31,24,.06);
+  overflow:hidden;
+  animation:calendarRise .2s ease both;
   font-family:Poppins,Arial,sans-serif;
 }
 @keyframes calendarRise{
@@ -411,249 +604,605 @@ input[type=checkbox]{
   to{opacity:1;transform:translateY(0)}
 }
 .sb-cal-top{
-  padding:18px 20px 17px;background:#242824;color:#fff;
+  padding:18px 20px 17px;
+  background:#242824;
+  color:#fff;
 }
 .sb-cal-topline{
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 .sb-cal-overline{
-  color:#e8bf56;font-size:9px;font-weight:700;
-  letter-spacing:2.1px;text-transform:uppercase;
+  color:#e8bf56;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2.1px;
+  text-transform:uppercase;
 }
 .sb-cal-title{
-  font-size:17px;font-weight:600;
-  letter-spacing:-.4px;margin-top:5px;
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-.4px;
+  margin-top:5px;
 }
 .sb-cal-close{
-  display:grid;place-items:center;width:28px;height:28px;
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:28px;
   border:1px solid rgba(255,255,255,.16);
-  border-radius:50%;color:#f5f4ee;
+  border-radius:50%;
+  color:#f5f4ee;
   background:rgba(255,255,255,.07);
-  font-size:19px;line-height:1;
+  font-size:19px;
+  line-height:1;
 }
-.sb-cal-close:hover{background:rgba(255,255,255,.18)}
+.sb-cal-close:hover{
+  background:rgba(255,255,255,.18);
+}
 .sb-cal-body{padding:19px 18px 12px}
 .sb-cal-switcher{
-  display:flex;gap:8px;align-items:center;margin-bottom:16px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-bottom:16px;
 }
 .sb-cal-select{
-  appearance:none;min-width:0;
-  border:1px solid #e6e7e1;background:#f9f9f6;
-  border-radius:8px;color:#282d27;
-  font-weight:600;font-size:12px;padding:10px 8px;
-  cursor:pointer;outline:none;text-align:center;
+  appearance:none;
+  min-width:0;
+  border:1px solid #e6e7e1;
+  background:#f9f9f6;
+  border-radius:8px;
+  color:#282d27;
+  font-weight:600;
+  font-size:12px;
+  padding:10px 8px;
+  cursor:pointer;
+  outline:none;
+  text-align:center;
 }
 .sb-cal-month{flex:1}
 .sb-cal-year{width:85px}
 .sb-cal-nav{
-  display:grid;place-items:center;flex:0 0 34px;
-  height:36px;border:1px solid #e6e7e1;
-  border-radius:8px;background:#fff;
-  color:#333831;font-size:22px;
+  display:grid;
+  place-items:center;
+  flex:0 0 34px;
+  height:36px;
+  border:1px solid #e6e7e1;
+  border-radius:8px;
+  background:#fff;
+  color:#333831;
+  font-size:22px;
 }
 .sb-cal-nav:hover{background:#f3f0e6}
 .sb-cal-weekdays,.sb-cal-grid{
-  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
-  text-align:center;column-gap:3px;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  text-align:center;
+  column-gap:3px;
 }
 .sb-cal-weekdays{margin-bottom:5px}
 .sb-cal-weekdays span{
-  color:#91958f;font-size:10px;
-  font-weight:600;padding:8px 0;
+  color:#91958f;
+  font-size:10px;
+  font-weight:600;
+  padding:8px 0;
 }
 .sb-cal-grid{row-gap:4px}
 .sb-cal-day{
-  display:grid;place-items:center;border:0;
-  background:transparent;height:39px;min-width:0;
-  border-radius:9px;font-size:12px;
-  font-weight:500;color:#343832;position:relative;
+  display:grid;
+  place-items:center;
+  border:0;
+  background:transparent;
+  height:39px;
+  min-width:0;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:500;
+  color:#343832;
+  position:relative;
 }
-.sb-cal-day:hover:not(:disabled){background:#f3eddb}
+.sb-cal-day:hover:not(:disabled){
+  background:#f3eddb;
+}
 .sb-cal-day.other{color:#b8bdb5}
 .sb-cal-day.today:not(.selected):after{
-  content:"";position:absolute;bottom:3px;left:50%;
+  content:"";
+  position:absolute;
+  bottom:3px;
+  left:50%;
   transform:translateX(-50%);
-  width:4px;height:4px;border-radius:50%;background:#b78a20;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#b78a20;
 }
 .sb-cal-day.selected{
-  color:#1f231c;background:#e7bd4d;font-weight:700;
+  color:#1f231c;
+  background:#e7bd4d;
+  font-weight:700;
 }
-.sb-cal-day:disabled{opacity:.2;cursor:not-allowed}
+.sb-cal-day:disabled{
+  opacity:.2;
+  cursor:not-allowed;
+}
 .sb-cal-bottom{
   border-top:1px solid #eeeee9;
-  display:flex;align-items:center;
+  display:flex;
+  align-items:center;
   justify-content:space-between;
-  padding:13px 18px 15px;gap:10px;
+  padding:13px 18px 15px;
+  gap:10px;
 }
 .sb-cal-hint{
-  font-size:10px;color:#969b94;margin-right:auto;
+  font-size:10px;
+  color:#969b94;
+  margin-right:auto;
 }
 .sb-cal-bottom button{
-  border:1px solid #e8e7df;background:#fff;
-  border-radius:7px;padding:8px 12px;
-  font-size:10px;font-weight:700;color:#4f554e;
+  border:1px solid #e8e7df;
+  background:#fff;
+  border-radius:7px;
+  padding:8px 12px;
+  font-size:10px;
+  font-weight:700;
+  color:#4f554e;
 }
 .sb-cal-bottom button.today-action{
-  background:#272b26;color:#fff;border-color:#272b26;
+  background:#272b26;
+  color:#fff;
+  border-color:#272b26;
 }
 .sb-cal-bottom button:disabled{
-  opacity:.35;cursor:not-allowed;
+  opacity:.35;
+  cursor:not-allowed;
 }
 
-/* APPROVED STYLE EXTENSIONS — DOCUMENT UPLOAD CONTROLS */
+/* =====================================
+   DOCUMENT UPLOAD CONTROLS
+===================================== */
 .doc-card{
-  padding:19px 20px;background:#fbfbfa;
-  border:1px solid #e5e7e1;border-radius:12px;
+  padding:19px 20px;
+  background:#fbfbfa;
+  border:1px solid #e5e7e1;
+  border-radius:12px;
 }
 .doc-card.error{
-  border-color:#cc6159;background:#fff8f7;
+  border-color:#cc6159;
+  background:#fff8f7;
 }
 .doc-head{
-  display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
 }
-.doc-head label{font-weight:600;color:#525651;font-size:11px}
+.doc-head label{
+  font-weight:600;
+  color:#525651;
+  font-size:11px;
+}
 .doc-tag{
-  font-size:9px;font-weight:700;letter-spacing:1px;
-  color:#91978e;white-space:nowrap;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1px;
+  color:#91978e;
+  white-space:nowrap;
 }
 .doc-tag.mandatory{color:#a57b26}
 .doc-upload-row{
-  display:flex;align-items:center;gap:13px;
-  flex-wrap:wrap;margin:12px 0 6px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  flex-wrap:wrap;
+  margin:12px 0 6px;
 }
 .upload-label{
-  display:inline-flex;align-items:center;
-  border:1px solid #c6cac1;border-radius:7px;
-  background:#fff;padding:11px 15px;
-  font-size:11px!important;font-weight:700!important;
+  display:inline-flex;
+  align-items:center;
+  border:1px solid #c6cac1;
+  border-radius:7px;
+  background:#fff;
+  padding:11px 15px;
+  font-size:11px!important;
+  font-weight:700!important;
   cursor:pointer;
 }
-.upload-label:hover{border-color:var(--gold);background:#fffaf0}
+.upload-label:hover{
+  border-color:var(--gold);
+  background:#fffaf0;
+}
 .file-picker{
-  position:absolute;width:1px;height:1px;
-  overflow:hidden;opacity:0;
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  opacity:0;
 }
 .file-picker:focus-visible + .upload-label{
-  outline:2px solid var(--gold);outline-offset:3px;
+  outline:2px solid var(--gold);
+  outline-offset:3px;
 }
 .doc-help,.doc-empty{
-  font-size:10px;color:#999e97;line-height:1.9;
+  font-size:10px;
+  color:#999e97;
+  line-height:1.9;
 }
 .selected-file{
-  display:flex;gap:12px;align-items:center;
-  background:#fff;border:1px solid #e7e9e3;
-  border-radius:9px;padding:10px 12px;margin:7px 0;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:#fff;
+  border:1px solid #e7e9e3;
+  border-radius:9px;
+  padding:10px 12px;
+  margin:7px 0;
 }
-.selected-file-icon{color:#b88d2d;font-size:21px}
-.selected-file-info{flex:1;min-width:0}
+.selected-file-icon{
+  color:#b88d2d;
+  font-size:21px;
+}
+.selected-file-info{
+  flex:1;
+  min-width:0;
+}
 .selected-file-info strong{
-  display:block;overflow-wrap:anywhere;font-size:11px;
+  display:block;
+  overflow-wrap:anywhere;
+  font-size:11px;
 }
-.selected-file-info small{font-size:10px;color:#9ca29a}
+.selected-file-info small{
+  font-size:10px;
+  color:#9ca29a;
+}
 .file-remove{
-  border:1px solid #e5e6df;background:#f9faf7;
-  border-radius:50%;width:29px;height:29px;
-  font-size:19px;color:#596058;flex:none;
+  border:1px solid #e5e6df;
+  background:#f9faf7;
+  border-radius:50%;
+  width:29px;
+  height:29px;
+  font-size:19px;
+  color:#596058;
+  flex:none;
 }
 .linked-document{
-  background:#fafaf7;border:1px solid #e7e8e3;
-  border-radius:10px;padding:16px;
-  display:grid;gap:6px;
+  background:#fafaf7;
+  border:1px solid #e7e8e3;
+  border-radius:10px;
+  padding:16px;
+  display:grid;
+  gap:6px;
 }
 .linked-document strong{font-size:11px}
-.linked-document small{font-size:10px;color:#8a9088}
+.linked-document small{
+  font-size:10px;
+  color:#8a9088;
+}
 .linked-document button{
-  justify-self:start;background:transparent;border:0;
-  color:#987221;font-weight:700;font-size:11px;padding:7px 0;
+  justify-self:start;
+  background:transparent;
+  border:0;
+  color:#987221;
+  font-weight:700;
+  font-size:11px;
+  padding:7px 0;
 }
 .upload-banner{
-  margin-bottom:28px;padding:18px;
-  border:1px solid #ebe2c7;background:#fffdf6;
-  border-radius:11px;font-size:11px;
-  color:#80734b;line-height:1.8;
+  margin-bottom:28px;
+  padding:18px;
+  border:1px solid #ebe2c7;
+  background:#fffdf6;
+  border-radius:11px;
+  font-size:11px;
+  color:#80734b;
+  line-height:1.8;
 }
 .upload-banner strong{color:#544725}
-.upload-banner span{display:block;margin-top:5px}
-.preview-note{
-  margin-top:25px;padding:16px 19px;
-  border-left:3px solid var(--gold);
-  background:#fffaf0;color:#82754e;
-  font-size:11px;line-height:1.9;
+.upload-banner span{
+  display:block;
+  margin-top:5px;
 }
-.review-grid p{line-height:1.85}
-@media(max-width:650px){
-  .doc-head{align-items:flex-start}
-  .doc-upload-row{align-items:flex-start;flex-direction:column}
-  .doc-card{padding:16px}
+.preview-note{
+  margin-top:25px;
+  padding:16px 19px;
+  border-left:3px solid var(--gold);
+  background:#fffaf0;
+  color:#82754e;
+  font-size:11px;
+  line-height:1.9;
+}
+
+/* =====================================
+   NEW: ALREADY REGISTERED MESSAGE
+===================================== */
+.existing-note{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  padding:18px 20px;
+  margin:0 0 29px;
+  border:1px solid #e9dfc3;
+  background:#fffdf7;
+  border-radius:11px;
+}
+.existing-note strong{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+}
+.existing-note p{
+  margin:6px 0 0;
+  color:#85867d;
+  font-size:10px;
+  line-height:1.9;
+  max-width:480px;
+}
+.existing-note button,
+.reference-help button{
+  border:0;
+  background:transparent;
+  padding:5px 0;
+  color:#997324;
+  font-size:11px;
+  font-weight:700;
+  text-align:left;
+}
+.existing-note button:hover,
+.reference-help button:hover{
+  text-decoration:underline;
+}
+
+/* =====================================
+   NEW: FORGOT REFERENCE NUMBER
+===================================== */
+.reference-help{
+  background:#fafaf7;
+  border:1px solid #e6e8e1;
+  border-radius:11px;
+  padding:16px 19px;
+  color:#5d625b;
+  font-size:11px;
+  line-height:1.9;
+}
+.reference-help summary{
+  color:#94701e;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+.reference-help p{
+  margin:10px 0 0;
+  color:#747b73;
+}
+.reference-help .reference-action{
+  margin-top:9px;
+  display:inline-block;
+}
+.reference-help--active{
+  background:#fffaf0;
+  border-color:#eadcba;
+}
+.reference-help--active strong{
+  font-weight:600;
+  color:#6f5925;
+}
+
+/* =====================================
+   NEW: SUBMISSION CONFIRMATION POPUP
+===================================== */
+.confirm-dialog{
+  position:fixed;
+  width:min(500px,calc(100% - 28px));
+  max-height:calc(100% - 32px);
+  overflow:auto;
+  border:1px solid #e5e6de;
+  border-radius:20px;
+  padding:0;
+  background:#fff;
+  box-shadow:0 35px 95px rgba(20,24,18,.19);
+  color:var(--ink);
+  font-family:Poppins,Arial,sans-serif;
+}
+.confirm-dialog::backdrop{
+  background:rgba(20,24,20,.55);
+  backdrop-filter:blur(3px);
+}
+.confirm-inner{
+  padding:35px 34px 30px;
+  text-align:center;
+}
+.confirm-icon{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  margin:0 auto 15px;
+  display:grid;
+  place-items:center;
+  background:#e8f4eb;
+  color:#378451;
+  font-size:29px;
+  font-weight:700;
+}
+.confirm-kicker{
+  color:#9a7b27;
+  letter-spacing:1.8px;
+  font-size:10px;
+  font-weight:700;
+}
+.confirm-inner h2{
+  font-size:25px;
+  letter-spacing:-.8px;
+  margin:9px 0 12px;
+}
+.confirm-inner p{
+  color:#838982;
+  font-size:11px;
+  line-height:1.9;
+}
+.confirm-ref{
+  margin:21px auto 17px;
+  padding:17px;
+  border:1px solid #eae2cb;
+  border-radius:11px;
+  background:#fffdf6;
+  display:grid;
+  gap:7px;
+  overflow-wrap:anywhere;
+}
+.confirm-ref small{
+  color:#9a8d69;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.confirm-ref strong{
+  font-size:18px;
+  font-weight:700;
+}
+.confirm-ref button{justify-self:center}
+.confirm-detail{
+  text-align:left;
+  border-top:1px solid #eeeee9;
+  padding:12px 0;
+  display:grid;
+  gap:5px;
+}
+.confirm-detail b{font-size:11px}
+.confirm-detail span{
+  font-size:11px;
+  color:#858a83;
+  line-height:1.75;
+}
+.confirm-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:21px;
 }
 
 /* RESPONSIVE */
 @media(max-width:1000px){
   .wrap{width:calc(100% - 44px)}
-  .layout{grid-template-columns:1fr}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .sidebar,.main-card{min-width:0}
   .sidebar{position:static}
-  .steps{display:flex;overflow-x:auto}
-  .step-btn{
-    min-width:60px;justify-content:center;
-    border-left:0;border-bottom:2px solid #e9ebe6;
+  .steps{
+    display:flex;
+    overflow-x:auto;
   }
-  .step-btn.current{border-bottom-color:var(--gold)}
+  .step-btn{
+    min-width:60px;
+    justify-content:center;
+    border-left:0;
+    border-bottom:2px solid #e9ebe6;
+  }
+  .step-btn.current{
+    border-bottom-color:var(--gold);
+  }
   .step-btn .step-name,
-  .side-card h3,.side-card p,.side-note{display:none}
+  .side-card h3,
+  .side-card p,
+  .side-note{display:none}
 }
+
 @media(max-width:650px){
   .wrap{width:calc(100% - 30px)}
   .header-inner{min-height:102px}
   .logo-wrap{width:125px;height:62px}
-  .brand-countries{font-size:8px;letter-spacing:1.4px}
+  .brand-countries{
+    font-size:8px;
+    letter-spacing:1.4px;
+  }
   .brand-countries i{margin:0 3px}
   .clock .time{font-size:16px}
   .clock .date{font-size:9px}
-  .clock .zone{font-size:8px;letter-spacing:1px}
+  .clock .zone{
+    font-size:8px;
+    letter-spacing:1px;
+  }
   .hero{padding:47px 0 30px}
-  .hero h1{font-size:34px;letter-spacing:-1.5px}
-  .modes{grid-template-columns:1fr;gap:9px;margin-bottom:27px}
-  .mode{min-height:auto;padding:17px}
+  .hero h1{
+    font-size:34px;
+    letter-spacing:-1.5px;
+  }
+  .modes{
+    grid-template-columns:1fr;
+    gap:9px;
+    margin-bottom:27px;
+  }
+  .mode{
+    min-height:auto;
+    padding:17px;
+  }
   .layout{gap:12px}
   .card-top{padding:25px 19px 0}
   .content{padding:25px 19px}
   .content h2{font-size:23px}
-  .fields,.review-grid{grid-template-columns:1fr}
+  .fields,.review-grid{
+    grid-template-columns:1fr;
+  }
   .field.wide{grid-column:auto}
   .actions{flex-wrap:wrap}
   .actions .btn{flex:1}
-  .blank-view{padding:40px 18px}
   .footer-inner{display:block}
-  .footer-inner span{display:block;margin-top:8px}
+  .footer-inner span{
+    display:block;
+    margin-top:8px;
+  }
   .sb-calendar{
-    left:12px!important;right:12px;
-    top:auto!important;bottom:12px;
+    left:12px!important;
+    right:12px;
+    top:auto!important;
+    bottom:12px;
     width:calc(100vw - 24px);
   }
   .sb-cal-body{padding:16px 14px 9px}
   .sb-cal-day{height:38px}
+  .doc-head{align-items:flex-start}
+  .doc-upload-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .doc-card{padding:16px}
+  .existing-note{
+    padding:16px;
+    align-items:flex-start;
+  }
+  .confirm-inner{padding:30px 19px 23px}
+  .confirm-actions{flex-wrap:wrap}
+  .confirm-actions .btn{flex:1}
 }
+
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *{transition:none!important;animation:none!important}
+  *{
+    transition:none!important;
+    animation:none!important;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="wrap header-inner">
     <div class="brand" aria-label="SHEILD BOOST Group of Companies">
       <span class="logo-wrap">
-        <img class="logo"
+        <img
+          class="logo"
           src="images/SB GROUP LOGO SVG.svg"
-          alt="SHEILD BOOST Group logo">
+          alt="SHEILD BOOST Group logo"
+        >
       </span>
       <span class="brand-countries">
         UAE <i>|</i> OMAN <i>|</i> INDIA
       </span>
     </div>
+
     <div class="clock" aria-label="Current UAE date and time">
       <span class="zone">UAE LOCAL TIME · GST</span>
       <time class="time" id="clockTime">--:--:--</time>
@@ -664,37 +1213,68 @@ input[type=checkbox]{
 
 <main>
   <section class="wrap hero">
-    <div class="eyebrow">Business Registration &amp; Compliance</div>
+    <div class="eyebrow">
+      Business Registration &amp; Compliance
+    </div>
+
     <h1>
       Business Registration
       <strong>&amp; Annual KYC Renewal.</strong>
     </h1>
+
     <p>
-      Register your business as a supplier or customer, provide supporting
-      documents, or submit updated company information for annual KYC review.
+      Register your business as a supplier or customer,
+      provide supporting documents, or submit updated company
+      information for annual KYC review.
     </p>
   </section>
 
   <section class="wrap">
-    <div class="select-label">Select a service to continue</div>
+    <div class="select-label">
+      Select a service to continue
+    </div>
+
     <div class="modes">
-      <button class="mode active" id="registrationBtn" type="button"
-        data-mode="registration" aria-pressed="true">
+      <button
+        class="mode active"
+        id="registrationBtn"
+        type="button"
+        data-mode="registration"
+        aria-pressed="true"
+      >
         <span class="num">NEW APPLICATION</span>
         <strong>Supplier Registration ↗</strong>
-        <span class="desc">Register a supplier and upload required records.</span>
+        <span class="desc">
+          Register a supplier and upload required records.
+        </span>
       </button>
-      <button class="mode" id="customerBtn" type="button"
-        data-mode="customer" aria-pressed="false">
+
+      <button
+        class="mode"
+        id="customerBtn"
+        type="button"
+        data-mode="customer"
+        aria-pressed="false"
+      >
         <span class="num">NEW APPLICATION</span>
         <strong>Customer Registration ↗</strong>
-        <span class="desc">Register a customer and provide company records.</span>
+        <span class="desc">
+          Register a customer and provide company records.
+        </span>
       </button>
-      <button class="mode" id="renewalBtn" type="button"
-        data-mode="renewal" aria-pressed="false">
+
+      <button
+        class="mode"
+        id="renewalBtn"
+        type="button"
+        data-mode="renewal"
+        aria-pressed="false"
+      >
         <span class="num">EXISTING REGISTRATION</span>
         <strong>Annual KYC Renewal ↗</strong>
-        <span class="desc">Submit changed company details and renewed files.</span>
+        <span class="desc">
+          Submit changed company details and renewed files.
+        </span>
       </button>
     </div>
   </section>
@@ -702,21 +1282,32 @@ input[type=checkbox]{
   <section class="wrap layout" id="portalArea">
     <aside class="sidebar" id="sidebar">
       <div class="side-card">
-        <span class="overline">Registration Journey</span>
+        <span class="overline">
+          Registration Journey
+        </span>
+
         <h3>Seven clear steps.</h3>
+
         <p>
           Complete each stage before proceeding.
           You can revisit earlier stages to make changes.
         </p>
-        <nav class="steps" id="stepNav"
-          aria-label="Form section navigation"></nav>
+
+        <nav
+          class="steps"
+          id="stepNav"
+          aria-label="Form section navigation"
+        ></nav>
       </div>
 
       <div class="side-note">
         <small>BEFORE YOU BEGIN</small>
         <h4>Keep your company documents ready.</h4>
+
         <p>
-          Keep your Trade Licence and VAT Certificate ready. Both are required for new registrations. Other supporting documents are optional.
+          Keep your Trade Licence and VAT Certificate ready.
+          Both are required for new registrations.
+          Other supporting documents are optional.
         </p>
       </div>
     </aside>
@@ -725,15 +1316,20 @@ input[type=checkbox]{
       <div id="formMode">
         <div class="card-top">
           <div class="topline">
-            <span id="progressTitle">NEW SUPPLIER REGISTRATION</span>
+            <span id="progressTitle">
+              NEW SUPPLIER REGISTRATION
+            </span>
             <span id="counter">01 / 07</span>
           </div>
+
           <div class="bar">
             <div class="fill" id="progressFill"></div>
           </div>
         </div>
+
         <div class="content" id="stepContent"></div>
       </div>
+
       <div id="alternateMode" hidden></div>
     </div>
   </section>
@@ -742,114 +1338,229 @@ input[type=checkbox]{
 <footer class="footer">
   <div class="wrap footer-inner">
     <b>SHEILD BOOST GROUP OF COMPANIES</b>
-    <span>Business Registration & KYC Portal · <span id="footerYear"></span></span>
+
+    <span>
+      Business Registration & KYC Portal ·
+      <span id="footerYear"></span>
+    </span>
   </div>
 </footer>
 
 <div id="toast" role="status" aria-live="polite"></div>
-<div id="sbCalendar" class="sb-calendar"
-  role="dialog" aria-label="Choose a licence date" hidden></div>
+
+<div
+  id="sbCalendar"
+  class="sb-calendar"
+  role="dialog"
+  aria-label="Choose a licence date"
+  hidden
+></div>
+
+<!-- Submission dialog: frontend preview only until backend integration -->
+<dialog
+  id="submissionDialog"
+  class="confirm-dialog"
+  aria-label="Submission confirmation"
+></dialog>
 
 <script>
 "use strict";
 
-/* WEBSITE CONFIG */
+/* =========================================
+   CONFIGURATION — FRONTEND REVIEW MODE
+========================================= */
+
 const GROUP_WEBSITE_URL = "";
 
-/* ORIGINAL BACKEND CONFIG RETAINED FOR LATER INTEGRATION.
-   No live requests are made anywhere in this management-review prototype.
-   The backend Worker must remain closed to live submissions. */
 const SUPPLIER_API_URL =
   "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
+
 const LIVE_SUBMISSIONS_ENABLED = false;
-// Annual KYC is also off until we explicitly finish the end-to-end review.
-// Worker LIVE_KYC_RENEWAL must remain unset independently of this setting.
 const LIVE_KYC_SUBMISSIONS_ENABLED = false;
+
+const TURNSTILE_SITE_KEY =
+  "0x4AAAAAAGQe-FM1QfQ3Y1L0";
+
 const $ = id => document.getElementById(id);
-// Keep registration and renewal form answers isolated from each other.
-const flows = {
-  registration:{data:{},files:{},step:0,maximumStep:0},
-  customer:{data:{},files:{},step:0,maximumStep:0},
-  renewal:{data:{},files:{},step:0,maximumStep:0}
-};
-let mode="registration";
-let flow=flows.registration;
-let data=flow.data;
-let step=0;
-let maximumStep=0;
-const MAX_FILE_BYTES=5*1024*1024;
-const MAX_TOTAL_BYTES=10*1024*1024;
-const ACCEPTED_FILE_EXTENSIONS=/\.(pdf|jpe?g|png)$/i;
-const FILE_ACCEPT=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png";
+
 const UAE = "Asia/Dubai";
 
-/* MANAGEMENT PREVIEW: No Turnstile or API requests are performed.
-   Keep API Worker and original approved Turnstile settings for post-approval
-   backend work; security verification must be integrated server-side then. */
-const TURNSTILE_SITE_KEY="0x4AAAAAAGQe-FM1QfQ3Y1L0";
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const MAX_TOTAL_BYTES = 10 * 1024 * 1024;
+
+const ACCEPTED_FILE_EXTENSIONS = /\.(pdf|jpe?g|png)$/i;
+
+const FILE_ACCEPT =
+  ".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png";
+
+/*
+  IMPORTANT:
+  This is the frontend preview version.
+
+  No real registrations, files or emails are submitted.
+  No reference number is generated locally.
+
+  Backend integration will follow management approval.
+*/
+
 function removeTurnstile(){}
 function mountTurnstile(){}
 
-/* LIVE UAE CLOCK */
+/* =========================================
+   INDEPENDENT FORM STATE
+========================================= */
+
+const flows = {
+  registration:{
+    data:{},
+    files:{},
+    step:0,
+    maximumStep:0
+  },
+  customer:{
+    data:{},
+    files:{},
+    step:0,
+    maximumStep:0
+  },
+  renewal:{
+    data:{},
+    files:{},
+    step:0,
+    maximumStep:0
+  }
+};
+
+let mode = "registration";
+let flow = flows.registration;
+let data = flow.data;
+let step = 0;
+let maximumStep = 0;
+
+/* =========================================
+   LIVE UAE CLOCK
+========================================= */
+
 function tick(){
   const now = new Date();
 
-  $("clockTime").textContent = new Intl.DateTimeFormat("en-GB",{
-    timeZone:UAE,hour:"2-digit",minute:"2-digit",
-    second:"2-digit",hour12:false
-  }).format(now);
+  $("clockTime").textContent =
+    new Intl.DateTimeFormat("en-GB",{
+      timeZone:UAE,
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:false
+    }).format(now);
 
-  $("clockDate").textContent = new Intl.DateTimeFormat("en-GB",{
-    timeZone:UAE,weekday:"long",day:"2-digit",
-    month:"short",year:"numeric"
-  }).format(now);
+  $("clockDate").textContent =
+    new Intl.DateTimeFormat("en-GB",{
+      timeZone:UAE,
+      weekday:"long",
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }).format(now);
 }
+
 tick();
 setInterval(tick,1000);
 
-$("footerYear").textContent = new Intl.DateTimeFormat("en-US",{
-  timeZone:UAE,year:"numeric"
-}).format(new Date());
+$("footerYear").textContent =
+  new Intl.DateTimeFormat("en-US",{
+    timeZone:UAE,
+    year:"numeric"
+  }).format(new Date());
+
+/* =========================================
+   HELPERS
+========================================= */
 
 function notify(message){
-  const toast=$("toast");
-  toast.textContent=message;
+  const toast = $("toast");
+
+  toast.textContent = message;
   toast.classList.add("show");
+
   clearTimeout(notify.timer);
-  notify.timer=setTimeout(()=>toast.classList.remove("show"),4300);
+
+  notify.timer = setTimeout(()=>{
+    toast.classList.remove("show");
+  },4300);
 }
 
 function esc(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  }[char]));
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    char=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[char])
+  );
 }
 
-/* FIELD HELPERS */
-const text=(name,label,required=false,extra={})=>({
-  name,label,type:"text",required,...extra
-});
-const select=(name,label,options,required=false,extra={})=>({
-  name,label,type:"select",options,required,...extra
-});
-const area=(name,label,required=false,extra={})=>({
-  name,label,type:"textarea",required,wide:true,...extra
-});
-const yesNo=["Yes","No"];
-const availability=["Available","Not available","Not applicable"];
-const file=(name,label,required=false,extra={})=>({
-  name,label,type:"file",required,wide:true,...extra
+const text = (name,label,required=false,extra={})=>({
+  name,
+  label,
+  type:"text",
+  required,
+  ...extra
 });
 
-/* ALL SEVEN SECTIONS */
-const supplierSections=[
+const select = (name,label,options,required=false,extra={})=>({
+  name,
+  label,
+  type:"select",
+  options,
+  required,
+  ...extra
+});
+
+const area = (name,label,required=false,extra={})=>({
+  name,
+  label,
+  type:"textarea",
+  required,
+  wide:true,
+  ...extra
+});
+
+const file = (name,label,required=false,extra={})=>({
+  name,
+  label,
+  type:"file",
+  required,
+  wide:true,
+  ...extra
+});
+
+const yesNo = ["Yes","No"];
+
+const availability = [
+  "Available",
+  "Not available",
+  "Not applicable"
+];
+
+/* =========================================
+   SUPPLIER REGISTRATION SECTIONS
+========================================= */
+
+const supplierSections = [
   {
     name:"Company & Legal Information",
     kicker:"SECTION 01 / COMPANY PROFILE",
-    description:"Provide your official company registration and primary business contact information.",
+    description:
+      "Provide your official company registration and primary business contact information.",
+
     fields:[
-      text("legalName","Registered legal entity name",true,{wide:true}),
+      text("legalName","Registered legal entity name",true,{
+        wide:true
+      }),
+
       select("entityType","Entity type",[
         "Limited Liability Company (LLC)",
         "Free Zone Company",
@@ -858,330 +1569,693 @@ const supplierSections=[
         "Branch Office",
         "Other"
       ],true),
+
       text("licenceAuthority","Trade licence issuing authority",true),
+
       text("licenceNumber","Trade licence number",true),
-      {...text("licenceIssue","Licence issue date",true),type:"date"},
-      {...text("licenceExpiry","Licence expiry date",true),type:"date"},
+
+      {
+        ...text("licenceIssue","Licence issue date",true),
+        type:"date"
+      },
+
+      {
+        ...text("licenceExpiry","Licence expiry date",true),
+        type:"date"
+      },
+
       area("registeredAddress","Registered business address",true),
+
       {
         name:"sameAddress",
         label:"Actual business address is the same as the registered address",
-        type:"checkbox",wide:true
+        type:"checkbox",
+        wide:true
       },
+
       area("actualAddress","Actual business address",true,{
         show:d=>d.sameAddress!=="Yes"
       }),
+
       area("activities","Licensed business activities",true),
 
-      /* COMPANY WEBSITE IS NORMAL TEXT */
-      text("website","Company website",false,{wide:true}),
+      text("website","Company website",false,{
+        wide:true
+      }),
 
       text("contactName","Primary contact person name",true),
-      {...text("contactEmail","Business email address",true),type:"email"},
-      {...text("contactMobile","Mobile / telephone",true),type:"tel"}
+
+      {
+        ...text("contactEmail","Business email address",true),
+        type:"email"
+      },
+
+      {
+        ...text("contactMobile","Mobile / telephone",true),
+        type:"tel"
+      }
     ]
   },
+
   {
     name:"Tax Registration & E-Invoicing",
     kicker:"SECTION 02 / REGULATORY INFORMATION",
-    description:"Provide tax details only where they apply to your business.",
+
+    description:
+      "Provide tax details only where they apply to your business.",
+
     fields:[
       select("vatStatus","VAT registration status",[
-        "Registered","Not registered"
+        "Registered",
+        "Not registered"
       ],true),
+
       text("trn","VAT Tax Registration Number (TRN)",true,{
         show:d=>d.vatStatus==="Registered"
       }),
+
       select("ctStatus","Corporate Tax registration",[
-        "Registered","Not registered",
-        "Exempt / not applicable","In progress"
+        "Registered",
+        "Not registered",
+        "Exempt / not applicable",
+        "In progress"
       ],true),
+
       text("ctNumber","Corporate Tax registration number",true,{
         show:d=>d.ctStatus==="Registered"
       }),
+
       select("taxCert","Tax registration certificate",availability),
+
       select("vatGroup","VAT group membership",[
-        "Yes","No","Not applicable"
+        "Yes",
+        "No",
+        "Not applicable"
       ]),
+
       text("vatGroupTrn","VAT Group TRN",true,{
         show:d=>d.vatGroup==="Yes"
       }),
+
       text("einvoiceTin","E-Invoicing TIN"),
+
       text("peppol","Peppol Participant ID"),
+
       text("asp","Accredited Service Provider (ASP) details",false,{
         wide:true
       })
     ]
   },
+
   {
     name:"Authorized Representative",
     kicker:"SECTION 03 / REPRESENTATIVE DETAILS",
-    description:"Identify the person authorized to act on behalf of your company.",
+
+    description:
+      "Identify the person authorized to act on behalf of your company.",
+
     fields:[
       text("repName","Director / authorized representative name",true,{
         wide:true
       }),
+
       text("repTitle","Designation",true),
-      {...text("repEmail","Email address",true),type:"email"},
-      {...text("repPhone","Mobile / telephone",true),type:"tel"},
+
+      {
+        ...text("repEmail","Email address",true),
+        type:"email"
+      },
+
+      {
+        ...text("repPhone","Mobile / telephone",true),
+        type:"tel"
+      },
+
       select("idType","Identification document type",[
-        "Emirates ID","Passport","Other"
+        "Emirates ID",
+        "Passport",
+        "Other"
       ],true),
-      {...text("eidNumber","Emirates ID number",true,{
-        show:d=>d.idType==="Emirates ID",wide:true
-      }),type:"eid"},
+
+      {
+        ...text("eidNumber","Emirates ID number",true,{
+          show:d=>d.idType==="Emirates ID",
+          wide:true
+        }),
+        type:"eid"
+      },
+
       file("idDoc","Emirates ID document",false,{
         show:d=>d.idType==="Emirates ID"
       }),
+
       text("otherIdNumber","Passport / other ID number",false,{
-        show:d=>d.idType==="Passport"||d.idType==="Other",wide:true
+        show:d=>
+          d.idType==="Passport" ||
+          d.idType==="Other",
+        wide:true
       }),
+
       file("idDocOther","Passport / other identity document",false,{
-        show:d=>d.idType==="Passport"||d.idType==="Other"
+        show:d=>
+          d.idType==="Passport" ||
+          d.idType==="Other"
       }),
-      select("authorization",
+
+      select(
+        "authorization",
         "Authorization letter / power of attorney available?",
-        ["Yes","No","Not applicable"],false,{wide:true})
+        ["Yes","No","Not applicable"],
+        false,
+        {wide:true}
+      )
     ]
   },
+
   {
     name:"Bank & Payment Details",
     kicker:"SECTION 04 / PAYMENT PROFILE",
-    description:"Provide beneficiary and payment information. This section must be protected by the live database access rules.",
+
+    description:
+      "Provide beneficiary and payment information. This section must be protected by the live database access rules.",
+
     fields:[
       text("bankName","Bank name",true),
+
       text("beneficiary","Beneficiary / account holder name",true),
+
       text("iban","IBAN",true),
+
       text("swift","SWIFT / BIC code",true),
+
       select("bankLetter","Bank account confirmation letter",availability),
+
       select("currency","Preferred payment currency",[
-        "AED","USD","EUR","GBP","INR","OMR","Other"
+        "AED",
+        "USD",
+        "EUR",
+        "GBP",
+        "INR",
+        "OMR",
+        "Other"
       ],true),
+
       select("paymentTerms","Payment terms",[
-        "Advance Payment","On Delivery","Net 15 Days",
-        "Net 30 Days","Net 45 Days","Net 60 Days",
+        "Advance Payment",
+        "On Delivery",
+        "Net 15 Days",
+        "Net 30 Days",
+        "Net 45 Days",
+        "Net 60 Days",
         "Other / To be agreed"
       ],true),
+
       select("thirdParty","Third-party payment arrangement?",yesNo),
+
       select("overseas","Overseas payment arrangement?",yesNo),
+
       area("paymentDetails","Please explain the payment arrangement",true,{
-        show:d=>d.thirdParty==="Yes"||d.overseas==="Yes"
+        show:d=>
+          d.thirdParty==="Yes" ||
+          d.overseas==="Yes"
       })
     ]
   },
+
   {
     name:"Business & Risk Declaration",
     kicker:"SECTION 05 / BUSINESS DUE DILIGENCE",
-    description:"Tell us about your operations and any recent material changes.",
+
+    description:
+      "Tell us about your operations and any recent material changes.",
+
     fields:[
       area("goodsServices","Nature of goods or services supplied",true),
-      {...text("yearsOperating","Years in operation",true),type:"number"},
+
+      {
+        ...text("yearsOperating","Years in operation",true),
+        type:"number"
+      },
+
       select("premises","Business premises type",[
-        "Owned","Rented","Shared office","Remote / virtual","Other"
+        "Owned",
+        "Rented",
+        "Shared office",
+        "Remote / virtual",
+        "Other"
       ]),
+
       area("premisesDetails","Business premises details"),
-      select("addressChange",
-        "Address changes in the previous 12 months?",yesNo,true),
-      select("managementChange",
+
+      select(
+        "addressChange",
+        "Address changes in the previous 12 months?",
+        yesNo,
+        true
+      ),
+
+      select(
+        "managementChange",
         "Key management or contact changes in the previous 12 months?",
-        yesNo,true),
+        yesNo,
+        true
+      ),
+
       area("changes","Describe the changes",true,{
-        show:d=>d.addressChange==="Yes"||d.managementChange==="Yes"
+        show:d=>
+          d.addressChange==="Yes" ||
+          d.managementChange==="Yes"
       }),
+
       select("unusual","Any unusual transaction arrangements?",yesNo,true),
+
       select("subcontractors","Any subcontractor arrangements?",yesNo,true),
+
       area("riskDetails","Explain the arrangements",true,{
-        show:d=>d.unusual==="Yes"||d.subcontractors==="Yes"
+        show:d=>
+          d.unusual==="Yes" ||
+          d.subcontractors==="Yes"
       })
     ]
   },
+
   {
     name:"Supporting Document Details",
     kicker:"SECTION 06 / SUPPORTING RECORDS",
-    description:"Upload your company documents. Trade Licence and VAT Certificate are required.",
+
+    description:
+      "Upload your company documents. Trade Licence and VAT Certificate are required.",
+
     fields:[
       file("docTrade","Trade Licence / Incorporation Document",true),
+
       file("docVAT","VAT Registration Certificate",true),
+
       file("docCT","Corporate Tax Document"),
-      {name:"idDocLink",label:"Representative Identification Document",
-        type:"linkedFile",wide:true},
+
+      {
+        name:"idDocLink",
+        label:"Representative Identification Document",
+        type:"linkedFile",
+        wide:true
+      },
+
       file("docAuthorization","Authorization Letter"),
+
       file("docBank","Bank Confirmation Letter"),
-      file("otherDocs","Other Supporting Records",false,{multiple:true}),
+
+      file("otherDocs","Other Supporting Records",false,{
+        multiple:true
+      }),
+
       area("otherDocsNotes","Other supporting records description")
     ]
   },
+
   {
     name:"Declaration & Submission",
     kicker:"SECTION 07 / FINAL DECLARATION",
-    description:"Confirm the details are accurate before reviewing your complete registration.",
+
+    description:
+      "Confirm the details are accurate before reviewing your complete registration.",
+
     fields:[
       text("signatoryName","Authorized signatory name",true),
+
       text("signatoryTitle","Signatory designation",true),
+
       {
         name:"declarationAccuracy",
         label:"I confirm the information provided is accurate and complete.",
-        type:"checkbox",required:true,wide:true
+        type:"checkbox",
+        required:true,
+        wide:true
       },
+
       {
         name:"declarationChange",
         label:"I agree to notify SHEILD BOOST Group of Companies of material changes.",
-        type:"checkbox",required:true,wide:true
+        type:"checkbox",
+        required:true,
+        wide:true
       },
+
       {
         name:"declarationPrivacy",
         label:"I acknowledge the processing of my information for supplier registration and verification purposes.",
-        type:"checkbox",required:true,wide:true
+        type:"checkbox",
+        required:true,
+        wide:true
       }
     ]
   }
 ];
 
-/* CUSTOMER: Same approved form system with purpose-specific sections. */
-const customerSections=supplierSections.map((section,index)=>{
-  if(index===0)return {
-    ...section,
-    description:"Provide legal company information and the primary customer contact."
-  };
-  if(index===3)return {
-    name:"Billing & Payment Information",
-    kicker:"SECTION 04 / BILLING PROFILE",
-    description:"Provide billing contacts and invoice preferences.",
-    fields:[
-      text("billingContact","Billing contact person",true),
-      {...text("billingEmail","Accounts / billing email",true),type:"email"},
-      area("billingAddress","Billing address",true),
-      text("billingPhone","Billing contact telephone"),
-      text("purchaseOrder","Customer / purchase order reference"),
-      select("currency","Preferred invoice currency",[
-        "AED","USD","EUR","GBP","INR","OMR","Other"
-      ],true),
-      select("paymentTerms","Expected payment terms",[
-        "Advance Payment","On Delivery","Net 15 Days","Net 30 Days",
-        "Net 45 Days","Net 60 Days","Other / To be agreed"
-      ]),
-      area("billingNotes","Other billing instructions")
-    ]
-  };
-  if(index===4)return {
-    name:"Business Relationship Details",
-    kicker:"SECTION 05 / CUSTOMER PROFILE",
-    description:"Describe your business requirements and expected engagement.",
-    fields:[
-      area("goodsServices","Products or services required",true),
-      select("businessType","Type of engagement",[
-        "One-time Purchase","Ongoing Supply / Service","Project-based",
-        "Inspection / Certification","Training","Other"
-      ],true),
-      select("engagementStatus","Current engagement status",[
-        "New enquiry","Existing client","Previously worked together"
-      ],true),
-      area("scopeNotes","Project or service scope"),
-      select("addressChange","Address changes in previous 12 months?",yesNo,true),
-      select("managementChange","Management or contact changes in previous 12 months?",yesNo,true),
-      area("changes","Describe the changes",true,{
-        show:d=>d.addressChange==="Yes"||d.managementChange==="Yes"
-      }),
-      area("customerNotes","Additional customer requirements")
-    ]
-  };
+/* =========================================
+   CUSTOMER REGISTRATION SECTIONS
+========================================= */
+
+const customerSections = supplierSections.map((section,index)=>{
+
+  if(index===0){
+    return {
+      ...section,
+      description:
+        "Provide legal company information and the primary customer contact."
+    };
+  }
+
+  if(index===3){
+    return {
+      name:"Billing & Payment Information",
+      kicker:"SECTION 04 / BILLING PROFILE",
+
+      description:
+        "Provide billing contacts and invoice preferences.",
+
+      fields:[
+        text("billingContact","Billing contact person",true),
+
+        {
+          ...text("billingEmail","Accounts / billing email",true),
+          type:"email"
+        },
+
+        area("billingAddress","Billing address",true),
+
+        text("billingPhone","Billing contact telephone"),
+
+        text("purchaseOrder","Customer / purchase order reference"),
+
+        select("currency","Preferred invoice currency",[
+          "AED",
+          "USD",
+          "EUR",
+          "GBP",
+          "INR",
+          "OMR",
+          "Other"
+        ],true),
+
+        select("paymentTerms","Expected payment terms",[
+          "Advance Payment",
+          "On Delivery",
+          "Net 15 Days",
+          "Net 30 Days",
+          "Net 45 Days",
+          "Net 60 Days",
+          "Other / To be agreed"
+        ]),
+
+        area("billingNotes","Other billing instructions")
+      ]
+    };
+  }
+
+  if(index===4){
+    return {
+      name:"Business Relationship Details",
+      kicker:"SECTION 05 / CUSTOMER PROFILE",
+
+      description:
+        "Describe your business requirements and expected engagement.",
+
+      fields:[
+        area("goodsServices","Products or services required",true),
+
+        select("businessType","Type of engagement",[
+          "One-time Purchase",
+          "Ongoing Supply / Service",
+          "Project-based",
+          "Inspection / Certification",
+          "Training",
+          "Other"
+        ],true),
+
+        select("engagementStatus","Current engagement status",[
+          "New enquiry",
+          "Existing client",
+          "Previously worked together"
+        ],true),
+
+        area("scopeNotes","Project or service scope"),
+
+        select(
+          "addressChange",
+          "Address changes in previous 12 months?",
+          yesNo,
+          true
+        ),
+
+        select(
+          "managementChange",
+          "Management or contact changes in previous 12 months?",
+          yesNo,
+          true
+        ),
+
+        area("changes","Describe the changes",true,{
+          show:d=>
+            d.addressChange==="Yes" ||
+            d.managementChange==="Yes"
+        }),
+
+        area("customerNotes","Additional customer requirements")
+      ]
+    };
+  }
+
+  if(index===6){
+    return {
+      ...section,
+      fields:section.fields.map(field=>
+        field.name==="declarationPrivacy"
+          ?{
+            ...field,
+            label:
+              "I acknowledge the processing of my information for customer registration and verification purposes."
+          }
+          :field
+      )
+    };
+  }
+
   return section;
 });
 
-/* BLIND ANNUAL KYC — never retrieve records using reference + email. */
-const renewalSections=[
+/* =========================================
+   ANNUAL KYC RENEWAL SECTIONS
+========================================= */
+
+const renewalSections = [
   {
     name:"Renewal Identification",
     kicker:"SECTION 01 / EXISTING COMPANY",
-    description:"Enter your existing registration details. The reference and email do not provide access to stored company data.",
+
+    description:
+      "Enter your existing registration details. Your reference and email do not provide access to stored company data.",
+
     fields:[
-      select("recordType","Renewal for",["Supplier","Customer"],true),
-      text("reference","Existing registration reference number",true,{wide:true}),
-      {...text("registeredEmail","Registered company email address",true,{wide:true}),type:"email"},
-      text("renewalCompany","Registered legal entity name",true,{wide:true})
+      select("recordType","Renewal for",[
+        "Supplier",
+        "Customer"
+      ],true),
+
+      text("reference","Existing registration reference number",true,{
+        wide:true,
+        show:d=>d.referenceMissing!=="Yes"
+      }),
+
+      {
+        name:"referenceHelp",
+        label:"Forgot your reference number?",
+        type:"referenceHelp",
+        wide:true
+      },
+
+      {
+        ...text("registeredEmail","Registered company email address",true,{
+          wide:true
+        }),
+        type:"email"
+      },
+
+      text("renewalCompany","Registered legal entity name",true,{
+        wide:true
+      }),
+
+      text("renewalLicenceNumber","Trade Licence number",true,{
+        wide:true,
+        show:d=>d.referenceMissing==="Yes"
+      })
     ]
   },
+
   {
     name:"Company Updates",
     kicker:"SECTION 02 / CHANGED INFORMATION",
-    description:"Provide new or changed information only. Leave unchanged information as it is.",
+
+    description:
+      "Provide new or changed information only. Leave unchanged information as it is.",
+
     fields:[
       select("hasChanges","Have company details changed?",yesNo,true),
+
       area("changes","Describe the changed company details",true,{
         show:d=>d.hasChanges==="Yes"
       }),
+
       select("licenceRenewed","Trade Licence renewed or replaced?",yesNo,true),
+
       text("licenceNumber","New Trade Licence number",false,{
         show:d=>d.licenceRenewed==="Yes"
       }),
-      {...text("licenceIssue","Updated licence issue date",false,{
-        show:d=>d.licenceRenewed==="Yes"
-      }),type:"date"},
-      {...text("licenceExpiry","Updated licence expiry date",false,{
-        show:d=>d.licenceRenewed==="Yes"
-      }),type:"date"},
+
+      {
+        ...text("licenceIssue","Updated licence issue date",false,{
+          show:d=>d.licenceRenewed==="Yes"
+        }),
+        type:"date"
+      },
+
+      {
+        ...text("licenceExpiry","Updated licence expiry date",false,{
+          show:d=>d.licenceRenewed==="Yes"
+        }),
+        type:"date"
+      },
+
       select("vatUpdated","VAT Certificate changed?",yesNo,true),
+
       select("repIdUpdated","Representative ID changed?",yesNo,true),
+
       select("idType","Updated identification type",[
-        "Emirates ID","Passport","Other"
-      ],true,{show:d=>d.repIdUpdated==="Yes"}),
-      {...text("eidNumber","New Emirates ID number",true,{
-        show:d=>d.repIdUpdated==="Yes"&&d.idType==="Emirates ID"
-      }),type:"eid"},
+        "Emirates ID",
+        "Passport",
+        "Other"
+      ],true,{
+        show:d=>d.repIdUpdated==="Yes"
+      }),
+
+      {
+        ...text("eidNumber","New Emirates ID number",true,{
+          show:d=>
+            d.repIdUpdated==="Yes" &&
+            d.idType==="Emirates ID"
+        }),
+        type:"eid"
+      },
+
       area("renewalNotes","Additional changes or remarks")
     ]
   },
+
   {
     name:"Updated Supporting Documents",
     kicker:"SECTION 03 / REPLACEMENT RECORDS",
-    description:"Upload only new or renewed documents. Unchanged documents are not required again.",
+
+    description:
+      "Upload only new or renewed documents. Unchanged documents are not required again.",
+
     fields:[
       file("docTrade","Renewed Trade Licence / Incorporation Document"),
+
       file("docVAT","Updated VAT Registration Certificate"),
+
       file("docCT","Updated Corporate Tax Document"),
+
       file("idDoc","Updated Emirates ID / Representative ID Document"),
+
       file("docAuthorization","Updated Authorization Letter"),
+
       file("docBank","Updated Bank Confirmation Letter"),
-      file("otherDocs","Other Updated Supporting Records",false,{multiple:true}),
+
+      file("otherDocs","Other Updated Supporting Records",false,{
+        multiple:true
+      }),
+
       area("otherDocsNotes","Document change explanation")
     ]
   },
+
   {
     name:"Renewal Declaration",
     kicker:"SECTION 04 / FINAL DECLARATION",
-    description:"Confirm that proposed changes are accurate and subject to management review.",
+
+    description:
+      "Confirm that proposed changes are accurate and subject to management review.",
+
     fields:[
       text("signatoryName","Authorized signatory name",true),
+
       text("signatoryTitle","Signatory designation",true),
-      {name:"declarationAccuracy",label:"I confirm the information and new documents are accurate.",type:"checkbox",required:true,wide:true},
-      {name:"declarationChange",label:"I understand that changes are subject to management verification.",type:"checkbox",required:true,wide:true},
-      {name:"declarationPrivacy",label:"I acknowledge the processing of renewal information when the live system is launched.",type:"checkbox",required:true,wide:true}
+
+      {
+        name:"declarationAccuracy",
+        label:"I confirm the information and new documents are accurate.",
+        type:"checkbox",
+        required:true,
+        wide:true
+      },
+
+      {
+        name:"declarationChange",
+        label:"I understand that changes are subject to management verification.",
+        type:"checkbox",
+        required:true,
+        wide:true
+      },
+
+      {
+        name:"declarationPrivacy",
+        label:"I acknowledge the processing of renewal information when the live system is launched.",
+        type:"checkbox",
+        required:true,
+        wide:true
+      }
     ]
   }
 ];
-let sections=supplierSections;
-const allSections={
+
+const allSections = {
   registration:supplierSections,
   customer:customerSections,
   renewal:renewalSections
 };
 
+let sections = supplierSections;
+
+/* =========================================
+   VISIBILITY HELPER
+========================================= */
 
 function visible(field){
-  return !field.show||field.show(data);
+  return !field.show || field.show(data);
 }
 
-/* PREMIUM CUSTOM DATE PICKER */
+/* =========================================
+   PREMIUM DATE PICKER
+========================================= */
+
 function parseISODate(value){
-  const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(value||"");
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value||"");
+
   if(!match)return null;
-  const year=+match[1],month=+match[2],day=+match[3];
-  const date=new Date(Date.UTC(year,month-1,day));
+
+  const year = +match[1];
+  const month = +match[2];
+  const day = +match[3];
+
+  const date = new Date(Date.UTC(year,month-1,day));
+
   if(
-    date.getUTCFullYear()!==year||
-    date.getUTCMonth()!==month-1||
+    date.getUTCFullYear()!==year ||
+    date.getUTCMonth()!==month-1 ||
     date.getUTCDate()!==day
-  )return null;
+  ){
+    return null;
+  }
+
   return date;
 }
 
@@ -1190,102 +2264,197 @@ function isoFromUTCDate(date){
 }
 
 function prettyISODate(value){
-  const date=parseISODate(value);
+  const date = parseISODate(value);
+
   if(!date)return "";
+
   return new Intl.DateTimeFormat("en-GB",{
-    day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    timeZone:"UTC"
   }).format(date);
 }
 
 function uaeTodayISO(){
-  const parts=new Intl.DateTimeFormat("en-GB",{
+  const parts = new Intl.DateTimeFormat("en-GB",{
     timeZone:"Asia/Dubai",
-    day:"2-digit",month:"2-digit",year:"numeric"
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
   }).formatToParts(new Date());
-  const part=type=>parts.find(p=>p.type===type)?.value||"";
+
+  const part = type =>
+    parts.find(p=>p.type===type)?.value || "";
+
   return `${part("year")}-${part("month")}-${part("day")}`;
 }
 
-const calendarState={name:"",year:0,month:0};
-const monthNames=[
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December"
+const calendarState = {
+  name:"",
+  year:0,
+  month:0
+};
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
 ];
 
 function closeCalendar(restoreFocus=false){
-  const selected=calendarState.name?$(calendarState.name):null;
-  $("sbCalendar").hidden=true;
-  if(selected)selected.setAttribute("aria-expanded","false");
-  if(restoreFocus&&selected)selected.focus({preventScroll:true});
-  calendarState.name="";
+  const selected = calendarState.name
+    ?$(calendarState.name)
+    :null;
+
+  $("sbCalendar").hidden = true;
+
+  if(selected){
+    selected.setAttribute("aria-expanded","false");
+  }
+
+  if(restoreFocus && selected){
+    selected.focus({preventScroll:true});
+  }
+
+  calendarState.name = "";
 }
 
 function positionCalendar(){
-  const popup=$("sbCalendar");
-  const anchor=calendarState.name?$(calendarState.name):null;
-  if(!anchor||popup.hidden||window.innerWidth<=650)return;
-  const rect=anchor.getBoundingClientRect();
-  const width=popup.offsetWidth,height=popup.offsetHeight,margin=12;
-  const left=Math.max(margin,
-    Math.min(rect.left,window.innerWidth-width-margin));
-  const underneath=rect.bottom+9;
-  const above=rect.top-height-9;
-  const top=underneath+height>window.innerHeight-margin&&above>=margin
-    ?above
-    :Math.max(margin,
-      Math.min(underneath,window.innerHeight-height-margin));
-  popup.style.left=left+"px";
-  popup.style.top=top+"px";
+  const popup = $("sbCalendar");
+
+  const anchor = calendarState.name
+    ?$(calendarState.name)
+    :null;
+
+  if(
+    !anchor ||
+    popup.hidden ||
+    window.innerWidth<=650
+  ){
+    return;
+  }
+
+  const rect = anchor.getBoundingClientRect();
+  const width = popup.offsetWidth;
+  const height = popup.offsetHeight;
+  const margin = 12;
+
+  const left = Math.max(
+    margin,
+    Math.min(rect.left,window.innerWidth-width-margin)
+  );
+
+  const underneath = rect.bottom+9;
+  const above = rect.top-height-9;
+
+  const top =
+    underneath+height>window.innerHeight-margin &&
+    above>=margin
+      ?above
+      :Math.max(
+        margin,
+        Math.min(
+          underneath,
+          window.innerHeight-height-margin
+        )
+      );
+
+  popup.style.left = left+"px";
+  popup.style.top = top+"px";
 }
 
 function openCalendar(fieldName){
   if(
-    calendarState.name===fieldName&&
+    calendarState.name===fieldName &&
     !$("sbCalendar").hidden
   ){
     closeCalendar(true);
     return;
   }
-  const field=$(fieldName);
+
+  const field = $(fieldName);
+
   if(!field)return;
-  const chosen=parseISODate(field.dataset.dateValue);
-  const issue=fieldName==="licenceExpiry"
-    ?parseISODate(data.licenceIssue):null;
-  const baseDate=chosen||issue||parseISODate(uaeTodayISO());
-  calendarState.name=fieldName;
-  calendarState.year=baseDate.getUTCFullYear();
-  calendarState.month=baseDate.getUTCMonth();
+
+  const chosen = parseISODate(field.dataset.dateValue);
+
+  const issue = fieldName==="licenceExpiry"
+    ?parseISODate(data.licenceIssue)
+    :null;
+
+  const baseDate =
+    chosen ||
+    issue ||
+    parseISODate(uaeTodayISO());
+
+  calendarState.name = fieldName;
+  calendarState.year = baseDate.getUTCFullYear();
+  calendarState.month = baseDate.getUTCMonth();
+
   field.setAttribute("aria-expanded","true");
-  $("sbCalendar").hidden=false;
+
+  $("sbCalendar").hidden = false;
+
   renderCalendar();
   positionCalendar();
-  $("sbCalendar").querySelector(".sb-cal-month")
+
+  $("sbCalendar")
+    .querySelector(".sb-cal-month")
     ?.focus({preventScroll:true});
 }
 
 function renderCalendar(){
-  const popup=$("sbCalendar");
-  const {name,year,month}=calendarState;
+  const popup = $("sbCalendar");
+
+  const {name,year,month} = calendarState;
+
   if(!name)return;
-  const selected=data[name]||"";
-  const today=uaeTodayISO();
-  const floor=name==="licenceExpiry"&&parseISODate(data.licenceIssue)
-    ?data.licenceIssue:"";
-  const start=new Date(Date.UTC(year,month,1));
-  const mondayOffset=(start.getUTCDay()+6)%7;
-  const weekdays=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-  const years=Array.from({length:201},(_,i)=>1900+i);
-  let days="";
+
+  const selected = data[name] || "";
+  const today = uaeTodayISO();
+
+  const floor =
+    name==="licenceExpiry" &&
+    parseISODate(data.licenceIssue)
+      ?data.licenceIssue
+      :"";
+
+  const start = new Date(Date.UTC(year,month,1));
+  const mondayOffset = (start.getUTCDay()+6)%7;
+
+  const weekdays = [
+    "Mon","Tue","Wed","Thu","Fri","Sat","Sun"
+  ];
+
+  const years = Array.from(
+    {length:201},
+    (_,i)=>1900+i
+  );
+
+  let days = "";
 
   for(let i=0;i<42;i++){
-    const date=new Date(
-      Date.UTC(year,month,i-mondayOffset+1));
-    const iso=isoFromUTCDate(date);
-    const other=date.getUTCMonth()!==month;
-    const disabled=!!(floor&&iso<floor);
+    const date = new Date(
+      Date.UTC(year,month,i-mondayOffset+1)
+    );
 
-    days+=`
-      <button type="button"
+    const iso = isoFromUTCDate(date);
+    const other = date.getUTCMonth()!==month;
+    const disabled = !!(floor && iso<floor);
+
+    days += `
+      <button
+        type="button"
         class="sb-cal-day
           ${other?"other":""}
           ${iso===selected?"selected":""}
@@ -1293,53 +2462,90 @@ function renderCalendar(){
         data-date="${iso}"
         aria-label="${esc(prettyISODate(iso))}"
         ${iso===selected?'aria-pressed="true"':""}
-        ${disabled?"disabled":""}>
+        ${disabled?"disabled":""}
+      >
         ${date.getUTCDate()}
-      </button>`;
+      </button>
+    `;
   }
 
-  popup.innerHTML=`
+  popup.innerHTML = `
     <div class="sb-cal-top">
       <div class="sb-cal-topline">
         <span class="sb-cal-overline">
           SHEILD BOOST · DATE SELECTION
         </span>
-        <button type="button" class="sb-cal-close"
-          data-cal-action="close" aria-label="Close date picker">×</button>
+
+        <button
+          type="button"
+          class="sb-cal-close"
+          data-cal-action="close"
+          aria-label="Close date picker"
+        >×</button>
       </div>
+
       <div class="sb-cal-title">
-        ${name==="licenceIssue"?"Licence Issue Date":"Licence Expiry Date"}
+        ${
+          name==="licenceIssue"
+            ?"Licence Issue Date"
+            :"Licence Expiry Date"
+        }
       </div>
     </div>
 
     <div class="sb-cal-body">
       <div class="sb-cal-switcher">
-        <button type="button" class="sb-cal-nav"
-          data-cal-action="prev" aria-label="Previous month">‹</button>
+        <button
+          type="button"
+          class="sb-cal-nav"
+          data-cal-action="prev"
+          aria-label="Previous month"
+        >‹</button>
 
-        <select class="sb-cal-select sb-cal-month"
-          aria-label="Select month">
-          ${monthNames.map((monthName,i)=>`
-            <option value="${i}" ${i===month?"selected":""}>
-              ${monthName}
-            </option>`).join("")}
+        <select
+          class="sb-cal-select sb-cal-month"
+          aria-label="Select month"
+        >
+          ${
+            monthNames.map((monthName,i)=>`
+              <option
+                value="${i}"
+                ${i===month?"selected":""}
+              >${monthName}</option>
+            `).join("")
+          }
         </select>
 
-        <select class="sb-cal-select sb-cal-year"
-          aria-label="Select year">
-          ${years.map(y=>`
-            <option value="${y}" ${y===year?"selected":""}>
-              ${y}
-            </option>`).join("")}
+        <select
+          class="sb-cal-select sb-cal-year"
+          aria-label="Select year"
+        >
+          ${
+            years.map(y=>`
+              <option
+                value="${y}"
+                ${y===year?"selected":""}
+              >${y}</option>
+            `).join("")
+          }
         </select>
 
-        <button type="button" class="sb-cal-nav"
-          data-cal-action="next" aria-label="Next month">›</button>
+        <button
+          type="button"
+          class="sb-cal-nav"
+          data-cal-action="next"
+          aria-label="Next month"
+        >›</button>
       </div>
 
       <div class="sb-cal-weekdays">
-        ${weekdays.map(day=>`<span>${day}</span>`).join("")}
+        ${
+          weekdays.map(day=>
+            `<span>${day}</span>`
+          ).join("")
+        }
       </div>
+
       <div class="sb-cal-grid">${days}</div>
     </div>
 
@@ -1347,43 +2553,75 @@ function renderCalendar(){
       <span class="sb-cal-hint">
         ${floor?"On or after issue date":"DD MMM YYYY"}
       </span>
-      <button type="button" data-cal-action="clear">Clear</button>
-      <button type="button" class="today-action"
+
+      <button
+        type="button"
+        data-cal-action="clear"
+      >Clear</button>
+
+      <button
+        type="button"
+        class="today-action"
         data-cal-action="today"
-        ${floor&&today<floor?"disabled":""}>Today</button>
-    </div>`;
+        ${floor&&today<floor?"disabled":""}
+      >Today</button>
+    </div>
+  `;
 
   positionCalendar();
 }
 
 function changeCalendarMonth(delta){
-  const date=new Date(Date.UTC(
-    calendarState.year,calendarState.month+delta,1));
-  const year=date.getUTCFullYear();
-  if(year<1900||year>2100)return;
-  calendarState.year=year;
-  calendarState.month=date.getUTCMonth();
+  const date = new Date(Date.UTC(
+    calendarState.year,
+    calendarState.month+delta,
+    1
+  ));
+
+  const year = date.getUTCFullYear();
+
+  if(year<1900 || year>2100)return;
+
+  calendarState.year = year;
+  calendarState.month = date.getUTCMonth();
+
   renderCalendar();
 }
 
 function selectCalendarDate(iso){
   if(!calendarState.name)return;
-  if(iso&&!parseISODate(iso))return;
+  if(iso && !parseISODate(iso))return;
+
   if(
-    calendarState.name==="licenceExpiry"&&
-    data.licenceIssue&&iso&&iso<data.licenceIssue
-  )return;
-  const input=$(calendarState.name);
+    calendarState.name==="licenceExpiry" &&
+    data.licenceIssue &&
+    iso &&
+    iso<data.licenceIssue
+  ){
+    return;
+  }
+
+  const input = $(calendarState.name);
+
   if(!input)return;
-  input.dataset.dateValue=iso;
-  input.value=prettyISODate(iso);
-  input.dispatchEvent(new Event("input",{bubbles:true}));
-  input.dispatchEvent(new Event("change",{bubbles:true}));
+
+  input.dataset.dateValue = iso;
+  input.value = prettyISODate(iso);
+
+  input.dispatchEvent(
+    new Event("input",{bubbles:true})
+  );
+
+  input.dispatchEvent(
+    new Event("change",{bubbles:true})
+  );
+
   closeCalendar(true);
 }
 
 $("sbCalendar").addEventListener("click",event=>{
-  const button=event.target.closest("button");
+  const button = event.target.closest("button");
+
   if(!button)return;
 
   if(button.dataset.date){
@@ -1392,52 +2630,92 @@ $("sbCalendar").addEventListener("click",event=>{
   }
 
   switch(button.dataset.calAction){
-    case "close":closeCalendar(true);break;
-    case "prev":changeCalendarMonth(-1);break;
-    case "next":changeCalendarMonth(1);break;
-    case "today":selectCalendarDate(uaeTodayISO());break;
-    case "clear":selectCalendarDate("");break;
+    case "close":
+      closeCalendar(true);
+      break;
+
+    case "prev":
+      changeCalendarMonth(-1);
+      break;
+
+    case "next":
+      changeCalendarMonth(1);
+      break;
+
+    case "today":
+      selectCalendarDate(uaeTodayISO());
+      break;
+
+    case "clear":
+      selectCalendarDate("");
+      break;
   }
 });
 
 $("sbCalendar").addEventListener("change",event=>{
   if(event.target.classList.contains("sb-cal-month")){
-    calendarState.month=Number(event.target.value);
+    calendarState.month = Number(event.target.value);
   }else if(event.target.classList.contains("sb-cal-year")){
-    calendarState.year=Number(event.target.value);
-  }else{return;}
+    calendarState.year = Number(event.target.value);
+  }else{
+    return;
+  }
 
-  const selector=event.target.classList.contains("sb-cal-month")
-    ?".sb-cal-month":".sb-cal-year";
+  const selector =
+    event.target.classList.contains("sb-cal-month")
+      ?".sb-cal-month"
+      :".sb-cal-year";
 
   renderCalendar();
-  $("sbCalendar").querySelector(selector)
+
+  $("sbCalendar")
+    .querySelector(selector)
     ?.focus({preventScroll:true});
 });
 
 $("sbCalendar").addEventListener("keydown",event=>{
   if(!event.target.matches(".sb-cal-day"))return;
-  const delta={
-    ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7
+
+  const delta = {
+    ArrowLeft:-1,
+    ArrowRight:1,
+    ArrowUp:-7,
+    ArrowDown:7
   }[event.key];
+
   if(!delta)return;
+
   event.preventDefault();
-  const date=parseISODate(event.target.dataset.date);
+
+  const date = parseISODate(event.target.dataset.date);
+
   date.setUTCDate(date.getUTCDate()+delta);
-  const nextISO=isoFromUTCDate(date);
+
+  const nextISO = isoFromUTCDate(date);
+
   if(
-    calendarState.name==="licenceExpiry"&&
-    data.licenceIssue&&nextISO<data.licenceIssue
-  )return;
-  calendarState.year=date.getUTCFullYear();
-  calendarState.month=date.getUTCMonth();
+    calendarState.name==="licenceExpiry" &&
+    data.licenceIssue &&
+    nextISO<data.licenceIssue
+  ){
+    return;
+  }
+
+  calendarState.year = date.getUTCFullYear();
+  calendarState.month = date.getUTCMonth();
+
   renderCalendar();
-  $("sbCalendar").querySelector(`[data-date="${nextISO}"]`)
+
+  $("sbCalendar")
+    .querySelector(`[data-date="${nextISO}"]`)
     ?.focus({preventScroll:true});
 });
 
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&!$("sbCalendar").hidden){
+  if(
+    event.key==="Escape" &&
+    !$("sbCalendar").hidden
+  ){
     event.preventDefault();
     closeCalendar(true);
   }
@@ -1445,24 +2723,38 @@ document.addEventListener("keydown",event=>{
 
 document.addEventListener("pointerdown",event=>{
   if(
-    !$("sbCalendar").hidden&&
-    !event.target.closest("#sbCalendar")&&
+    !$("sbCalendar").hidden &&
+    !event.target.closest("#sbCalendar") &&
     !event.target.closest(".date-control")
-  )closeCalendar();
+  ){
+    closeCalendar();
+  }
 });
 
-window.addEventListener("resize",positionCalendar,{passive:true});
-window.addEventListener("scroll",positionCalendar,{
-  passive:true,capture:true
-});
+window.addEventListener(
+  "resize",
+  positionCalendar,
+  {passive:true}
+);
 
-/* FIELD RENDERING AND LOCAL FILE PREVIEW */
+window.addEventListener(
+  "scroll",
+  positionCalendar,
+  {passive:true,capture:true}
+);
+
+/* =========================================
+   FILE UPLOAD HELPERS
+========================================= */
+
 function filesFor(name){
   return flow.files[name] || [];
 }
 
 function totalFileBytes(){
-  return Object.values(flow.files).flat().reduce((sum,item)=>sum+item.size,0);
+  return Object.values(flow.files)
+    .flat()
+    .reduce((sum,item)=>sum+item.size,0);
 }
 
 function fileSize(size){
@@ -1470,360 +2762,848 @@ function fileSize(size){
 }
 
 function fileHTML(field){
-  const chosen=filesFor(field.name);
-  const id=esc(field.name);
-  const listing=chosen.map((item,index)=>`
+  const chosen = filesFor(field.name);
+  const id = esc(field.name);
+
+  const listing = chosen.map((item,index)=>`
     <div class="selected-file">
-      <span class="selected-file-icon" aria-hidden="true">▤</span>
+      <span
+        class="selected-file-icon"
+        aria-hidden="true"
+      >▤</span>
+
       <span class="selected-file-info">
         <strong>${esc(item.name)}</strong>
-        <small>${fileSize(item.size)} · Selected locally</small>
+        <small>
+          ${fileSize(item.size)} · Selected locally
+        </small>
       </span>
-      <button type="button" class="file-remove"
-        data-remove-file="${id}" data-remove-index="${index}"
-        aria-label="Remove ${esc(item.name)}">×</button>
-    </div>`).join("");
+
+      <button
+        type="button"
+        class="file-remove"
+        data-remove-file="${id}"
+        data-remove-index="${index}"
+        aria-label="Remove ${esc(item.name)}"
+      >×</button>
+    </div>
+  `).join("");
 
   return `
-    <div class="field wide doc-card" data-document="${id}">
+    <div
+      class="field wide doc-card"
+      data-document="${id}"
+    >
       <div class="doc-head">
         <label for="${id}">
           ${esc(field.label)}
-          ${field.required?'<span class="required"> *</span>':""}
+          ${
+            field.required
+              ?'<span class="required"> *</span>'
+              :""
+          }
         </label>
-        <span class="doc-tag ${field.required?"mandatory":""}">
+
+        <span class="doc-tag ${
+          field.required?"mandatory":""
+        }">
           ${field.required?"REQUIRED":"OPTIONAL"}
         </span>
       </div>
+
       <div class="doc-upload-row">
-        <input class="file-picker" type="file" name="${id}" id="${id}"
-          accept="${FILE_ACCEPT}" ${field.multiple?"multiple":""}>
-        <label class="upload-label" for="${id}">
+        <input
+          class="file-picker"
+          type="file"
+          name="${id}"
+          id="${id}"
+          accept="${FILE_ACCEPT}"
+          ${field.multiple?"multiple":""}
+        >
+
+        <label
+          class="upload-label"
+          for="${id}"
+        >
           + Select ${field.multiple?"Files":"File"}
         </label>
+
         <span class="doc-help">
           PDF, JPG or PNG · Max 5 MB each
           ${field.multiple?" · Up to 5 files":""}
         </span>
       </div>
-      ${listing || '<span class="doc-empty">No file selected</span>'}
-    </div>`;
+
+      ${
+        listing ||
+        '<span class="doc-empty">No file selected</span>'
+      }
+    </div>
+  `;
 }
+
+/* =========================================
+   DYNAMIC FIELD RENDERING
+========================================= */
 
 function fieldHTML(field){
   if(!visible(field))return "";
-  const id=esc(field.name);
-  const label=esc(field.label);
-  const val=esc(data[field.name]??"");
-  const required=field.required
-    ?'<span class="required"> *</span>':"";
 
-  if(field.type==="file")return fileHTML(field);
+  const id = esc(field.name);
+  const label = esc(field.label);
+  const val = esc(data[field.name] ?? "");
+
+  const required = field.required
+    ?'<span class="required"> *</span>'
+    :"";
+
+  if(field.type==="file"){
+    return fileHTML(field);
+  }
+
+  /* NEW: FORGOT REFERENCE NUMBER */
+
+  if(field.type==="referenceHelp"){
+    if(data.referenceMissing==="Yes"){
+      return `
+        <div class="field wide">
+          <div class="reference-help reference-help--active">
+
+            <strong>
+              Continuing without your reference number
+            </strong>
+
+            <p>
+              Please first check the inbox or spam folder
+              of your registered company email for the
+              original SHEILD BOOST registration
+              acknowledgment, which contains your
+              reference number.
+            </p>
+
+            <p>
+              If you still cannot find it, supply the
+              registered company name, email and Trade
+              Licence number below.
+
+              Management must verify the request before
+              linking it to an existing record.
+
+              No existing private information will be
+              displayed here.
+            </p>
+
+            <button
+              type="button"
+              data-use-reference
+            >
+              ← I found my reference number
+            </button>
+
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="field wide">
+
+        <details class="reference-help">
+
+          <summary>
+            Forgot your reference number?
+          </summary>
+
+          <p>
+            Please check your
+            <strong>registered company email inbox</strong>
+            and spam folder.
+
+            Search for the registration acknowledgment
+            from SHEILD BOOST Group of Companies.
+
+            Your reference number is included in that
+            email once live notifications are enabled.
+          </p>
+
+          <p>
+            If you still cannot find it, you can submit
+            your updated information without the number.
+
+            Management will verify and link your renewal
+            manually. No existing company records will
+            be exposed.
+          </p>
+
+          <button
+            type="button"
+            class="reference-action"
+            data-forgot-reference
+          >
+            Continue without reference →
+          </button>
+
+        </details>
+
+      </div>
+    `;
+  }
+
+  /* EXISTING SECTION 03 ID DOCUMENT LINK */
 
   if(field.type==="linkedFile"){
-    const key=data.idType==="Emirates ID"?"idDoc":"idDocOther";
-    const chosen=filesFor(key);
+    const key =
+      data.idType==="Emirates ID"
+        ?"idDoc"
+        :"idDocOther";
+
+    const chosen = filesFor(key);
+
     return `
       <div class="field wide">
         <label>${label} (optional)</label>
+
         <div class="linked-document">
-          <strong>${chosen.length?esc(chosen[0].name):"No file selected"}</strong>
+          <strong>
+            ${
+              chosen.length
+                ?esc(chosen[0].name)
+                :"No file selected"
+            }
+          </strong>
+
           <small>
-            ${chosen.length
-              ?"Already selected in Section 03 — no duplicate required."
-              :"You may select an identity document in Section 03."}
+            ${
+              chosen.length
+                ?"Already selected in Section 03 — no duplicate required."
+                :"You may select an identity document in Section 03."
+            }
           </small>
-          <button type="button" data-go-step="2">
+
+          <button
+            type="button"
+            data-go-step="2"
+          >
             Open Authorized Representative ↗
           </button>
         </div>
-      </div>`;
+      </div>
+    `;
   }
 
   if(field.type==="checkbox"){
     return `
       <div class="field wide">
         <label class="check-row">
-          <input type="checkbox" name="${id}"
-            ${data[field.name]==="Yes"?"checked":""}
-            ${field.required?"required":""}>
-          <span>${label}${required}</span>
+
+          <input
+            type="checkbox"
+            name="${id}"
+            ${
+              data[field.name]==="Yes"
+                ?"checked"
+                :""
+            }
+            ${field.required?"required":""}
+          >
+
+          <span>
+            ${label}${required}
+          </span>
+
         </label>
-      </div>`;
+      </div>
+    `;
   }
 
-  let control="";
+  let control = "";
+
   if(field.type==="date"){
-    control=`
+    control = `
       <div class="date-control">
-        <input class="input date-input" id="${id}" name="${id}"
-          type="text" readonly autocomplete="off"
-          data-date-value="${val}" placeholder="Select a date"
-          aria-haspopup="dialog" aria-controls="sbCalendar"
+
+        <input
+          class="input date-input"
+          id="${id}"
+          name="${id}"
+          type="text"
+          readonly
+          autocomplete="off"
+          data-date-value="${val}"
+          placeholder="Select a date"
+          aria-haspopup="dialog"
+          aria-controls="sbCalendar"
           aria-expanded="false"
           value="${esc(prettyISODate(data[field.name]))}"
-          ${field.required?"required":""}>
-        <button type="button" class="date-trigger"
+          ${field.required?"required":""}
+        >
+
+        <button
+          type="button"
+          class="date-trigger"
           data-calendar-open="${id}"
-          aria-label="Choose ${label}">
-          <svg viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.75"
-            stroke-linecap="round" stroke-linejoin="round"
-            aria-hidden="true">
-            <rect x="3" y="5" width="18" height="16" rx="2"/>
-            <path d="M7 3v4M17 3v4M3 10h18"/>
+          aria-label="Choose ${label}"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="16"
+              rx="2"
+            ></rect>
+
+            <path d="M7 3v4M17 3v4M3 10h18"></path>
           </svg>
         </button>
-      </div>`;
-  }else if(field.type==="select"){
-    control=`
-      <select class="input" id="${id}" name="${id}"
-        ${field.required?"required":""}>
-        <option value="">Select an option</option>
-        ${field.options.map(option=>`
-          <option value="${esc(option)}"
-            ${data[field.name]===option?"selected":""}>
-            ${esc(option)}
-          </option>`).join("")}
-      </select>`;
-  }else if(field.type==="textarea"){
-    control=`
-      <textarea class="input" id="${id}" name="${id}"
-        maxlength="1200" ${field.required?"required":""}
-        placeholder="Enter details">${val}</textarea>`;
-  }else if(field.type==="eid"){
-    control=`
-      <input class="input" id="${id}" name="${id}"
-        type="text" inputmode="numeric" maxlength="18"
-        pattern="784-[0-9]{4}-[0-9]{7}-[0-9]"
-        placeholder="784-XXXX-XXXXXXX-X" value="${val}"
-        ${field.required?"required":""}>
-      <small class="doc-help">Enter 15 digits starting with 784.</small>`;
-  }else{
-    control=`
-      <input class="input" id="${id}" name="${id}"
-        type="${field.type}" value="${val}"
+      </div>
+    `;
+  }
+
+  else if(field.type==="select"){
+    control = `
+      <select
+        class="input"
+        id="${id}"
+        name="${id}"
         ${field.required?"required":""}
-        ${field.type==="number"?'min="0" max="300"':""}
+      >
+        <option value="">
+          Select an option
+        </option>
+
+        ${
+          field.options.map(option=>`
+            <option
+              value="${esc(option)}"
+              ${
+                data[field.name]===option
+                  ?"selected"
+                  :""
+              }
+            >
+              ${esc(option)}
+            </option>
+          `).join("")
+        }
+
+      </select>
+    `;
+  }
+
+  else if(field.type==="textarea"){
+    control = `
+      <textarea
+        class="input"
+        id="${id}"
+        name="${id}"
+        maxlength="1200"
+        ${field.required?"required":""}
+        placeholder="Enter details"
+      >${val}</textarea>
+    `;
+  }
+
+  else if(field.type==="eid"){
+    control = `
+      <input
+        class="input"
+        id="${id}"
+        name="${id}"
+        type="text"
+        inputmode="numeric"
+        maxlength="18"
+        pattern="784-[0-9]{4}-[0-9]{7}-[0-9]"
+        placeholder="784-XXXX-XXXXXXX-X"
+        value="${val}"
+        ${field.required?"required":""}
+      >
+
+      <small class="doc-help">
+        Enter 15 digits starting with 784.
+      </small>
+    `;
+  }
+
+  else{
+    control = `
+      <input
+        class="input"
+        id="${id}"
+        name="${id}"
+        type="${field.type}"
+        value="${val}"
+        ${field.required?"required":""}
+        ${
+          field.type==="number"
+            ?'min="0" max="300"'
+            :""
+        }
         maxlength="200"
-        placeholder="Enter ${label.toLowerCase()}">`;
+        placeholder="Enter ${label.toLowerCase()}"
+      >
+    `;
   }
 
   return `
     <div class="field ${field.wide?"wide":""}">
-      <label for="${id}">${label}${required}</label>
+      <label for="${id}">
+        ${label}${required}
+      </label>
+
       ${control}
-    </div>`;
+    </div>
+  `;
 }
 
+/* =========================================
+   STORE CURRENT FORM VALUES
+========================================= */
+
 function store(){
-  document.querySelectorAll("#stepContent [name]").forEach(element=>{
-    if(element.type==="file")return;
-    data[element.name]=element.type==="checkbox"
-      ?(element.checked?"Yes":"No")
-      :element.classList.contains("date-input")
-        ?(element.dataset.dateValue||"")
-        :element.value;
+  document.querySelectorAll(
+    "#stepContent [name]"
+  ).forEach(element=>{
+
+    if(element.type==="file"){
+      return;
+    }
+
+    data[element.name] =
+      element.type==="checkbox"
+        ?(element.checked?"Yes":"No")
+        :element.classList.contains("date-input")
+          ?(element.dataset.dateValue||"")
+          :element.value;
   });
 }
 
+/* =========================================
+   FILE VALIDATION
+========================================= */
+
 function checkSelectedFiles(name,list){
-  const chosen=Array.from(list||[]);
+  const chosen = Array.from(list||[]);
+
   if(!chosen.length)return false;
-  const allowedTypes=new Set([
-    "application/pdf","image/jpeg","image/png"
+
+  const allowedTypes = new Set([
+    "application/pdf",
+    "image/jpeg",
+    "image/png"
   ]);
+
   for(const item of chosen){
-    if(!ACCEPTED_FILE_EXTENSIONS.test(item.name) ||
-       (item.type&&!allowedTypes.has(item.type))){
-      notify("Please select PDF, JPG or PNG documents only.");
+    if(
+      !ACCEPTED_FILE_EXTENSIONS.test(item.name) ||
+      (
+        item.type &&
+        !allowedTypes.has(item.type)
+      )
+    ){
+      notify(
+        "Please select PDF, JPG or PNG documents only."
+      );
       return false;
     }
-    if(item.size<=0 || item.size>MAX_FILE_BYTES){
-      notify("Each file must be greater than 0 KB and at most 5 MB.");
+
+    if(
+      item.size<=0 ||
+      item.size>MAX_FILE_BYTES
+    ){
+      notify(
+        "Each file must be greater than 0 KB and at most 5 MB."
+      );
       return false;
     }
   }
-  const field=sections.flatMap(section=>section.fields)
-    .find(item=>item.name===name&&item.type==="file");
+
+  const field = sections
+    .flatMap(section=>section.fields)
+    .find(
+      item=>
+        item.name===name &&
+        item.type==="file"
+    );
+
   if(field?.multiple && chosen.length>5){
-    notify("Select no more than 5 additional documents.");
+    notify(
+      "Select no more than 5 additional documents."
+    );
     return false;
   }
-  const existing=filesFor(name).reduce((sum,item)=>sum+item.size,0);
-  const selected=chosen.reduce((sum,item)=>sum+item.size,0);
-  if(totalFileBytes()-existing+selected>MAX_TOTAL_BYTES){
-    notify("The total size of selected files cannot exceed 10 MB.");
+
+  const existing = filesFor(name).reduce(
+    (sum,item)=>sum+item.size,
+    0
+  );
+
+  const selected = chosen.reduce(
+    (sum,item)=>sum+item.size,
+    0
+  );
+
+  if(
+    totalFileBytes()-existing+selected >
+    MAX_TOTAL_BYTES
+  ){
+    notify(
+      "The total size of selected files cannot exceed 10 MB."
+    );
     return false;
   }
+
   return true;
 }
 
 function chooseFiles(name,list){
-  if(!checkSelectedFiles(name,list))return;
-  flow.files[name]=Array.from(list);
+  if(!checkSelectedFiles(name,list)){
+    return;
+  }
+
+  flow.files[name] = Array.from(list);
+
   store();
   render();
 }
+
+/* =========================================
+   CARD FOCUS / NAVIGATION
+========================================= */
 
 function focusCard(){
   $("mainCard").scrollIntoView({
     behavior:window.matchMedia(
       "(prefers-reduced-motion: reduce)"
-    ).matches?"auto":"smooth",
+    ).matches
+      ?"auto"
+      :"smooth",
     block:"start"
   });
 }
 
-/* INDEPENDENT MULTI-STEP WORKFLOWS */
 function syncFlow(){
-  flow.step=step;
-  flow.maximumStep=maximumStep;
+  flow.step = step;
+  flow.maximumStep = maximumStep;
 }
 
 function updateNav(){
-  $("stepNav").innerHTML=sections.map((section,index)=>`
-    <button type="button"
-      class="step-btn
-        ${index===step?"current":""}
-        ${index<maximumStep?"done":""}"
-      data-step="${index}" ${index>maximumStep?"disabled":""}>
-      <span>${String(index+1).padStart(2,"0")}</span>
-      <span class="step-name">${esc(section.name)}</span>
-    </button>`).join("");
+  $("stepNav").innerHTML = sections.map(
+    (section,index)=>`
+      <button
+        type="button"
+        class="step-btn
+          ${index===step?"current":""}
+          ${index<maximumStep?"done":""}"
+        data-step="${index}"
+        ${index>maximumStep?"disabled":""}
+      >
+        <span>
+          ${String(index+1).padStart(2,"0")}
+        </span>
 
-  $("stepNav").querySelectorAll("[data-step]").forEach(button=>{
-    button.addEventListener("click",()=>{
-      store();
-      step=Number(button.dataset.step);
-      syncFlow();
-      render();
-      focusCard();
+        <span class="step-name">
+          ${esc(section.name)}
+        </span>
+      </button>
+    `
+  ).join("");
+
+  $("stepNav")
+    .querySelectorAll("[data-step]")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+        store();
+
+        step = Number(button.dataset.step);
+
+        syncFlow();
+        render();
+        focusCard();
+      });
+
     });
-  });
 }
 
+/* =========================================
+   SECTION VALIDATION
+========================================= */
+
 function validateSection(sectionIndex,showError=false){
-  const section=sections[sectionIndex];
+  const section = sections[sectionIndex];
+
   if(!section)return false;
 
-  const fail=(field,message)=>{
+  const fail = (field,message)=>{
     if(showError){
-      const warning=$("error");
+      const warning = $("error");
+
       if(warning){
-        warning.textContent=message;
-        warning.hidden=false;
+        warning.textContent = message;
+        warning.hidden = false;
       }
-      const control=$(field.name);
-      const holder=control?.closest(".doc-card")||control;
+
+      const control = $(field.name);
+
+      const holder =
+        control?.closest(".doc-card") ||
+        control;
+
       holder?.classList.add("error");
-      control?.focus({preventScroll:true});
-      holder?.scrollIntoView({behavior:"smooth",block:"center"});
+
+      control?.focus({
+        preventScroll:true
+      });
+
+      holder?.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
     }
+
     return false;
   };
 
   for(const field of section.fields){
     if(!visible(field))continue;
-    if(field.type==="linkedFile")continue;
-    if(field.type==="file"){
-      if(field.required&&!filesFor(field.name).length){
-        return fail(field,"Please attach "+field.label+" to continue.");
-      }
+
+    if(
+      field.type==="linkedFile" ||
+      field.type==="referenceHelp"
+    ){
       continue;
     }
 
-    const value=String(data[field.name]??"").trim();
-    if(field.required && (field.type==="checkbox"
-        ?value!=="Yes":!value)){
-      return fail(field,"Complete all required fields before continuing.");
+    if(field.type==="file"){
+      if(
+        field.required &&
+        !filesFor(field.name).length
+      ){
+        return fail(
+          field,
+          "Please attach "+field.label+" to continue."
+        );
+      }
+
+      continue;
     }
-    if(field.type==="eid" && value &&
-       !/^784-\d{4}-\d{7}-\d$/.test(value)){
-      return fail(field,"Enter a valid 15-digit Emirates ID number beginning with 784.");
+
+    const value = String(
+      data[field.name] ?? ""
+    ).trim();
+
+    if(
+      field.required &&
+      (
+        field.type==="checkbox"
+          ?value!=="Yes"
+          :!value
+      )
+    ){
+      return fail(
+        field,
+        "Complete all required fields before continuing."
+      );
     }
-    if(field.type==="email" && value &&
-       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
-      return fail(field,"Enter a valid email address.");
+
+    if(
+      field.type==="eid" &&
+      value &&
+      !/^784-\d{4}-\d{7}-\d$/.test(value)
+    ){
+      return fail(
+        field,
+        "Enter a valid 15-digit Emirates ID number beginning with 784."
+      );
     }
-    if(field.type==="date" && value && !parseISODate(value)){
-      return fail(field,"Select a valid date.");
+
+    if(
+      field.type==="email" &&
+      value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    ){
+      return fail(
+        field,
+        "Enter a valid email address."
+      );
     }
-    if(field.type==="number" && value &&
-       (Number.isNaN(Number(value)) || Number(value)<0 || Number(value)>300)){
-      return fail(field,"Enter a valid number.");
+
+    if(
+      field.type==="date" &&
+      value &&
+      !parseISODate(value)
+    ){
+      return fail(
+        field,
+        "Select a valid date."
+      );
     }
+
+    if(
+      field.type==="number" &&
+      value &&
+      (
+        Number.isNaN(Number(value)) ||
+        Number(value)<0 ||
+        Number(value)>300
+      )
+    ){
+      return fail(
+        field,
+        "Enter a valid number."
+      );
+    }
+
     if(showError){
-      const control=$(field.name);
-      if(control && !control.checkValidity()){
-        return fail(field,"Correct the highlighted field.");
+      const control = $(field.name);
+
+      if(
+        control &&
+        !control.checkValidity()
+      ){
+        return fail(
+          field,
+          "Correct the highlighted field."
+        );
       }
     }
   }
 
-  if(section.fields.some(field=>field.name==="licenceExpiry") &&
-     data.licenceIssue && data.licenceExpiry &&
-     data.licenceExpiry<data.licenceIssue){
-    return fail({name:"licenceExpiry"},
-      "Licence expiry date cannot be earlier than its issue date.");
+  if(
+    section.fields.some(
+      field=>field.name==="licenceExpiry"
+    ) &&
+    data.licenceIssue &&
+    data.licenceExpiry &&
+    data.licenceExpiry<data.licenceIssue
+  ){
+    return fail(
+      {name:"licenceExpiry"},
+      "Licence expiry date cannot be earlier than its issue date."
+    );
   }
 
-  if(mode==="renewal" && sectionIndex===2){
-    if(data.licenceRenewed==="Yes" && !filesFor("docTrade").length){
-      return fail({name:"docTrade"},
-        "Upload the renewed Trade Licence you indicated in Section 02.");
+  /* ANNUAL KYC DOCUMENT CHECK */
+
+  if(
+    mode==="renewal" &&
+    sectionIndex===2
+  ){
+    if(
+      data.licenceRenewed==="Yes" &&
+      !filesFor("docTrade").length
+    ){
+      return fail(
+        {name:"docTrade"},
+        "Upload the renewed Trade Licence you indicated in Section 02."
+      );
     }
-    if(data.vatUpdated==="Yes" && !filesFor("docVAT").length){
-      return fail({name:"docVAT"},
-        "Upload the updated VAT Certificate you indicated in Section 02.");
+
+    if(
+      data.vatUpdated==="Yes" &&
+      !filesFor("docVAT").length
+    ){
+      return fail(
+        {name:"docVAT"},
+        "Upload the updated VAT Certificate you indicated in Section 02."
+      );
     }
   }
 
-  if(mode==="renewal" && sectionIndex===0){
-    const ref=String(data.reference||"").trim();
+  /* REFERENCE OR FORGOTTEN REFERENCE */
+
+  if(
+    mode==="renewal" &&
+    sectionIndex===0 &&
+    data.referenceMissing!=="Yes"
+  ){
+    const ref = String(
+      data.reference||""
+    ).trim();
+
     if(!/^[A-Za-z0-9_-]{5,100}$/.test(ref)){
-      return fail({name:"reference"},
-        "Enter a valid existing reference number.");
+      return fail(
+        {name:"reference"},
+        "Enter a valid reference number, or choose Forgot Reference Number."
+      );
     }
   }
 
   return true;
 }
 
+/* =========================================
+   RENDER CURRENT WORKFLOW
+========================================= */
+
 function render(){
   closeCalendar();
-  sections=allSections[mode];
-  $("formMode").hidden=false;
-  $("alternateMode").hidden=true;
-  $("sidebar").hidden=false;
+
+  sections = allSections[mode];
+
+  $("formMode").hidden = false;
+  $("alternateMode").hidden = true;
+  $("sidebar").hidden = false;
+
   markMode();
 
-  const count=sections.length;
-  $("counter").textContent=step===count
-    ?"FINAL REVIEW"
-    :`${String(step+1).padStart(2,"0")} / ${String(count).padStart(2,"0")}`;
+  const count = sections.length;
 
-  const titles={
+  $("counter").textContent =
+    step===count
+      ?"FINAL REVIEW"
+      :`${String(step+1).padStart(2,"0")} / ${String(count).padStart(2,"0")}`;
+
+  const titles = {
     registration:"NEW SUPPLIER REGISTRATION",
     customer:"NEW CUSTOMER REGISTRATION",
     renewal:"ANNUAL KYC RENEWAL"
   };
-  $("progressTitle").textContent=step===count
-    ?titles[mode]+" · REVIEW":titles[mode];
-  $("progressFill").style.width=(
-    step===count?100:((step+1)/(count+1))*100
-  )+"%";
 
-  const guide=$("sidebar").querySelector(".side-card h3");
-  guide.textContent=mode==="renewal"?"Four clear steps.":"Seven clear steps.";
-  $("sidebar").querySelector(".side-card p").textContent=
+  $("progressTitle").textContent =
+    step===count
+      ?titles[mode]+" · REVIEW"
+      :titles[mode];
+
+  $("progressFill").style.width =
+    (
+      step===count
+        ?100
+        :((step+1)/(count+1))*100
+    )+"%";
+
+  const guide = $("sidebar").querySelector(
+    ".side-card h3"
+  );
+
+  guide.textContent =
     mode==="renewal"
-      ?"Supply only updated information and documents. Existing confidential data is not disclosed."
-      :"Complete each stage before proceeding. You can revisit earlier stages.";
-  $("sidebar").querySelector(".side-note p").textContent=
-    mode==="renewal"
-      ?"Have your reference number, registered company email and updated records ready."
-      :"Trade Licence and VAT Certificate uploads are mandatory. Other documents are optional.";
+      ?"Four clear steps."
+      :"Seven clear steps.";
+
+  $("sidebar")
+    .querySelector(".side-card p")
+    .textContent =
+      mode==="renewal"
+        ?"Supply only updated information and documents. Existing confidential data is not disclosed."
+        :"Complete each stage before proceeding. You can revisit earlier stages.";
+
+  $("sidebar")
+    .querySelector(".side-note p")
+    .textContent =
+      mode==="renewal"
+        ?"Have your reference number, registered company email and updated records ready."
+        :"Trade Licence and VAT Certificate uploads are mandatory. Other documents are optional.";
+
   updateNav();
 
   if(step===count){
@@ -1831,145 +3611,394 @@ function render(){
     return;
   }
 
-  const section=sections[step];
-  const hasFiles=section.fields.some(field=>field.type==="file");
-  $("stepContent").innerHTML=`
-    <div class="kicker">${esc(section.kicker)}</div>
-    <h2>${esc(section.name)}</h2>
-    <p class="introtext">${esc(section.description)}</p>
+  const section = sections[step];
 
-    ${hasFiles?`
-      <div class="upload-banner">
-        <strong>Document selection</strong>
-        <span>PDF, JPG or PNG. Each file up to 5 MB;
-          combined selection up to 10 MB.</span>
-        <span>Selected: ${fileSize(totalFileBytes())}
-          of 10 MB. Files remain in this browser tab only.</span>
-      </div>`:""}
+  const hasFiles = section.fields.some(
+    field=>field.type==="file"
+  );
+
+  $("stepContent").innerHTML = `
+    <div class="kicker">
+      ${esc(section.kicker)}
+    </div>
+
+    <h2>
+      ${esc(section.name)}
+    </h2>
+
+    <p class="introtext">
+      ${esc(section.description)}
+    </p>
+
+    ${
+      mode!=="renewal" && step===0
+        ?`
+          <div class="existing-note">
+
+            <div>
+              <strong>
+                Already registered with SHEILD BOOST?
+              </strong>
+
+              <p>
+                If your company previously registered
+                as a supplier or customer, please use
+                Annual KYC Renewal to update your
+                information and certificates instead
+                of making another new registration.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              data-open-renewal
+            >
+              Go to Annual KYC Renewal →
+            </button>
+
+          </div>
+        `
+        :""
+    }
+
+    ${
+      hasFiles
+        ?`
+          <div class="upload-banner">
+            <strong>
+              Document selection
+            </strong>
+
+            <span>
+              PDF, JPG or PNG. Each file up to 5 MB;
+              combined selection up to 10 MB.
+            </span>
+
+            <span>
+              Selected: ${fileSize(totalFileBytes())}
+              of 10 MB.
+
+              Files remain in this browser tab only.
+            </span>
+          </div>
+        `
+        :""
+    }
 
     <form id="currentFields" novalidate>
+
       <div class="fields">
-        ${section.fields.map(fieldHTML).join("")}
+        ${
+          section.fields
+            .map(fieldHTML)
+            .join("")
+        }
       </div>
 
-      <div id="error" class="message" hidden>
+      <div
+        id="error"
+        class="message"
+        hidden
+      >
         Complete the highlighted required fields.
       </div>
 
       <div class="actions">
-        ${step?`
-          <button type="button" class="btn" id="previous">
-            ← Previous
-          </button>`:""}
-        <button type="button" class="btn primary" id="continue">
-          ${step===count-1?"Review all information →":"Continue →"}
+
+        ${
+          step
+            ?`
+              <button
+                type="button"
+                class="btn"
+                id="previous"
+              >
+                ← Previous
+              </button>
+            `
+            :""
+        }
+
+        <button
+          type="button"
+          class="btn primary"
+          id="continue"
+        >
+          ${
+            step===count-1
+              ?"Review all information →"
+              :"Continue →"
+          }
         </button>
+
       </div>
+
     </form>
 
-    ${mode==="registration"&&step===3?`
-      <div class="info">
-        Bank details are sensitive. No information is sent or saved
-        during the management review prototype.
-      </div>`:""}
+    ${
+      mode==="registration" && step===3
+        ?`
+          <div class="info">
+            Bank details are sensitive.
 
-    ${mode!=="renewal"&&step===5?`
-      <div class="preview-note">
-        For management review: a VAT Certificate is mandatory even
-        if VAT status is marked “Not registered.” Please confirm
-        whether an exemption should be added before launch.
-      </div>`:""}`;
-
-  const form=$("currentFields");
-  form.addEventListener("click",event=>{
-    const opener=event.target.closest("[data-calendar-open]");
-    const dateField=event.target.closest(".date-input");
-    if(opener||dateField){
-      openCalendar(opener?.dataset.calendarOpen||dateField.name);
-      return;
+            No information is sent or saved
+            during this frontend design preview.
+          </div>
+        `
+        :""
     }
-    const remove=event.target.closest("[data-remove-file]");
-    if(remove){
+
+    ${
+      mode!=="renewal" && step===5
+        ?`
+          <div class="preview-note">
+            For management review:
+            a VAT Certificate is currently mandatory
+            even if VAT status is marked
+            "Not registered".
+
+            Management should confirm whether an
+            exemption is needed before launch.
+          </div>
+        `
+        :""
+    }
+  `;
+
+  /* ALREADY REGISTERED LINK */
+
+  const directKycLink = $("stepContent")
+    .querySelector("[data-open-renewal]");
+
+  if(directKycLink){
+    directKycLink.onclick = ()=>{
       store();
-      const name=remove.dataset.removeFile;
-      const index=Number(remove.dataset.removeIndex);
-      flow.files[name].splice(index,1);
+      switchMode("renewal");
+    };
+  }
+
+  const form = $("currentFields");
+
+  /* FORM CLICK EVENTS */
+
+  form.addEventListener("click",event=>{
+
+    /* FORGOT REFERENCE NUMBER */
+
+    if(
+      event.target.closest("[data-forgot-reference]")
+    ){
+      store();
+
+      data.referenceMissing = "Yes";
+      data.reference = "";
+
       render();
       return;
     }
-    const jump=event.target.closest("[data-go-step]");
+
+    /* RETURN TO NORMAL REFERENCE ENTRY */
+
+    if(
+      event.target.closest("[data-use-reference]")
+    ){
+      store();
+
+      data.referenceMissing = "No";
+
+      render();
+      return;
+    }
+
+    /* DATE CALENDAR */
+
+    const opener = event.target.closest(
+      "[data-calendar-open]"
+    );
+
+    const dateField = event.target.closest(
+      ".date-input"
+    );
+
+    if(opener || dateField){
+      openCalendar(
+        opener?.dataset.calendarOpen ||
+        dateField.name
+      );
+      return;
+    }
+
+    /* FILE REMOVAL */
+
+    const remove = event.target.closest(
+      "[data-remove-file]"
+    );
+
+    if(remove){
+      store();
+
+      const name = remove.dataset.removeFile;
+      const index = Number(
+        remove.dataset.removeIndex
+      );
+
+      flow.files[name].splice(index,1);
+
+      render();
+      return;
+    }
+
+    /* GO TO REPRESENTATIVE SECTION */
+
+    const jump = event.target.closest(
+      "[data-go-step]"
+    );
+
     if(jump){
       store();
-      step=Number(jump.dataset.goStep);
+
+      step = Number(jump.dataset.goStep);
+
       syncFlow();
       render();
       focusCard();
     }
   });
 
+  /* KEYBOARD DATE CONTROLS */
+
   form.addEventListener("keydown",event=>{
-    if(event.target.classList.contains("date-input")&&
-       ["Enter"," ","ArrowDown"].includes(event.key)){
+    if(
+      event.target.classList.contains("date-input") &&
+      ["Enter"," ","ArrowDown"].includes(event.key)
+    ){
       event.preventDefault();
+
       openCalendar(event.target.name);
     }
   });
 
+  /* FORM INPUT UPDATES */
+
   form.addEventListener("input",event=>{
+
     if(event.target.name==="eidNumber"){
-      const digits=event.target.value.replace(/\D/g,"").slice(0,15);
-      event.target.value=[
-        digits.slice(0,3),digits.slice(3,7),
-        digits.slice(7,14),digits.slice(14,15)
+      const digits = event.target.value
+        .replace(/\D/g,"")
+        .slice(0,15);
+
+      event.target.value = [
+        digits.slice(0,3),
+        digits.slice(3,7),
+        digits.slice(7,14),
+        digits.slice(14,15)
       ].filter(Boolean).join("-");
     }
+
     store();
+
     event.target.classList.remove("error");
   });
 
+  /* CONDITIONAL FIELD UPDATES */
+
   form.addEventListener("change",event=>{
+
     if(event.target.type==="file"){
-      chooseFiles(event.target.name,event.target.files);
+      chooseFiles(
+        event.target.name,
+        event.target.files
+      );
       return;
     }
+
     store();
-    const conditional=[
-      "sameAddress","vatStatus","ctStatus","vatGroup",
-      "thirdParty","overseas","addressChange","managementChange",
-      "unusual","subcontractors","idType","hasChanges",
-      "licenceRenewed","vatUpdated","repIdUpdated"
+
+    const conditional = [
+      "sameAddress",
+      "vatStatus",
+      "ctStatus",
+      "vatGroup",
+      "thirdParty",
+      "overseas",
+      "addressChange",
+      "managementChange",
+      "unusual",
+      "subcontractors",
+      "idType",
+      "hasChanges",
+      "licenceRenewed",
+      "vatUpdated",
+      "repIdUpdated"
     ];
-    if(conditional.includes(event.target.name))render();
+
+    if(
+      conditional.includes(
+        event.target.name
+      )
+    ){
+      render();
+    }
   });
 
+  /* PREVIOUS BUTTON */
+
   if(step){
-    $("previous").onclick=()=>{
+    $("previous").onclick = ()=>{
       store();
+
       step--;
+
       syncFlow();
       render();
       focusCard();
     };
   }
 
-  $("continue").onclick=()=>{
+  /* CONTINUE BUTTON */
+
+  $("continue").onclick = ()=>{
     store();
-    if(!validateSection(step,true))return;
-    maximumStep=Math.max(maximumStep,step+1);
+
+    if(!validateSection(step,true)){
+      return;
+    }
+
+    maximumStep = Math.max(
+      maximumStep,
+      step+1
+    );
+
     step++;
+
     syncFlow();
     render();
     focusCard();
   };
 }
 
-/* SAFE REVIEW — document filenames only; no file contents transmitted. */
+/* =========================================
+   SAFE REVIEW HELPERS
+========================================= */
+
 function masked(fieldName,value){
   if(!value)return "";
-  if(fieldName==="eidNumber")return "••••-••••-••••"+String(value).slice(-4);
-  if(["iban","swift","otherIdNumber"].includes(fieldName)){
-    return String(value).length>4?"•••• •••• "+String(value).slice(-4):"••••";
+
+  if(fieldName==="eidNumber"){
+    return (
+      "••••-••••-••••" +
+      String(value).slice(-4)
+    );
   }
+
+  if(
+    ["iban","swift","otherIdNumber"].includes(fieldName)
+  ){
+    return String(value).length>4
+      ?"•••• •••• "+String(value).slice(-4)
+      :"••••";
+  }
+
   return value;
 }
 
@@ -1977,185 +4006,583 @@ function reviewRows(section){
   return section.fields
     .filter(visible)
     .map(field=>{
-      let value="";
+
+      let value = "";
+
       if(field.type==="file"){
-        value=filesFor(field.name).map(item=>
-          item.name+" ("+fileSize(item.size)+")"
-        ).join("; ") || "Not selected";
-      }else if(field.type==="linkedFile"){
-        const key=data.idType==="Emirates ID"?"idDoc":"idDocOther";
-        value=filesFor(key).map(item=>item.name).join("; ")||"Not selected";
-      }else if(field.type==="date"){
-        value=prettyISODate(data[field.name])||"—";
-      }else if(field.name==="actualAddress"&&data.sameAddress==="Yes"){
-        value=data.registeredAddress||"—";
-      }else{
-        value=masked(field.name,data[field.name])||"—";
+        value = filesFor(field.name)
+          .map(item=>
+            item.name +
+            " (" +
+            fileSize(item.size) +
+            ")"
+          )
+          .join("; ") ||
+          "Not selected";
       }
-      return {label:field.label,value};
+
+      else if(field.type==="linkedFile"){
+        const key =
+          data.idType==="Emirates ID"
+            ?"idDoc"
+            :"idDocOther";
+
+        value = filesFor(key)
+          .map(item=>item.name)
+          .join("; ") ||
+          "Not selected";
+      }
+
+      else if(field.type==="referenceHelp"){
+        value =
+          data.referenceMissing==="Yes"
+            ?"Reference unavailable — manual management verification required"
+            :"Reference provided";
+      }
+
+      else if(field.type==="date"){
+        value =
+          prettyISODate(data[field.name]) ||
+          "—";
+      }
+
+      else if(
+        field.name==="actualAddress" &&
+        data.sameAddress==="Yes"
+      ){
+        value =
+          data.registeredAddress ||
+          "—";
+      }
+
+      else{
+        value =
+          masked(
+            field.name,
+            data[field.name]
+          ) ||
+          "—";
+      }
+
+      return {
+        label:field.label,
+        value
+      };
     });
 }
 
+/* =========================================
+   FINAL REVIEW SCREEN
+========================================= */
+
 function renderReview(){
-  const blocks=sections.map((section,index)=>`
+
+  const blocks = sections.map((section,index)=>`
     <section class="review-card">
+
       <div class="review-head">
         <strong>
-          ${String(index+1).padStart(2,"0")} · ${esc(section.name)}
+          ${String(index+1).padStart(2,"0")} ·
+          ${esc(section.name)}
         </strong>
-        <button type="button" data-edit="${index}">Edit section ↗</button>
-      </div>
-      <div class="review-grid">
-        ${reviewRows(section).map(item=>`
-          <div>
-            <small>${esc(item.label)}</small>
-            <p>${esc(item.value)}</p>
-          </div>`).join("")}
-      </div>
-    </section>`).join("");
 
-  const heading=mode==="renewal"
-    ?"Review Your KYC Renewal":"Review Your Information";
-  $("stepContent").innerHTML=`
-    <div class="kicker">FINAL STAGE / REVIEW</div>
-    <h2>${heading}</h2>
-    <p class="introtext">
-      Please check each section and selected document before completing
-      the design preview. Use Edit section to make changes.
-    </p>
-    ${blocks}
-    <div class="info">
-      <strong>Frontend design preview only.</strong>
-      Your information and files have not been uploaded or saved to
-      SHEILD BOOST systems. The actual submission time and reference
-      number will be generated by the secure backend after approval.
-      ${mode==="renewal"
-        ?"Your company reference and email do not authenticate you or expose existing records."
-        :""}
+        <button
+          type="button"
+          data-edit="${index}"
+        >
+          Edit section ↗
+        </button>
+      </div>
+
+      <div class="review-grid">
+        ${
+          reviewRows(section).map(item=>`
+            <div>
+              <small>
+                ${esc(item.label)}
+              </small>
+
+              <p>
+                ${esc(item.value)}
+              </p>
+            </div>
+          `).join("")
+        }
+      </div>
+
+    </section>
+  `).join("");
+
+  const heading =
+    mode==="renewal"
+      ?"Review Your KYC Renewal"
+      :"Review Your Information";
+
+  $("stepContent").innerHTML = `
+    <div class="kicker">
+      FINAL STAGE / REVIEW
     </div>
+
+    <h2>${heading}</h2>
+
+    <p class="introtext">
+      Please check each section and selected document
+      before completing the design preview.
+
+      Use Edit section to make changes.
+    </p>
+
+    ${blocks}
+
+    <div class="info">
+      <strong>
+        Frontend design preview only.
+      </strong>
+
+      Your information and files have not been uploaded
+      or saved to SHEILD BOOST systems.
+
+      The actual submission time and reference number
+      will be generated by the secure backend
+      after approval.
+
+      ${
+        mode==="renewal"
+          ?"Your company reference and email do not authenticate you or expose existing records."
+          :"Potential duplicate registrations will be checked server-side after launch. No company registration status is exposed through public email or licence lookups."
+      }
+    </div>
+
     <div class="turnstile-section">
-      <div class="kicker">SECURITY VERIFICATION</div>
+      <div class="kicker">
+        SECURITY VERIFICATION
+      </div>
+
       <p class="turnstile-note">
-        Cloudflare Turnstile will be connected to the server-side
-        submission process for the live release. It is inactive here.
+        Cloudflare Turnstile will be connected
+        to the server-side submission process
+        for the live release.
+
+        It is inactive here.
       </p>
     </div>
+
     <div class="actions">
-      <button type="button" class="btn" id="previous">← Previous</button>
-      <button type="button" class="btn primary" id="demoSubmit">
+      <button
+        type="button"
+        class="btn"
+        id="previous"
+      >
+        ← Previous
+      </button>
+
+      <button
+        type="button"
+        class="btn primary"
+        id="demoSubmit"
+      >
         Finish Design Preview →
       </button>
-    </div>`;
+    </div>
+  `;
 
-  $("stepContent").querySelectorAll("[data-edit]").forEach(button=>{
-    button.onclick=()=>{
-      step=Number(button.dataset.edit);
-      syncFlow();
-      render();
-      focusCard();
-    };
-  });
+  /* EDIT ANY SECTION */
 
-  $("previous").onclick=()=>{
-    step=sections.length-1;
+  $("stepContent")
+    .querySelectorAll("[data-edit]")
+    .forEach(button=>{
+      button.onclick = ()=>{
+        step = Number(
+          button.dataset.edit
+        );
+
+        syncFlow();
+        render();
+        focusCard();
+      };
+    });
+
+  /* PREVIOUS */
+
+  $("previous").onclick = ()=>{
+    step = sections.length-1;
+
     syncFlow();
     render();
     focusCard();
   };
 
-  $("demoSubmit").onclick=()=>{
-    for(let index=0;index<sections.length;index++){
+  /* PREVIEW SUBMISSION */
+
+  $("demoSubmit").onclick = ()=>{
+
+    for(
+      let index=0;
+      index<sections.length;
+      index++
+    ){
       if(!validateSection(index,false)){
-        step=index;
+        step = index;
+
         syncFlow();
         render();
         focusCard();
-        notify("Complete the required information and documents first.");
+
+        notify(
+          "Complete the required information and documents first."
+        );
+
         return;
       }
     }
+
     showPreviewSuccess();
   };
 }
 
-function showPreviewSuccess(){
-  const now=new Intl.DateTimeFormat("en-GB",{
-    timeZone:UAE,
-    day:"2-digit",month:"short",year:"numeric",
-    hour:"2-digit",minute:"2-digit",second:"2-digit",
-    hour12:true
-  }).format(new Date());
+/* =========================================
+   EMAIL ADDRESS MASKING
+========================================= */
 
-  $("stepContent").innerHTML=`
-    <div class="submission-success" role="status">
-      <span class="success-mark" aria-hidden="true">✓</span>
-      <div class="kicker">DESIGN PREVIEW COMPLETE</div>
-      <h2>Preview Finished</h2>
-      <p>
-        You have reviewed the ${mode==="renewal"
-          ?"KYC Renewal":mode==="customer"
-            ?"Customer Registration":"Supplier Registration"} workflow.
-        No actual registration, renewal or document upload occurred.
-      </p>
-      <div class="submission-reference">
-        <span>PREVIEWED AT · UAE LOCAL TIME</span>
-        <strong>${esc(now)}</strong>
-        <span>NOT AN OFFICIAL SUBMISSION RECEIPT</span>
-      </div>
-      <div class="actions" style="justify-content:center">
-        <button type="button" class="btn" id="backToReview">
-          Back to Review
-        </button>
-        <button type="button" class="btn primary" id="restartFlow">
-          Start New Preview →
-        </button>
-      </div>
-    </div>`;
-  $("progressTitle").textContent="DESIGN PREVIEW FINISHED";
-  $("counter").textContent="PREVIEW";
-  $("progressFill").style.width="100%";
-  $("stepNav").replaceChildren();
+function maskEmail(value){
+  const address = String(value||"").trim();
+  const parts = address.split("@");
 
-  $("backToReview").onclick=()=>render();
-  $("restartFlow").onclick=()=>{
-    flows[mode]={data:{},files:{},step:0,maximumStep:0};
-    flow=flows[mode];
-    data=flow.data;
-    step=0;
-    maximumStep=0;
-    render();
-    focusCard();
-  };
-  focusCard();
+  if(
+    parts.length!==2 ||
+    !parts[0]
+  ){
+    return "registered email address";
+  }
+
+  return (
+    parts[0].slice(
+      0,
+      Math.min(2,parts[0].length)
+    ) +
+    "***@" +
+    parts[1]
+  );
 }
 
-function markMode(){
-  document.querySelectorAll(".mode").forEach(button=>{
-    const active=button.dataset.mode===mode;
-    button.classList.toggle("active",active);
-    button.setAttribute("aria-pressed",String(active));
+/* =========================================
+   NEW: SUBMISSION CONFIRMATION DIALOG
+
+   LIVE INTEGRATION RULE:
+   Only call this as a real submission after
+   the backend confirms the registration and
+   all required files have been stored.
+
+   Never create fake official references.
+========================================= */
+
+function showSubmissionDialog({
+  preview=false,
+  reference="",
+  email="",
+  emailStatus="not-sent"
+}={}){
+
+  const dialog = $("submissionDialog");
+
+  const name =
+    mode==="registration"
+      ?"Supplier Registration"
+      :mode==="customer"
+        ?"Customer Registration"
+        :"Annual KYC Renewal";
+
+  const safeRef = reference
+    ?esc(reference)
+    :"Issued after successful submission";
+
+  const emailMessage = preview
+    ?"This is a frontend preview. No files or information have been uploaded, and no email has been sent."
+    :emailStatus==="sent"
+      ?"An acknowledgment has been accepted for delivery to "+maskEmail(email)+". Please check your inbox and spam folder."
+      :"Your registration is recorded, but email delivery is not confirmed. Please save your reference number.";
+
+  dialog.innerHTML = `
+    <div class="confirm-inner">
+
+      <span
+        class="confirm-icon"
+        aria-hidden="true"
+      >✓</span>
+
+      <div class="confirm-kicker">
+        ${
+          preview
+            ?"DESIGN PREVIEW"
+            :"REGISTRATION RECEIVED"
+        }
+      </div>
+
+      <h2>
+        ${
+          preview
+            ?"Preview completed"
+            :"Submission received!"
+        }
+      </h2>
+
+      <p>
+        ${
+          preview
+            ?"You have reviewed the "+esc(name)+" workflow. This is not an official submission."
+            :"Thank you for submitting your "+esc(name)+" to SHEILD BOOST Group of Companies."
+        }
+      </p>
+
+      <div class="confirm-ref">
+
+        <small>
+          ${
+            preview
+              ?"REFERENCE NUMBER PREVIEW"
+              :"YOUR SUBMISSION REFERENCE"
+          }
+        </small>
+
+        <strong>
+          ${safeRef}
+        </strong>
+
+        ${
+          reference && !preview
+            ?`
+              <button
+                class="btn"
+                type="button"
+                id="copySubmissionReference"
+              >
+                Copy Reference
+              </button>
+            `
+            :`
+              <small>
+                No official reference generated in preview mode
+              </small>
+            `
+        }
+
+      </div>
+
+      <div class="confirm-detail">
+        <b>
+          ${
+            preview
+              ?"Preview status"
+              :"Application status: Pending Review"
+          }
+        </b>
+
+        <span>
+          ${
+            preview
+              ?"Design preview only. No submission is stored."
+              :"Our management team will review your company information and certificates."
+          }
+        </span>
+      </div>
+
+      <div class="confirm-detail">
+        <b>
+          Confirmation email
+        </b>
+
+        <span>
+          ${esc(emailMessage)}
+        </span>
+      </div>
+
+      <div class="confirm-detail">
+        <b>
+          Keep your reference number safe
+        </b>
+
+        <span>
+          You may need it for future Annual KYC Renewal.
+
+          If you forget it, check the original registration
+          email or continue with manual management verification.
+        </span>
+      </div>
+
+      <div class="confirm-actions">
+
+        <button
+          type="button"
+          class="btn"
+          id="closeSubmissionDialog"
+        >
+          Close
+        </button>
+
+        ${
+          preview
+            ?`
+              <button
+                type="button"
+                class="btn primary"
+                id="restartPreview"
+              >
+                Start New Preview →
+              </button>
+            `
+            :""
+        }
+
+      </div>
+
+    </div>
+  `;
+
+  /* CLOSE DIALOG */
+
+  dialog.querySelector(
+    "#closeSubmissionDialog"
+  ).onclick = ()=>{
+    dialog.close();
+  };
+
+  /* COPY ACTUAL BACKEND REFERENCE */
+
+  const copy = dialog.querySelector(
+    "#copySubmissionReference"
+  );
+
+  if(copy){
+    copy.onclick = async ()=>{
+      try{
+        await navigator.clipboard.writeText(
+          reference
+        );
+
+        copy.textContent = "Copied ✓";
+      }catch{
+        notify(
+          "Copy unavailable. Please select the reference number manually."
+        );
+      }
+    };
+  }
+
+  /* RESTART PREVIEW */
+
+  const restart = dialog.querySelector(
+    "#restartPreview"
+  );
+
+  if(restart){
+    restart.onclick = ()=>{
+      dialog.close();
+
+      flows[mode] = {
+        data:{},
+        files:{},
+        step:0,
+        maximumStep:0
+      };
+
+      flow = flows[mode];
+      data = flow.data;
+      step = 0;
+      maximumStep = 0;
+
+      render();
+      focusCard();
+    };
+  }
+
+  if(!dialog.open){
+    dialog.showModal();
+  }
+}
+
+function showPreviewSuccess(){
+  showSubmissionDialog({
+    preview:true,
+    email:
+      mode==="renewal"
+        ?data.registeredEmail
+        :data.contactEmail
   });
 }
 
+/* =========================================
+   MODE BUTTON STATES
+========================================= */
+
+function markMode(){
+  document.querySelectorAll(".mode")
+    .forEach(button=>{
+
+      const active =
+        button.dataset.mode===mode;
+
+      button.classList.toggle(
+        "active",
+        active
+      );
+
+      button.setAttribute(
+        "aria-pressed",
+        String(active)
+      );
+
+    });
+}
+
+/* =========================================
+   SWITCH SUPPLIER / CUSTOMER / KYC
+========================================= */
+
 function switchMode(which){
-  if(!allSections[which])return;
-  if($("currentFields"))store();
+  if(!allSections[which]){
+    return;
+  }
+
+  if($("currentFields")){
+    store();
+  }
+
   syncFlow();
   closeCalendar();
-  mode=which;
-  sections=allSections[mode];
-  flow=flows[mode];
-  data=flow.data;
-  step=flow.step;
-  maximumStep=flow.maximumStep;
+
+  mode = which;
+  sections = allSections[mode];
+
+  flow = flows[mode];
+  data = flow.data;
+  step = flow.step;
+  maximumStep = flow.maximumStep;
+
   render();
   focusCard();
 }
 
-/* FRONTEND ONLY — no printing controls, no storage, no network calls. */
-$("registrationBtn").onclick=()=>switchMode("registration");
-$("customerBtn").onclick=()=>switchMode("customer");
-$("renewalBtn").onclick=()=>switchMode("renewal");
+/* =========================================
+   INITIALIZE FRONTEND
+
+   No printing features.
+   No live API requests.
+   No permanent document storage.
+   No automatic email sending yet.
+========================================= */
+
+$("registrationBtn").onclick = ()=>{
+  switchMode("registration");
+};
+
+$("customerBtn").onclick = ()=>{
+  switchMode("customer");
+};
+
+$("renewalBtn").onclick = ()=>{
+  switchMode("renewal");
+};
+
 render();
 
 </script>
