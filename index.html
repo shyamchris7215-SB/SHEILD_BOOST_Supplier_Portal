@@ -337,6 +337,20 @@ input[type=checkbox]{
   font-size:10px;line-height:1.8;
 }
 
+/* SUBMISSION CONFIRMATION — matches original premium design */
+.submission-success{text-align:center;padding:35px 12px 45px}
+.submission-success h2{margin:12px 0 14px}
+.submission-success p{font-size:12px;color:#7c817c;line-height:1.9}
+.success-mark{display:grid;place-items:center;margin:0 auto 22px;
+  width:66px;height:66px;border-radius:50%;background:#e9f5ed;
+  color:#368451;font-size:32px;font-weight:700}
+.submission-reference{display:grid;gap:9px;margin:30px auto 16px;
+  padding:18px 20px;border:1px solid #e5e5da;background:#fffdf6;
+  border-radius:12px;max-width:500px;overflow-wrap:anywhere}
+.submission-reference span{font-size:10px;letter-spacing:1.7px;
+  color:#978d6a;font-weight:700}
+.submission-reference strong{font-size:19px;letter-spacing:.5px}
+
 /* FOOTER */
 .footer{
   border-top:1px solid var(--line);background:#fff;
@@ -663,6 +677,15 @@ input[type=checkbox]{
 
 /* WEBSITE CONFIG */
 const GROUP_WEBSITE_URL = "";
+
+/* BACKEND INTEGRATION — SAFE PRE-LAUNCH CONFIGURATION
+   Keep LIVE_SUBMISSIONS_ENABLED=false until security/privacy reviews finish.
+   This browser setting is NOT the security boundary: the API Worker must also
+   keep LIVE_REGISTRATION disabled until approval for live operation.
+*/
+const SUPPLIER_API_URL =
+  "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
+const LIVE_SUBMISSIONS_ENABLED = false;
 const $ = id => document.getElementById(id);
 const data = {};
 let step = 0;
@@ -1486,6 +1509,152 @@ function render(){
   };
 }
 
+/* BACKEND REGISTRATION
+   Preview: sends ONLY empty JSON {} to the disabled registration route.
+   Never sends supplier details or Turnstile tokens during preview.
+   Live: available only after explicit code/configuration approval.
+*/
+function buildRegistrationData(){
+  const formData = {};
+  sections.forEach(section=>{
+    section.fields.forEach(field=>{
+      if(!visible(field))return;
+      const value=data[field.name];
+      if(typeof value==="string")formData[field.name]=value.trim();
+    });
+  });
+  return formData;
+}
+
+function firstInvalidSection(){
+  for(let i=0;i<sections.length;i++){
+    for(const field of sections[i].fields){
+      if(!visible(field))continue;
+      const value=String(data[field.name]??"").trim();
+      if(field.required && !value)return i;
+      if(field.required && field.type==="checkbox" && value!=="Yes")return i;
+    }
+  }
+  if(!parseISODate(data.licenceIssue)||!parseISODate(data.licenceExpiry)||
+     data.licenceExpiry<data.licenceIssue)return 0;
+  return -1;
+}
+
+function resetVerification(){
+  turnstileToken="";
+  if(turnstileWidgetId!==null && window.turnstile){
+    try{window.turnstile.reset(turnstileWidgetId)}catch{}
+  }
+}
+
+async function checkRegistrationGate(button){
+  button.disabled=true;
+  const initialText=button.textContent;
+  button.textContent="Checking backend…";
+  try{
+    // The empty body is intentional: no supplier details are transmitted.
+    // The API should reply 503 while LIVE_REGISTRATION is disabled.
+    const response=await fetch(SUPPLIER_API_URL+"/register",{
+      method:"POST",
+      mode:"cors",
+      cache:"no-store",
+      headers:{"Content-Type":"application/json"},
+      body:"{}"
+    });
+    const result=await response.json().catch(()=>({}));
+    if(response.status===503 &&
+       result.error==="Registration submissions are not open yet"){
+      notify("Backend connection verified. Live registrations remain closed. No supplier information was sent.");
+    }else{
+      notify("Backend responded unexpectedly (HTTP "+response.status+"). No supplier information was sent. Please review API settings.");
+    }
+  }catch{
+    notify("Unable to verify the backend connection. No supplier information was sent.");
+  }finally{
+    button.disabled=false;
+    button.textContent=initialText;
+  }
+}
+
+async function submitRegistration(button){
+  if(!LIVE_SUBMISSIONS_ENABLED)return checkRegistrationGate(button);
+
+  const badSection=firstInvalidSection();
+  if(badSection!==-1){
+    step=badSection;
+    render();
+    focusCard();
+    notify("Please complete all required fields and declarations before submitting.");
+    return;
+  }
+  if(!turnstileToken){
+    notify("Please complete the security verification before submitting.");
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent="Submitting securely…";
+  let uncertain=false;
+  try{
+    const response=await fetch(SUPPLIER_API_URL+"/register",{
+      method:"POST",
+      mode:"cors",
+      cache:"no-store",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        formData:buildRegistrationData(),
+        turnstileToken
+      })
+    });
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok){
+      const explanation=typeof result.error==="string"
+        ?result.error
+        :"Registration could not be completed (HTTP "+response.status+").";
+      notify(explanation);
+      resetVerification();
+      return;
+    }
+    if(result.success!==true ||
+       typeof result.supplierReference!=="string" ||
+       !result.supplierReference){
+      uncertain=true;
+      notify("The server response could not be confirmed. Contact SHEILD BOOST before trying again.");
+      return;
+    }
+
+    removeTurnstile();
+    for(const key of Object.keys(data))delete data[key];
+    maximumStep=7;
+    step=7;
+    $("stepContent").innerHTML=`
+      <div class="submission-success" role="status">
+        <span class="success-mark" aria-hidden="true">✓</span>
+        <div class="kicker">REGISTRATION RECEIVED</div>
+        <h2>Submission Successful</h2>
+        <p>Your supplier registration has been received for review.</p>
+        <div class="submission-reference">
+          <span>SUPPLIER REFERENCE</span>
+          <strong>${esc(result.supplierReference)}</strong>
+        </div>
+        <p>Keep this reference number for future correspondence and KYC renewal.</p>
+      </div>`;
+    $("progressTitle").textContent="REGISTRATION RECEIVED";
+    $("counter").textContent="COMPLETE";
+    $("progressFill").style.width="100%";
+    $("stepNav").replaceChildren();
+    focusCard();
+  }catch{
+    uncertain=true;
+    notify("Submission status could not be confirmed. Contact SHEILD BOOST before retrying to avoid duplicate registrations.");
+  }finally{
+    if(!uncertain && document.contains(button)){
+      button.disabled=false;
+      button.textContent="Submit Registration →";
+    }
+  }
+}
+
 /* FINAL REVIEW */
 function renderReview(){
   const blocks=sections.map((section,index)=>{
@@ -1533,15 +1702,18 @@ function renderReview(){
     ${blocks}
 
     <div class="info">
-      This is a design preview only. No supplier information
-      is being transmitted or saved to a database.
+      ${LIVE_SUBMISSIONS_ENABLED
+        ?"Your registration information will be sent securely for review when you submit."
+        :"This is a design preview. Live submissions are disabled, and preview checks do not send supplier information."}
     </div>
 
     <div class="turnstile-section">
       <div class="kicker">SECURITY VERIFICATION</div>
       <div id="turnstileWidget" aria-label="Cloudflare security verification"></div>
       <p class="turnstile-note">
-        Verification preview only. Supplier information is not yet being submitted.
+        ${LIVE_SUBMISSIONS_ENABLED
+          ?"Complete verification before sending your registration."
+          :"Verification preview only. Supplier information will not be submitted."}
       </p>
     </div>
 
@@ -1550,7 +1722,7 @@ function renderReview(){
         ← Previous
       </button>
       <button type="button" class="btn primary" id="demoSubmit">
-        Preview Submission →
+        ${LIVE_SUBMISSIONS_ENABLED?"Submit Registration →":"Preview Submission →"}
       </button>
     </div>`;
 
@@ -1570,11 +1742,7 @@ function renderReview(){
     focusCard();
   };
 
-  $("demoSubmit").onclick=()=>{
-    notify(
-      "Design preview complete. Database submission will be enabled after secure backend integration."
-    );
-  };
+  $("demoSubmit").onclick=()=>submitRegistration($("demoSubmit"));
 }
 
 /* SERVICE BUTTONS */
