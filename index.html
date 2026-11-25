@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f8f8f6">
-<title>Supplier Management Portal | SHEILD BOOST Group</title>
+<title>Business Registration & KYC Portal | SHEILD BOOST Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script id="turnstileScript" src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+<!-- Turnstile and submission APIs will be connected after management approval. -->
 
 <style>
 /* DESIGN SYSTEM */
@@ -500,6 +500,94 @@ input[type=checkbox]{
   opacity:.35;cursor:not-allowed;
 }
 
+/* APPROVED STYLE EXTENSIONS — DOCUMENT UPLOAD CONTROLS */
+.doc-card{
+  padding:19px 20px;background:#fbfbfa;
+  border:1px solid #e5e7e1;border-radius:12px;
+}
+.doc-card.error{
+  border-color:#cc6159;background:#fff8f7;
+}
+.doc-head{
+  display:flex;align-items:center;
+  justify-content:space-between;gap:12px;
+}
+.doc-head label{font-weight:600;color:#525651;font-size:11px}
+.doc-tag{
+  font-size:9px;font-weight:700;letter-spacing:1px;
+  color:#91978e;white-space:nowrap;
+}
+.doc-tag.mandatory{color:#a57b26}
+.doc-upload-row{
+  display:flex;align-items:center;gap:13px;
+  flex-wrap:wrap;margin:12px 0 6px;
+}
+.upload-label{
+  display:inline-flex;align-items:center;
+  border:1px solid #c6cac1;border-radius:7px;
+  background:#fff;padding:11px 15px;
+  font-size:11px!important;font-weight:700!important;
+  cursor:pointer;
+}
+.upload-label:hover{border-color:var(--gold);background:#fffaf0}
+.file-picker{
+  position:absolute;width:1px;height:1px;
+  overflow:hidden;opacity:0;
+}
+.file-picker:focus-visible + .upload-label{
+  outline:2px solid var(--gold);outline-offset:3px;
+}
+.doc-help,.doc-empty{
+  font-size:10px;color:#999e97;line-height:1.9;
+}
+.selected-file{
+  display:flex;gap:12px;align-items:center;
+  background:#fff;border:1px solid #e7e9e3;
+  border-radius:9px;padding:10px 12px;margin:7px 0;
+}
+.selected-file-icon{color:#b88d2d;font-size:21px}
+.selected-file-info{flex:1;min-width:0}
+.selected-file-info strong{
+  display:block;overflow-wrap:anywhere;font-size:11px;
+}
+.selected-file-info small{font-size:10px;color:#9ca29a}
+.file-remove{
+  border:1px solid #e5e6df;background:#f9faf7;
+  border-radius:50%;width:29px;height:29px;
+  font-size:19px;color:#596058;flex:none;
+}
+.linked-document{
+  background:#fafaf7;border:1px solid #e7e8e3;
+  border-radius:10px;padding:16px;
+  display:grid;gap:6px;
+}
+.linked-document strong{font-size:11px}
+.linked-document small{font-size:10px;color:#8a9088}
+.linked-document button{
+  justify-self:start;background:transparent;border:0;
+  color:#987221;font-weight:700;font-size:11px;padding:7px 0;
+}
+.upload-banner{
+  margin-bottom:28px;padding:18px;
+  border:1px solid #ebe2c7;background:#fffdf6;
+  border-radius:11px;font-size:11px;
+  color:#80734b;line-height:1.8;
+}
+.upload-banner strong{color:#544725}
+.upload-banner span{display:block;margin-top:5px}
+.preview-note{
+  margin-top:25px;padding:16px 19px;
+  border-left:3px solid var(--gold);
+  background:#fffaf0;color:#82754e;
+  font-size:11px;line-height:1.9;
+}
+.review-grid p{line-height:1.85}
+@media(max-width:650px){
+  .doc-head{align-items:flex-start}
+  .doc-upload-row{align-items:flex-start;flex-direction:column}
+  .doc-card{padding:16px}
+}
+
 /* RESPONSIVE */
 @media(max-width:1000px){
   .wrap{width:calc(100% - 44px)}
@@ -576,46 +664,37 @@ input[type=checkbox]{
 
 <main>
   <section class="wrap hero">
-    <div class="eyebrow">Supplier Management Portal</div>
+    <div class="eyebrow">Business Registration &amp; Compliance</div>
     <h1>
-      Supplier Registration
-      <strong>&amp; Annual KYC Verification.</strong>
+      Business Registration
+      <strong>&amp; Annual KYC Renewal.</strong>
     </h1>
     <p>
-      A streamlined supplier onboarding and verification experience.
-      Register your business, maintain accurate information and
-      complete your supplier profile with confidence.
+      Register your business as a supplier or customer, provide supporting
+      documents, or submit updated company information for annual KYC review.
     </p>
   </section>
 
   <section class="wrap">
     <div class="select-label">Select a service to continue</div>
     <div class="modes">
-      <button class="mode active" id="registrationBtn"
-        type="button" data-mode="registration">
+      <button class="mode active" id="registrationBtn" type="button"
+        data-mode="registration" aria-pressed="true">
         <span class="num">NEW APPLICATION</span>
         <strong>Supplier Registration ↗</strong>
-        <span class="desc">
-          Create a new supplier profile and submit company information.
-        </span>
+        <span class="desc">Register a supplier and upload required records.</span>
       </button>
-
-      <button class="mode" id="renewalBtn"
-        type="button" data-mode="renewal">
-        <span class="num">EXISTING SUPPLIER</span>
+      <button class="mode" id="customerBtn" type="button"
+        data-mode="customer" aria-pressed="false">
+        <span class="num">NEW APPLICATION</span>
+        <strong>Customer Registration ↗</strong>
+        <span class="desc">Register a customer and provide company records.</span>
+      </button>
+      <button class="mode" id="renewalBtn" type="button"
+        data-mode="renewal" aria-pressed="false">
+        <span class="num">EXISTING REGISTRATION</span>
         <strong>Annual KYC Renewal ↗</strong>
-        <span class="desc">
-          Review and update previously registered business information.
-        </span>
-      </button>
-
-      <button class="mode" id="verificationBtn"
-        type="button" data-mode="verification">
-        <span class="num">GROUP INFORMATION</span>
-        <strong>Business Verification ↗</strong>
-        <span class="desc">
-          Learn more about SHEILD BOOST Group of Companies.
-        </span>
+        <span class="desc">Submit changed company details and renewed files.</span>
       </button>
     </div>
   </section>
@@ -635,10 +714,9 @@ input[type=checkbox]{
 
       <div class="side-note">
         <small>BEFORE YOU BEGIN</small>
-        <h4>Keep your company details ready.</h4>
+        <h4>Keep your company documents ready.</h4>
         <p>
-          You'll need legal registration, business contact,
-          tax and payment information. No file uploads are required.
+          Keep your Trade Licence and VAT Certificate ready. Both are required for new registrations. Other supporting documents are optional.
         </p>
       </div>
     </aside>
@@ -664,7 +742,7 @@ input[type=checkbox]{
 <footer class="footer">
   <div class="wrap footer-inner">
     <b>SHEILD BOOST GROUP OF COMPANIES</b>
-    <span>Supplier Management Portal · <span id="footerYear"></span></span>
+    <span>Business Registration & KYC Portal · <span id="footerYear"></span></span>
   </div>
 </footer>
 
@@ -678,11 +756,9 @@ input[type=checkbox]{
 /* WEBSITE CONFIG */
 const GROUP_WEBSITE_URL = "";
 
-/* BACKEND INTEGRATION — SAFE PRE-LAUNCH CONFIGURATION
-   Keep LIVE_SUBMISSIONS_ENABLED=false until security/privacy reviews finish.
-   This browser setting is NOT the security boundary: the API Worker must also
-   keep LIVE_REGISTRATION disabled until approval for live operation.
-*/
+/* ORIGINAL BACKEND CONFIG RETAINED FOR LATER INTEGRATION.
+   No live requests are made anywhere in this management-review prototype.
+   The backend Worker must remain closed to live submissions. */
 const SUPPLIER_API_URL =
   "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
 const LIVE_SUBMISSIONS_ENABLED = false;
@@ -691,45 +767,28 @@ const LIVE_SUBMISSIONS_ENABLED = false;
 const LIVE_KYC_SUBMISSIONS_ENABLED = false;
 const $ = id => document.getElementById(id);
 // Keep registration and renewal form answers isolated from each other.
-const registrationFlow = {data:{}, step:0, maximumStep:0};
-const renewalFlow = {data:{}, step:0, maximumStep:0};
-let data = registrationFlow.data;
-let step = 0;
-let maximumStep = 0;
-let mode = "registration";
-let renewalIdentity = null;
+const flows = {
+  registration:{data:{},files:{},step:0,maximumStep:0},
+  customer:{data:{},files:{},step:0,maximumStep:0},
+  renewal:{data:{},files:{},step:0,maximumStep:0}
+};
+let mode="registration";
+let flow=flows.registration;
+let data=flow.data;
+let step=0;
+let maximumStep=0;
+const MAX_FILE_BYTES=5*1024*1024;
+const MAX_TOTAL_BYTES=10*1024*1024;
+const ACCEPTED_FILE_EXTENSIONS=/\.(pdf|jpe?g|png)$/i;
+const FILE_ACCEPT=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png";
 const UAE = "Asia/Dubai";
 
-/* TURNSTILE — EXPLICIT RENDERING FOR DYNAMIC REVIEW */
-const TURNSTILE_SITE_KEY = "0x4AAAAAAGQe-FM1QfQ3Y1L0";
-let turnstileWidgetId = null;
-let turnstileToken = "";
-
-function removeTurnstile(){
-  if(turnstileWidgetId!==null && window.turnstile){
-    try{window.turnstile.remove(turnstileWidgetId)}catch{}
-  }
-  turnstileWidgetId=null;
-  turnstileToken="";
-}
-
-function mountTurnstile(){
-  const container=$("turnstileWidget");
-  if(!container || !window.turnstile || turnstileWidgetId!==null)return;
-  try{
-    turnstileWidgetId=window.turnstile.render(container,{
-      sitekey:TURNSTILE_SITE_KEY,
-      theme:"light",
-      callback:token=>{turnstileToken=token},
-      "expired-callback":()=>{turnstileToken=""},
-      "error-callback":()=>{turnstileToken=""}
-    });
-  }catch{
-    container.textContent="Verification is temporarily unavailable.";
-  }
-}
-
-$("turnstileScript").addEventListener("load",mountTurnstile);
+/* MANAGEMENT PREVIEW: No Turnstile or API requests are performed.
+   Keep API Worker and original approved Turnstile settings for post-approval
+   backend work; security verification must be integrated server-side then. */
+const TURNSTILE_SITE_KEY="0x4AAAAAAGQe-FM1QfQ3Y1L0";
+function removeTurnstile(){}
+function mountTurnstile(){}
 
 /* LIVE UAE CLOCK */
 function tick(){
@@ -779,13 +838,16 @@ const area=(name,label,required=false,extra={})=>({
 });
 const yesNo=["Yes","No"];
 const availability=["Available","Not available","Not applicable"];
+const file=(name,label,required=false,extra={})=>({
+  name,label,type:"file",required,wide:true,...extra
+});
 
 /* ALL SEVEN SECTIONS */
-const sections=[
+const supplierSections=[
   {
     name:"Company & Legal Information",
     kicker:"SECTION 01 / COMPANY PROFILE",
-    description:"Provide your official company registration and primary supplier contact information.",
+    description:"Provide your official company registration and primary business contact information.",
     fields:[
       text("legalName","Registered legal entity name",true,{wide:true}),
       select("entityType","Entity type",[
@@ -864,8 +926,19 @@ const sections=[
       {...text("repPhone","Mobile / telephone",true),type:"tel"},
       select("idType","Identification document type",[
         "Emirates ID","Passport","Other"
-      ]),
-      select("idAvailable","Identification document available?",yesNo),
+      ],true),
+      {...text("eidNumber","Emirates ID number",true,{
+        show:d=>d.idType==="Emirates ID",wide:true
+      }),type:"eid"},
+      file("idDoc","Emirates ID document",false,{
+        show:d=>d.idType==="Emirates ID"
+      }),
+      text("otherIdNumber","Passport / other ID number",false,{
+        show:d=>d.idType==="Passport"||d.idType==="Other",wide:true
+      }),
+      file("idDocOther","Passport / other identity document",false,{
+        show:d=>d.idType==="Passport"||d.idType==="Other"
+      }),
       select("authorization",
         "Authorization letter / power of attorney available?",
         ["Yes","No","Not applicable"],false,{wide:true})
@@ -888,7 +961,7 @@ const sections=[
         "Advance Payment","On Delivery","Net 15 Days",
         "Net 30 Days","Net 45 Days","Net 60 Days",
         "Other / To be agreed"
-      ],true,{wide:true}),
+      ],true),
       select("thirdParty","Third-party payment arrangement?",yesNo),
       select("overseas","Overseas payment arrangement?",yesNo),
       area("paymentDetails","Please explain the payment arrangement",true,{
@@ -925,17 +998,17 @@ const sections=[
   {
     name:"Supporting Document Details",
     kicker:"SECTION 06 / SUPPORTING RECORDS",
-    description:"Confirm document availability only. No files or scans are uploaded.",
+    description:"Upload your company documents. Trade Licence and VAT Certificate are required.",
     fields:[
-      select("docTrade","Trade licence / incorporation document",[
-        "Available","Not available"
-      ],true),
-      select("docVAT","VAT registration certificate",availability),
-      select("docCT","Corporate Tax document",availability),
-      select("docID","Representative identification document",availability),
-      select("docAuthorization","Authorization letter",availability),
-      select("docBank","Bank confirmation letter",availability),
-      area("otherDocs","Other supporting records (if any)")
+      file("docTrade","Trade Licence / Incorporation Document",true),
+      file("docVAT","VAT Registration Certificate",true),
+      file("docCT","Corporate Tax Document"),
+      {name:"idDocLink",label:"Representative Identification Document",
+        type:"linkedFile",wide:true},
+      file("docAuthorization","Authorization Letter"),
+      file("docBank","Bank Confirmation Letter"),
+      file("otherDocs","Other Supporting Records",false,{multiple:true}),
+      area("otherDocsNotes","Other supporting records description")
     ]
   },
   {
@@ -963,6 +1036,136 @@ const sections=[
     ]
   }
 ];
+
+/* CUSTOMER: Same approved form system with purpose-specific sections. */
+const customerSections=supplierSections.map((section,index)=>{
+  if(index===0)return {
+    ...section,
+    description:"Provide legal company information and the primary customer contact."
+  };
+  if(index===3)return {
+    name:"Billing & Payment Information",
+    kicker:"SECTION 04 / BILLING PROFILE",
+    description:"Provide billing contacts and invoice preferences.",
+    fields:[
+      text("billingContact","Billing contact person",true),
+      {...text("billingEmail","Accounts / billing email",true),type:"email"},
+      area("billingAddress","Billing address",true),
+      text("billingPhone","Billing contact telephone"),
+      text("purchaseOrder","Customer / purchase order reference"),
+      select("currency","Preferred invoice currency",[
+        "AED","USD","EUR","GBP","INR","OMR","Other"
+      ],true),
+      select("paymentTerms","Expected payment terms",[
+        "Advance Payment","On Delivery","Net 15 Days","Net 30 Days",
+        "Net 45 Days","Net 60 Days","Other / To be agreed"
+      ]),
+      area("billingNotes","Other billing instructions")
+    ]
+  };
+  if(index===4)return {
+    name:"Business Relationship Details",
+    kicker:"SECTION 05 / CUSTOMER PROFILE",
+    description:"Describe your business requirements and expected engagement.",
+    fields:[
+      area("goodsServices","Products or services required",true),
+      select("businessType","Type of engagement",[
+        "One-time Purchase","Ongoing Supply / Service","Project-based",
+        "Inspection / Certification","Training","Other"
+      ],true),
+      select("engagementStatus","Current engagement status",[
+        "New enquiry","Existing client","Previously worked together"
+      ],true),
+      area("scopeNotes","Project or service scope"),
+      select("addressChange","Address changes in previous 12 months?",yesNo,true),
+      select("managementChange","Management or contact changes in previous 12 months?",yesNo,true),
+      area("changes","Describe the changes",true,{
+        show:d=>d.addressChange==="Yes"||d.managementChange==="Yes"
+      }),
+      area("customerNotes","Additional customer requirements")
+    ]
+  };
+  return section;
+});
+
+/* BLIND ANNUAL KYC — never retrieve records using reference + email. */
+const renewalSections=[
+  {
+    name:"Renewal Identification",
+    kicker:"SECTION 01 / EXISTING COMPANY",
+    description:"Enter your existing registration details. The reference and email do not provide access to stored company data.",
+    fields:[
+      select("recordType","Renewal for",["Supplier","Customer"],true),
+      text("reference","Existing registration reference number",true,{wide:true}),
+      {...text("registeredEmail","Registered company email address",true,{wide:true}),type:"email"},
+      text("renewalCompany","Registered legal entity name",true,{wide:true})
+    ]
+  },
+  {
+    name:"Company Updates",
+    kicker:"SECTION 02 / CHANGED INFORMATION",
+    description:"Provide new or changed information only. Leave unchanged information as it is.",
+    fields:[
+      select("hasChanges","Have company details changed?",yesNo,true),
+      area("changes","Describe the changed company details",true,{
+        show:d=>d.hasChanges==="Yes"
+      }),
+      select("licenceRenewed","Trade Licence renewed or replaced?",yesNo,true),
+      text("licenceNumber","New Trade Licence number",false,{
+        show:d=>d.licenceRenewed==="Yes"
+      }),
+      {...text("licenceIssue","Updated licence issue date",false,{
+        show:d=>d.licenceRenewed==="Yes"
+      }),type:"date"},
+      {...text("licenceExpiry","Updated licence expiry date",false,{
+        show:d=>d.licenceRenewed==="Yes"
+      }),type:"date"},
+      select("vatUpdated","VAT Certificate changed?",yesNo,true),
+      select("repIdUpdated","Representative ID changed?",yesNo,true),
+      select("idType","Updated identification type",[
+        "Emirates ID","Passport","Other"
+      ],true,{show:d=>d.repIdUpdated==="Yes"}),
+      {...text("eidNumber","New Emirates ID number",true,{
+        show:d=>d.repIdUpdated==="Yes"&&d.idType==="Emirates ID"
+      }),type:"eid"},
+      area("renewalNotes","Additional changes or remarks")
+    ]
+  },
+  {
+    name:"Updated Supporting Documents",
+    kicker:"SECTION 03 / REPLACEMENT RECORDS",
+    description:"Upload only new or renewed documents. Unchanged documents are not required again.",
+    fields:[
+      file("docTrade","Renewed Trade Licence / Incorporation Document"),
+      file("docVAT","Updated VAT Registration Certificate"),
+      file("docCT","Updated Corporate Tax Document"),
+      file("idDoc","Updated Emirates ID / Representative ID Document"),
+      file("docAuthorization","Updated Authorization Letter"),
+      file("docBank","Updated Bank Confirmation Letter"),
+      file("otherDocs","Other Updated Supporting Records",false,{multiple:true}),
+      area("otherDocsNotes","Document change explanation")
+    ]
+  },
+  {
+    name:"Renewal Declaration",
+    kicker:"SECTION 04 / FINAL DECLARATION",
+    description:"Confirm that proposed changes are accurate and subject to management review.",
+    fields:[
+      text("signatoryName","Authorized signatory name",true),
+      text("signatoryTitle","Signatory designation",true),
+      {name:"declarationAccuracy",label:"I confirm the information and new documents are accurate.",type:"checkbox",required:true,wide:true},
+      {name:"declarationChange",label:"I understand that changes are subject to management verification.",type:"checkbox",required:true,wide:true},
+      {name:"declarationPrivacy",label:"I acknowledge the processing of renewal information when the live system is launched.",type:"checkbox",required:true,wide:true}
+    ]
+  }
+];
+let sections=supplierSections;
+const allSections={
+  registration:supplierSections,
+  customer:customerSections,
+  renewal:renewalSections
+};
+
 
 function visible(field){
   return !field.show||field.show(data);
@@ -1253,14 +1456,89 @@ window.addEventListener("scroll",positionCalendar,{
   passive:true,capture:true
 });
 
-/* CREATE FORM FIELDS */
+/* FIELD RENDERING AND LOCAL FILE PREVIEW */
+function filesFor(name){
+  return flow.files[name] || [];
+}
+
+function totalFileBytes(){
+  return Object.values(flow.files).flat().reduce((sum,item)=>sum+item.size,0);
+}
+
+function fileSize(size){
+  return (size/1024/1024).toFixed(2)+" MB";
+}
+
+function fileHTML(field){
+  const chosen=filesFor(field.name);
+  const id=esc(field.name);
+  const listing=chosen.map((item,index)=>`
+    <div class="selected-file">
+      <span class="selected-file-icon" aria-hidden="true">▤</span>
+      <span class="selected-file-info">
+        <strong>${esc(item.name)}</strong>
+        <small>${fileSize(item.size)} · Selected locally</small>
+      </span>
+      <button type="button" class="file-remove"
+        data-remove-file="${id}" data-remove-index="${index}"
+        aria-label="Remove ${esc(item.name)}">×</button>
+    </div>`).join("");
+
+  return `
+    <div class="field wide doc-card" data-document="${id}">
+      <div class="doc-head">
+        <label for="${id}">
+          ${esc(field.label)}
+          ${field.required?'<span class="required"> *</span>':""}
+        </label>
+        <span class="doc-tag ${field.required?"mandatory":""}">
+          ${field.required?"REQUIRED":"OPTIONAL"}
+        </span>
+      </div>
+      <div class="doc-upload-row">
+        <input class="file-picker" type="file" name="${id}" id="${id}"
+          accept="${FILE_ACCEPT}" ${field.multiple?"multiple":""}>
+        <label class="upload-label" for="${id}">
+          + Select ${field.multiple?"Files":"File"}
+        </label>
+        <span class="doc-help">
+          PDF, JPG or PNG · Max 5 MB each
+          ${field.multiple?" · Up to 5 files":""}
+        </span>
+      </div>
+      ${listing || '<span class="doc-empty">No file selected</span>'}
+    </div>`;
+}
+
 function fieldHTML(field){
   if(!visible(field))return "";
   const id=esc(field.name);
   const label=esc(field.label);
   const val=esc(data[field.name]??"");
   const required=field.required
-    ?' <span class="required">*</span>':"";
+    ?'<span class="required"> *</span>':"";
+
+  if(field.type==="file")return fileHTML(field);
+
+  if(field.type==="linkedFile"){
+    const key=data.idType==="Emirates ID"?"idDoc":"idDocOther";
+    const chosen=filesFor(key);
+    return `
+      <div class="field wide">
+        <label>${label} (optional)</label>
+        <div class="linked-document">
+          <strong>${chosen.length?esc(chosen[0].name):"No file selected"}</strong>
+          <small>
+            ${chosen.length
+              ?"Already selected in Section 03 — no duplicate required."
+              :"You may select an identity document in Section 03."}
+          </small>
+          <button type="button" data-go-step="2">
+            Open Authorized Representative ↗
+          </button>
+        </div>
+      </div>`;
+  }
 
   if(field.type==="checkbox"){
     return `
@@ -1269,28 +1547,25 @@ function fieldHTML(field){
           <input type="checkbox" name="${id}"
             ${data[field.name]==="Yes"?"checked":""}
             ${field.required?"required":""}>
-          ${label}${required}
+          <span>${label}${required}</span>
         </label>
       </div>`;
   }
 
   let control="";
-
   if(field.type==="date"){
     control=`
       <div class="date-control">
-        <input class="input date-input"
-          id="${id}" name="${id}"
+        <input class="input date-input" id="${id}" name="${id}"
           type="text" readonly autocomplete="off"
-          placeholder="Select a date"
+          data-date-value="${val}" placeholder="Select a date"
           aria-haspopup="dialog" aria-controls="sbCalendar"
           aria-expanded="false"
-          ${field.required?"required":""}
-          data-date-value="${val}"
-          value="${esc(prettyISODate(data[field.name]))}">
+          value="${esc(prettyISODate(data[field.name]))}"
+          ${field.required?"required":""}>
         <button type="button" class="date-trigger"
           data-calendar-open="${id}"
-          aria-label="Open ${label} calendar">
+          aria-label="Choose ${label}">
           <svg viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.75"
             stroke-linecap="round" stroke-linejoin="round"
@@ -1316,6 +1591,14 @@ function fieldHTML(field){
       <textarea class="input" id="${id}" name="${id}"
         maxlength="1200" ${field.required?"required":""}
         placeholder="Enter details">${val}</textarea>`;
+  }else if(field.type==="eid"){
+    control=`
+      <input class="input" id="${id}" name="${id}"
+        type="text" inputmode="numeric" maxlength="18"
+        pattern="784-[0-9]{4}-[0-9]{7}-[0-9]"
+        placeholder="784-XXXX-XXXXXXX-X" value="${val}"
+        ${field.required?"required":""}>
+      <small class="doc-help">Enter 15 digits starting with 784.</small>`;
   }else{
     control=`
       <input class="input" id="${id}" name="${id}"
@@ -1333,15 +1616,54 @@ function fieldHTML(field){
     </div>`;
 }
 
-/* STORE CURRENT SECTION ANSWERS */
 function store(){
   document.querySelectorAll("#stepContent [name]").forEach(element=>{
+    if(element.type==="file")return;
     data[element.name]=element.type==="checkbox"
       ?(element.checked?"Yes":"No")
       :element.classList.contains("date-input")
         ?(element.dataset.dateValue||"")
         :element.value;
   });
+}
+
+function checkSelectedFiles(name,list){
+  const chosen=Array.from(list||[]);
+  if(!chosen.length)return false;
+  const allowedTypes=new Set([
+    "application/pdf","image/jpeg","image/png"
+  ]);
+  for(const item of chosen){
+    if(!ACCEPTED_FILE_EXTENSIONS.test(item.name) ||
+       (item.type&&!allowedTypes.has(item.type))){
+      notify("Please select PDF, JPG or PNG documents only.");
+      return false;
+    }
+    if(item.size<=0 || item.size>MAX_FILE_BYTES){
+      notify("Each file must be greater than 0 KB and at most 5 MB.");
+      return false;
+    }
+  }
+  const field=sections.flatMap(section=>section.fields)
+    .find(item=>item.name===name&&item.type==="file");
+  if(field?.multiple && chosen.length>5){
+    notify("Select no more than 5 additional documents.");
+    return false;
+  }
+  const existing=filesFor(name).reduce((sum,item)=>sum+item.size,0);
+  const selected=chosen.reduce((sum,item)=>sum+item.size,0);
+  if(totalFileBytes()-existing+selected>MAX_TOTAL_BYTES){
+    notify("The total size of selected files cannot exceed 10 MB.");
+    return false;
+  }
+  return true;
+}
+
+function chooseFiles(name,list){
+  if(!checkSelectedFiles(name,list))return;
+  flow.files[name]=Array.from(list);
+  store();
+  render();
 }
 
 function focusCard(){
@@ -1353,15 +1675,19 @@ function focusCard(){
   });
 }
 
-/* SIDEBAR NAVIGATION */
+/* INDEPENDENT MULTI-STEP WORKFLOWS */
+function syncFlow(){
+  flow.step=step;
+  flow.maximumStep=maximumStep;
+}
+
 function updateNav(){
   $("stepNav").innerHTML=sections.map((section,index)=>`
     <button type="button"
       class="step-btn
         ${index===step?"current":""}
         ${index<maximumStep?"done":""}"
-      data-step="${index}"
-      ${index>maximumStep?"disabled":""}>
+      data-step="${index}" ${index>maximumStep?"disabled":""}>
       <span>${String(index+1).padStart(2,"0")}</span>
       <span class="step-name">${esc(section.name)}</span>
     </button>`).join("");
@@ -1370,47 +1696,156 @@ function updateNav(){
     button.addEventListener("click",()=>{
       store();
       step=Number(button.dataset.step);
+      syncFlow();
       render();
       focusCard();
     });
   });
 }
 
-/* SHOW CURRENT FORM SECTION */
+function validateSection(sectionIndex,showError=false){
+  const section=sections[sectionIndex];
+  if(!section)return false;
+
+  const fail=(field,message)=>{
+    if(showError){
+      const warning=$("error");
+      if(warning){
+        warning.textContent=message;
+        warning.hidden=false;
+      }
+      const control=$(field.name);
+      const holder=control?.closest(".doc-card")||control;
+      holder?.classList.add("error");
+      control?.focus({preventScroll:true});
+      holder?.scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    return false;
+  };
+
+  for(const field of section.fields){
+    if(!visible(field))continue;
+    if(field.type==="linkedFile")continue;
+    if(field.type==="file"){
+      if(field.required&&!filesFor(field.name).length){
+        return fail(field,"Please attach "+field.label+" to continue.");
+      }
+      continue;
+    }
+
+    const value=String(data[field.name]??"").trim();
+    if(field.required && (field.type==="checkbox"
+        ?value!=="Yes":!value)){
+      return fail(field,"Complete all required fields before continuing.");
+    }
+    if(field.type==="eid" && value &&
+       !/^784-\d{4}-\d{7}-\d$/.test(value)){
+      return fail(field,"Enter a valid 15-digit Emirates ID number beginning with 784.");
+    }
+    if(field.type==="email" && value &&
+       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
+      return fail(field,"Enter a valid email address.");
+    }
+    if(field.type==="date" && value && !parseISODate(value)){
+      return fail(field,"Select a valid date.");
+    }
+    if(field.type==="number" && value &&
+       (Number.isNaN(Number(value)) || Number(value)<0 || Number(value)>300)){
+      return fail(field,"Enter a valid number.");
+    }
+    if(showError){
+      const control=$(field.name);
+      if(control && !control.checkValidity()){
+        return fail(field,"Correct the highlighted field.");
+      }
+    }
+  }
+
+  if(section.fields.some(field=>field.name==="licenceExpiry") &&
+     data.licenceIssue && data.licenceExpiry &&
+     data.licenceExpiry<data.licenceIssue){
+    return fail({name:"licenceExpiry"},
+      "Licence expiry date cannot be earlier than its issue date.");
+  }
+
+  if(mode==="renewal" && sectionIndex===2){
+    if(data.licenceRenewed==="Yes" && !filesFor("docTrade").length){
+      return fail({name:"docTrade"},
+        "Upload the renewed Trade Licence you indicated in Section 02.");
+    }
+    if(data.vatUpdated==="Yes" && !filesFor("docVAT").length){
+      return fail({name:"docVAT"},
+        "Upload the updated VAT Certificate you indicated in Section 02.");
+    }
+  }
+
+  if(mode==="renewal" && sectionIndex===0){
+    const ref=String(data.reference||"").trim();
+    if(!/^[A-Za-z0-9_-]{5,100}$/.test(ref)){
+      return fail({name:"reference"},
+        "Enter a valid existing reference number.");
+    }
+  }
+
+  return true;
+}
+
 function render(){
-  removeTurnstile();
   closeCalendar();
-  // Use the existing seven-step form, but keep the active service selected.
-  mode=renewalIdentity ? "renewal" : "registration";
+  sections=allSections[mode];
   $("formMode").hidden=false;
   $("alternateMode").hidden=true;
   $("sidebar").hidden=false;
   markMode();
-  updateNav();
 
-  $("counter").textContent=step===7
+  const count=sections.length;
+  $("counter").textContent=step===count
     ?"FINAL REVIEW"
-    :`${String(step+1).padStart(2,"0")} / 07`;
+    :`${String(step+1).padStart(2,"0")} / ${String(count).padStart(2,"0")}`;
 
-  $("progressTitle").textContent=step===7
-    ?(renewalIdentity ? "KYC RENEWAL REVIEW" : "REGISTRATION REVIEW")
-    :(renewalIdentity ? "ANNUAL KYC RENEWAL" : "NEW SUPPLIER REGISTRATION");
-
+  const titles={
+    registration:"NEW SUPPLIER REGISTRATION",
+    customer:"NEW CUSTOMER REGISTRATION",
+    renewal:"ANNUAL KYC RENEWAL"
+  };
+  $("progressTitle").textContent=step===count
+    ?titles[mode]+" · REVIEW":titles[mode];
   $("progressFill").style.width=(
-    step===7?100:((step+1)/8)*100
+    step===count?100:((step+1)/(count+1))*100
   )+"%";
 
-  if(step===7){
+  const guide=$("sidebar").querySelector(".side-card h3");
+  guide.textContent=mode==="renewal"?"Four clear steps.":"Seven clear steps.";
+  $("sidebar").querySelector(".side-card p").textContent=
+    mode==="renewal"
+      ?"Supply only updated information and documents. Existing confidential data is not disclosed."
+      :"Complete each stage before proceeding. You can revisit earlier stages.";
+  $("sidebar").querySelector(".side-note p").textContent=
+    mode==="renewal"
+      ?"Have your reference number, registered company email and updated records ready."
+      :"Trade Licence and VAT Certificate uploads are mandatory. Other documents are optional.";
+  updateNav();
+
+  if(step===count){
     renderReview();
     return;
   }
 
   const section=sections[step];
-
+  const hasFiles=section.fields.some(field=>field.type==="file");
   $("stepContent").innerHTML=`
     <div class="kicker">${esc(section.kicker)}</div>
     <h2>${esc(section.name)}</h2>
     <p class="introtext">${esc(section.description)}</p>
+
+    ${hasFiles?`
+      <div class="upload-banner">
+        <strong>Document selection</strong>
+        <span>PDF, JPG or PNG. Each file up to 5 MB;
+          combined selection up to 10 MB.</span>
+        <span>Selected: ${fileSize(totalFileBytes())}
+          of 10 MB. Files remain in this browser tab only.</span>
+      </div>`:""}
 
     <form id="currentFields" novalidate>
       <div class="fields">
@@ -1418,7 +1853,7 @@ function render(){
       </div>
 
       <div id="error" class="message" hidden>
-        Complete all highlighted required fields to continue.
+        Complete the highlighted required fields.
       </div>
 
       <div class="actions">
@@ -1427,56 +1862,91 @@ function render(){
             ← Previous
           </button>`:""}
         <button type="button" class="btn primary" id="continue">
-          ${step===6?"Review all information →":"Continue →"}
+          ${step===count-1?"Review all information →":"Continue →"}
         </button>
       </div>
     </form>
 
-    ${step===3?`
+    ${mode==="registration"&&step===3?`
       <div class="info">
-        Banking details must not be transmitted to a public
-        database without a secure backend and access controls.
+        Bank details are sensitive. No information is sent or saved
+        during the management review prototype.
+      </div>`:""}
+
+    ${mode!=="renewal"&&step===5?`
+      <div class="preview-note">
+        For management review: a VAT Certificate is mandatory even
+        if VAT status is marked “Not registered.” Please confirm
+        whether an exemption should be added before launch.
       </div>`:""}`;
 
   const form=$("currentFields");
-
   form.addEventListener("click",event=>{
     const opener=event.target.closest("[data-calendar-open]");
     const dateField=event.target.closest(".date-input");
     if(opener||dateField){
       openCalendar(opener?.dataset.calendarOpen||dateField.name);
+      return;
+    }
+    const remove=event.target.closest("[data-remove-file]");
+    if(remove){
+      store();
+      const name=remove.dataset.removeFile;
+      const index=Number(remove.dataset.removeIndex);
+      flow.files[name].splice(index,1);
+      render();
+      return;
+    }
+    const jump=event.target.closest("[data-go-step]");
+    if(jump){
+      store();
+      step=Number(jump.dataset.goStep);
+      syncFlow();
+      render();
+      focusCard();
     }
   });
 
   form.addEventListener("keydown",event=>{
-    if(
-      event.target.classList.contains("date-input")&&
-      ["Enter"," ","ArrowDown"].includes(event.key)
-    ){
+    if(event.target.classList.contains("date-input")&&
+       ["Enter"," ","ArrowDown"].includes(event.key)){
       event.preventDefault();
       openCalendar(event.target.name);
     }
   });
 
   form.addEventListener("input",event=>{
-    if(event.target.name)store();
+    if(event.target.name==="eidNumber"){
+      const digits=event.target.value.replace(/\D/g,"").slice(0,15);
+      event.target.value=[
+        digits.slice(0,3),digits.slice(3,7),
+        digits.slice(7,14),digits.slice(14,15)
+      ].filter(Boolean).join("-");
+    }
+    store();
     event.target.classList.remove("error");
   });
 
   form.addEventListener("change",event=>{
+    if(event.target.type==="file"){
+      chooseFiles(event.target.name,event.target.files);
+      return;
+    }
     store();
-    const conditionalFields=[
+    const conditional=[
       "sameAddress","vatStatus","ctStatus","vatGroup",
-      "thirdParty","overseas","addressChange",
-      "managementChange","unusual","subcontractors"
+      "thirdParty","overseas","addressChange","managementChange",
+      "unusual","subcontractors","idType","hasChanges",
+      "licenceRenewed","vatUpdated","repIdUpdated"
     ];
-    if(conditionalFields.includes(event.target.name))render();
+    if(conditional.includes(event.target.name))render();
   });
 
   if(step){
     $("previous").onclick=()=>{
       store();
       step--;
+      syncFlow();
       render();
       focusCard();
     };
@@ -1484,534 +1954,210 @@ function render(){
 
   $("continue").onclick=()=>{
     store();
-    const controls=[
-      ...form.querySelectorAll("input,select,textarea")
-    ];
-
-    let invalid=controls.find(element=>
-      (element.classList.contains("date-input")&&
-       !element.dataset.dateValue)||
-      !element.checkValidity()
-    );
-
-    if(
-      step===0&&data.licenceIssue&&data.licenceExpiry&&
-      data.licenceExpiry<data.licenceIssue
-    ){
-      invalid=form.querySelector('[name="licenceExpiry"]');
-    }
-
-    if(invalid){
-      invalid.classList.add("error");
-      $("error").hidden=false;
-      invalid.focus();
-      invalid.scrollIntoView({
-        behavior:"smooth",block:"center"
-      });
-      return;
-    }
-
+    if(!validateSection(step,true))return;
     maximumStep=Math.max(maximumStep,step+1);
     step++;
+    syncFlow();
     render();
     focusCard();
   };
 }
 
-/* BACKEND REGISTRATION
-   Preview: sends ONLY empty JSON {} to the disabled registration route.
-   Never sends supplier details or Turnstile tokens during preview.
-   Live: available only after explicit code/configuration approval.
-*/
-function buildRegistrationData(){
-  const formData = {};
-  sections.forEach(section=>{
-    section.fields.forEach(field=>{
-      if(!visible(field))return;
-      const value=data[field.name];
-      if(typeof value==="string")formData[field.name]=value.trim();
+/* SAFE REVIEW — document filenames only; no file contents transmitted. */
+function masked(fieldName,value){
+  if(!value)return "";
+  if(fieldName==="eidNumber")return "••••-••••-••••"+String(value).slice(-4);
+  if(["iban","swift","otherIdNumber"].includes(fieldName)){
+    return String(value).length>4?"•••• •••• "+String(value).slice(-4):"••••";
+  }
+  return value;
+}
+
+function reviewRows(section){
+  return section.fields
+    .filter(visible)
+    .map(field=>{
+      let value="";
+      if(field.type==="file"){
+        value=filesFor(field.name).map(item=>
+          item.name+" ("+fileSize(item.size)+")"
+        ).join("; ") || "Not selected";
+      }else if(field.type==="linkedFile"){
+        const key=data.idType==="Emirates ID"?"idDoc":"idDocOther";
+        value=filesFor(key).map(item=>item.name).join("; ")||"Not selected";
+      }else if(field.type==="date"){
+        value=prettyISODate(data[field.name])||"—";
+      }else if(field.name==="actualAddress"&&data.sameAddress==="Yes"){
+        value=data.registeredAddress||"—";
+      }else{
+        value=masked(field.name,data[field.name])||"—";
+      }
+      return {label:field.label,value};
     });
-  });
-  return formData;
 }
 
-function firstInvalidSection(){
-  for(let i=0;i<sections.length;i++){
-    for(const field of sections[i].fields){
-      if(!visible(field))continue;
-      const value=String(data[field.name]??"").trim();
-      if(field.required && !value)return i;
-      if(field.required && field.type==="checkbox" && value!=="Yes")return i;
-    }
-  }
-  if(!parseISODate(data.licenceIssue)||!parseISODate(data.licenceExpiry)||
-     data.licenceExpiry<data.licenceIssue)return 0;
-  return -1;
-}
-
-function resetVerification(){
-  turnstileToken="";
-  if(turnstileWidgetId!==null && window.turnstile){
-    try{window.turnstile.reset(turnstileWidgetId)}catch{}
-  }
-}
-
-async function checkRegistrationGate(button){
-  button.disabled=true;
-  const initialText=button.textContent;
-  button.textContent="Checking backend…";
-  try{
-    // The empty body is intentional: no supplier details are transmitted.
-    // The API should reply 503 while LIVE_REGISTRATION is disabled.
-    const response=await fetch(SUPPLIER_API_URL+"/register",{
-      method:"POST",
-      mode:"cors",
-      cache:"no-store",
-      headers:{"Content-Type":"application/json"},
-      body:"{}"
-    });
-    const result=await response.json().catch(()=>({}));
-    if(response.status===503 &&
-       result.error==="Registration submissions are not open yet"){
-      notify("Backend connection verified. Live registrations remain closed. No supplier information was sent.");
-    }else{
-      notify("Backend responded unexpectedly (HTTP "+response.status+"). No supplier information was sent. Please review API settings.");
-    }
-  }catch{
-    notify("Unable to verify the backend connection. No supplier information was sent.");
-  }finally{
-    button.disabled=false;
-    button.textContent=initialText;
-  }
-}
-
-async function submitRegistration(button){
-  if(!LIVE_SUBMISSIONS_ENABLED)return checkRegistrationGate(button);
-
-  const badSection=firstInvalidSection();
-  if(badSection!==-1){
-    step=badSection;
-    render();
-    focusCard();
-    notify("Please complete all required fields and declarations before submitting.");
-    return;
-  }
-  if(!turnstileToken){
-    notify("Please complete the security verification before submitting.");
-    return;
-  }
-
-  button.disabled=true;
-  button.textContent="Submitting securely…";
-  let uncertain=false;
-  try{
-    const response=await fetch(SUPPLIER_API_URL+"/register",{
-      method:"POST",
-      mode:"cors",
-      cache:"no-store",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        formData:buildRegistrationData(),
-        turnstileToken
-      })
-    });
-    const result=await response.json().catch(()=>({}));
-    if(!response.ok){
-      const explanation=typeof result.error==="string"
-        ?result.error
-        :"Registration could not be completed (HTTP "+response.status+").";
-      notify(explanation);
-      resetVerification();
-      return;
-    }
-    if(result.success!==true ||
-       typeof result.supplierReference!=="string" ||
-       !result.supplierReference){
-      uncertain=true;
-      notify("The server response could not be confirmed. Contact SHEILD BOOST before trying again.");
-      return;
-    }
-
-    removeTurnstile();
-    for(const key of Object.keys(data))delete data[key];
-    maximumStep=7;
-    step=7;
-    $("stepContent").innerHTML=`
-      <div class="submission-success" role="status">
-        <span class="success-mark" aria-hidden="true">✓</span>
-        <div class="kicker">REGISTRATION RECEIVED</div>
-        <h2>Submission Successful</h2>
-        <p>Your supplier registration has been received for review.</p>
-        <div class="submission-reference">
-          <span>SUPPLIER REFERENCE</span>
-          <strong>${esc(result.supplierReference)}</strong>
-        </div>
-        <p>Keep this reference number for future correspondence and KYC renewal.</p>
-      </div>`;
-    $("progressTitle").textContent="REGISTRATION RECEIVED";
-    $("counter").textContent="COMPLETE";
-    $("progressFill").style.width="100%";
-    $("stepNav").replaceChildren();
-    focusCard();
-  }catch{
-    uncertain=true;
-    notify("Submission status could not be confirmed. Contact SHEILD BOOST before retrying to avoid duplicate registrations.");
-  }finally{
-    if(!uncertain && document.contains(button)){
-      button.disabled=false;
-      button.textContent="Submit Registration →";
-    }
-  }
-}
-
-/* ANNUAL KYC RENEWAL — NO OTP, NO DATA PREFILL
-   Reference number + registered email are collected locally.
-   Neither is authenticated at this step and no earlier record is exposed.
-   Matching occurs ONLY in the server-side INSERT when live renewal is enabled.
-*/
-async function checkKycGate(button){
-  button.disabled=true;
-  const initialText=button.textContent;
-  button.textContent="Checking KYC backend…";
-  try{
-    // Empty request; the closed renewal endpoint rejects it before parsing.
-    // Never sends form data, reference, email or Turnstile token in preview.
-    const response=await fetch(SUPPLIER_API_URL+"/kyc/renewal",{
-      method:"POST",mode:"cors",cache:"no-store",
-      headers:{"Content-Type":"application/json"},body:"{}"
-    });
-    const result=await response.json().catch(()=>({}));
-    if(response.status===503 &&
-       result.error==="KYC renewal submissions are not open yet"){
-      notify("KYC backend connection verified. Renewals remain closed. No supplier information was sent.");
-    }else{
-      notify("Unexpected KYC response (HTTP "+response.status+"). No supplier details were sent.");
-    }
-  }catch{
-    notify("Unable to verify KYC backend connection. No supplier information was sent.");
-  }finally{
-    button.disabled=false;
-    button.textContent=initialText;
-  }
-}
-
-async function submitKycRenewal(button){
-  if(!renewalIdentity){
-    notify("Enter your reference number and registered email to begin renewal.");
-    switchMode("renewal");
-    return;
-  }
-  if(!LIVE_KYC_SUBMISSIONS_ENABLED)return checkKycGate(button);
-
-  const invalidSection=firstInvalidSection();
-  if(invalidSection!==-1){
-    step=invalidSection;render();focusCard();
-    notify("Please complete the required renewal fields and declarations.");
-    return;
-  }
-  if(!turnstileToken){
-    notify("Complete the security verification before submitting.");
-    return;
-  }
-
-  button.disabled=true;
-  button.textContent="Submitting renewal…";
-  let uncertain=false;
-  try{
-    const response=await fetch(SUPPLIER_API_URL+"/kyc/renewal",{
-      method:"POST",mode:"cors",cache:"no-store",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        supplierReference:renewalIdentity.reference,
-        registeredEmail:renewalIdentity.registeredEmail,
-        formData:buildRegistrationData(),
-        turnstileToken
-      })
-    });
-    const result=await response.json().catch(()=>({}));
-    if(!response.ok){
-      notify(typeof result.error==="string" ? result.error :
-        "Renewal request could not be completed (HTTP "+response.status+").");
-      resetVerification();
-      return;
-    }
-    if(response.status!==202 || result.success!==true){
-      uncertain=true;
-      notify("Renewal response could not be confirmed. Please contact SHEILD BOOST before retrying.");
-      return;
-    }
-    // A uniform 202 response deliberately does NOT confirm if the
-    // supplied reference and registered email matched any record.
-    removeTurnstile();
-    for(const key of Object.keys(renewalFlow.data))delete renewalFlow.data[key];
-    step=7; maximumStep=7;
-    $("stepContent").innerHTML=`
-      <div class="submission-success" role="status">
-        <span class="success-mark" aria-hidden="true">✓</span>
-        <div class="kicker">ANNUAL KYC RENEWAL</div>
-        <h2>Renewal Request Received</h2>
-        <p>${esc(result.message || "If your supplier reference and registered email match an eligible supplier, your request will be reviewed by SHEILD BOOST.")}</p>
-        <p>No existing supplier or banking details were disclosed.</p>
-      </div>`;
-    $("progressTitle").textContent="KYC RENEWAL REQUEST";
-    $("counter").textContent="RECEIVED";
-    $("progressFill").style.width="100%";
-    $("stepNav").replaceChildren();
-    renewalIdentity=null;
-    focusCard();
-  }catch{
-    uncertain=true;
-    notify("Renewal status could not be confirmed. Contact SHEILD BOOST before retrying.");
-  }finally{
-    if(!uncertain && document.contains(button)){
-      button.disabled=false;
-      button.textContent="Submit KYC Renewal →";
-    }
-  }
-}
-
-/* FINAL REVIEW */
 function renderReview(){
-  const isKyc=Boolean(renewalIdentity);
-  const isLive=isKyc ? LIVE_KYC_SUBMISSIONS_ENABLED : LIVE_SUBMISSIONS_ENABLED;
-  const blocks=sections.map((section,index)=>{
-    const rows=section.fields
-      .filter(visible)
-      .map(field=>({
-        label:field.label,
-        value:field.name==="actualAddress"&&data.sameAddress==="Yes"
-          ?data.registeredAddress
-          :field.type==="date"
-            ?prettyISODate(data[field.name])
-            :(data[field.name]??"")
-      }))
-      .filter(row=>row.value!==""&&row.value!==undefined);
+  const blocks=sections.map((section,index)=>`
+    <section class="review-card">
+      <div class="review-head">
+        <strong>
+          ${String(index+1).padStart(2,"0")} · ${esc(section.name)}
+        </strong>
+        <button type="button" data-edit="${index}">Edit section ↗</button>
+      </div>
+      <div class="review-grid">
+        ${reviewRows(section).map(item=>`
+          <div>
+            <small>${esc(item.label)}</small>
+            <p>${esc(item.value)}</p>
+          </div>`).join("")}
+      </div>
+    </section>`).join("");
 
-    return `
-      <section class="review-card">
-        <div class="review-head">
-          <strong>
-            ${String(index+1).padStart(2,"0")} ·
-            ${esc(section.name)}
-          </strong>
-          <button type="button" data-edit="${index}">
-            Edit section ↗
-          </button>
-        </div>
-        <div class="review-grid">
-          ${rows.map(row=>`
-            <div>
-              <small>${esc(row.label)}</small>
-              <p>${esc(row.value)}</p>
-            </div>`).join("")}
-        </div>
-      </section>`;
-  }).join("");
-
+  const heading=mode==="renewal"
+    ?"Review Your KYC Renewal":"Review Your Information";
   $("stepContent").innerHTML=`
-    <div class="kicker">${isKyc ? "ANNUAL KYC / REVIEW" : "FINAL STAGE / REVIEW"}</div>
-    <h2>${isKyc ? "Review Your KYC Renewal" : "Review Your Information"}</h2>
+    <div class="kicker">FINAL STAGE / REVIEW</div>
+    <h2>${heading}</h2>
     <p class="introtext">
-      Scroll through all seven sections below.
-      Select Edit section to correct anything before submission.
+      Please check each section and selected document before completing
+      the design preview. Use Edit section to make changes.
     </p>
-
-    ${isKyc ? `
-      <div class="info">
-        <strong>Renewal Reference:</strong> ${esc(renewalIdentity.reference)}<br>
-        <strong>Registered Email:</strong> ${esc(renewalIdentity.registeredEmail)}<br>
-        These details are not verified at this stage. They are checked privately
-        by the backend when a live renewal is submitted. Previous supplier
-        information is never displayed.
-      </div>` : ""}
-
     ${blocks}
-
     <div class="info">
-      ${isLive
-        ?(isKyc
-          ?"Your renewal request will be submitted for management review. A received response does not confirm the reference and email matched."
-          :"Your registration information will be sent securely for review when you submit.")
-        :"This is a design preview. Live submissions are disabled, and preview checks do not send supplier information."}
+      <strong>Frontend design preview only.</strong>
+      Your information and files have not been uploaded or saved to
+      SHEILD BOOST systems. The actual submission time and reference
+      number will be generated by the secure backend after approval.
+      ${mode==="renewal"
+        ?"Your company reference and email do not authenticate you or expose existing records."
+        :""}
     </div>
-
     <div class="turnstile-section">
       <div class="kicker">SECURITY VERIFICATION</div>
-      <div id="turnstileWidget" aria-label="Cloudflare security verification"></div>
       <p class="turnstile-note">
-        ${isLive
-          ?"Complete verification before submitting your application."
-          :"Verification preview only. Supplier information will not be submitted."}
+        Cloudflare Turnstile will be connected to the server-side
+        submission process for the live release. It is inactive here.
       </p>
     </div>
-
     <div class="actions">
-      <button type="button" class="btn" id="previous">
-        ← Previous
-      </button>
+      <button type="button" class="btn" id="previous">← Previous</button>
       <button type="button" class="btn primary" id="demoSubmit">
-        ${isLive
-          ?(isKyc ? "Submit KYC Renewal →" : "Submit Registration →")
-          :(isKyc ? "Preview KYC Renewal →" : "Preview Submission →")}
+        Finish Design Preview →
       </button>
     </div>`;
-
-  mountTurnstile();
 
   $("stepContent").querySelectorAll("[data-edit]").forEach(button=>{
     button.onclick=()=>{
       step=Number(button.dataset.edit);
+      syncFlow();
       render();
       focusCard();
     };
   });
 
   $("previous").onclick=()=>{
-    step=6;
+    step=sections.length-1;
+    syncFlow();
     render();
     focusCard();
   };
 
   $("demoSubmit").onclick=()=>{
-    if(isKyc)submitKycRenewal($("demoSubmit"));
-    else submitRegistration($("demoSubmit"));
+    for(let index=0;index<sections.length;index++){
+      if(!validateSection(index,false)){
+        step=index;
+        syncFlow();
+        render();
+        focusCard();
+        notify("Complete the required information and documents first.");
+        return;
+      }
+    }
+    showPreviewSuccess();
   };
 }
 
-/* SERVICE BUTTONS */
+function showPreviewSuccess(){
+  const now=new Intl.DateTimeFormat("en-GB",{
+    timeZone:UAE,
+    day:"2-digit",month:"short",year:"numeric",
+    hour:"2-digit",minute:"2-digit",second:"2-digit",
+    hour12:true
+  }).format(new Date());
+
+  $("stepContent").innerHTML=`
+    <div class="submission-success" role="status">
+      <span class="success-mark" aria-hidden="true">✓</span>
+      <div class="kicker">DESIGN PREVIEW COMPLETE</div>
+      <h2>Preview Finished</h2>
+      <p>
+        You have reviewed the ${mode==="renewal"
+          ?"KYC Renewal":mode==="customer"
+            ?"Customer Registration":"Supplier Registration"} workflow.
+        No actual registration, renewal or document upload occurred.
+      </p>
+      <div class="submission-reference">
+        <span>PREVIEWED AT · UAE LOCAL TIME</span>
+        <strong>${esc(now)}</strong>
+        <span>NOT AN OFFICIAL SUBMISSION RECEIPT</span>
+      </div>
+      <div class="actions" style="justify-content:center">
+        <button type="button" class="btn" id="backToReview">
+          Back to Review
+        </button>
+        <button type="button" class="btn primary" id="restartFlow">
+          Start New Preview →
+        </button>
+      </div>
+    </div>`;
+  $("progressTitle").textContent="DESIGN PREVIEW FINISHED";
+  $("counter").textContent="PREVIEW";
+  $("progressFill").style.width="100%";
+  $("stepNav").replaceChildren();
+
+  $("backToReview").onclick=()=>render();
+  $("restartFlow").onclick=()=>{
+    flows[mode]={data:{},files:{},step:0,maximumStep:0};
+    flow=flows[mode];
+    data=flow.data;
+    step=0;
+    maximumStep=0;
+    render();
+    focusCard();
+  };
+  focusCard();
+}
+
 function markMode(){
   document.querySelectorAll(".mode").forEach(button=>{
-    button.classList.toggle(
-      "active",button.dataset.mode===mode
-    );
+    const active=button.dataset.mode===mode;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
   });
 }
 
 function switchMode(which){
-  // Preserve previous form values separately when changing services.
-  if(!$("formMode").hidden){
-    if(step<7)store();
-    const currentFlow=mode==="renewal" ? renewalFlow : registrationFlow;
-    currentFlow.step=step;
-    currentFlow.maximumStep=maximumStep;
-  }
-  removeTurnstile();
+  if(!allSections[which])return;
+  if($("currentFields"))store();
+  syncFlow();
   closeCalendar();
   mode=which;
-  markMode();
-
-  if(which==="registration"){
-    renewalIdentity=null;
-    data=registrationFlow.data;
-    step=registrationFlow.step;
-    maximumStep=registrationFlow.maximumStep;
-    render();
-    focusCard();
-    return;
-  }
-
-  $("formMode").hidden=true;
-  $("sidebar").hidden=true;
-  $("alternateMode").hidden=false;
-
-  if(which==="renewal"){
-    // A new renewal starts from its own reference-and-email screen.
-    renewalIdentity=null;
-    $("alternateMode").innerHTML=`
-      <div class="blank-view">
-        <div class="kicker">EXISTING SUPPLIER</div>
-        <h2>Annual KYC Renewal</h2>
-        <p>
-          Enter your existing supplier reference number and the email
-          address registered with SHEILD BOOST. No OTP is required.
-        </p>
-
-        <input class="input" id="reference"
-          placeholder="Supplier reference number (e.g. SB-...)"
-          autocomplete="off" maxlength="100"
-          aria-label="Supplier reference number">
-
-        <input class="input" id="renewEmail"
-          type="email" maxlength="200" autocomplete="email"
-          placeholder="Registered company email"
-          aria-label="Registered company email">
-
-        <div class="info">
-          Complete a fresh seven-step KYC form. Your reference and email
-          will be checked privately by the backend when renewal submissions
-          open. Previously saved details will not be displayed or changed
-          automatically. Live KYC submissions are currently disabled.
-        </div>
-
-        <div style="margin-top:20px">
-          <button type="button" class="btn primary" id="renewAction">
-            Continue to KYC Form →
-          </button>
-        </div>
-      </div>`;
-
-    $("renewAction").onclick=()=>{
-      const reference=$("reference").value.trim();
-      const registeredEmail=$("renewEmail").value.trim();
-      if(!/^[A-Za-z0-9_-]{5,100}$/.test(reference)){
-        $("reference").focus();
-        notify("Enter a valid existing supplier reference number.");
-        return;
-      }
-      if(registeredEmail.length>200 ||
-         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registeredEmail)){
-        $("renewEmail").focus();
-        notify("Enter your registered company email address.");
-        return;
-      }
-
-      // This is input formatting only, not a claim of verified identity.
-      // No backend matching request or stored supplier data retrieval occurs.
-      renewalIdentity={reference,registeredEmail};
-      data=renewalFlow.data;
-      for(const key of Object.keys(data))delete data[key];
-      step=0;
-      maximumStep=0;
-      renewalFlow.step=0;
-      renewalFlow.maximumStep=0;
-      render();
-      focusCard();
-    };
-  }else{
-    renewalIdentity=null;
-    $("alternateMode").innerHTML=`
-      <div class="blank-view">
-        <div class="kicker">OFFICIAL GROUP INFORMATION</div>
-        <h2>Business Verification</h2>
-        <p>
-          Visit the official SHEILD BOOST Group of Companies website
-          for business information and verification.
-        </p>
-        <button type="button" class="btn primary" id="verifyAction">
-          Visit Group Website ↗
-        </button>
-      </div>`;
-
-    $("verifyAction").onclick=()=>{
-      if(GROUP_WEBSITE_URL){
-        window.open(
-          GROUP_WEBSITE_URL,"_blank","noopener,noreferrer"
-        );
-      }else{
-        notify("We will add the official group website URL later.");
-      }
-    };
-  }
-
+  sections=allSections[mode];
+  flow=flows[mode];
+  data=flow.data;
+  step=flow.step;
+  maximumStep=flow.maximumStep;
+  render();
   focusCard();
 }
 
-/* INITIALIZATION */
+/* FRONTEND ONLY — no printing controls, no storage, no network calls. */
 $("registrationBtn").onclick=()=>switchMode("registration");
+$("customerBtn").onclick=()=>switchMode("customer");
 $("renewalBtn").onclick=()=>switchMode("renewal");
-$("verificationBtn").onclick=()=>switchMode("verification");
-
 render();
+
 </script>
 </body>
 </html>
