@@ -1381,6 +1381,12 @@ const KYC_REFERENCE_SUPPORT_EMAIL = "";
 const SUPPLIER_API_URL =
   "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
 
+/*
+  Deployment safety switches. Do NOT change these to true until the
+  API, Turnstile, D1, R2 and management dashboard have passed a full
+  test with non-sensitive dummy data.
+  Server-side LIVE_SUBMISSIONS must ALSO be explicitly enabled.
+*/
 const LIVE_SUBMISSIONS_ENABLED = false;
 const LIVE_KYC_SUBMISSIONS_ENABLED = false;
 
@@ -1400,17 +1406,62 @@ const FILE_ACCEPT =
   ".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png";
 
 /*
-  IMPORTANT:
-  This is the frontend preview version.
-
-  No real registrations, files or emails are submitted.
-  No reference number is generated locally.
-
-  Backend integration will follow management sign-off on the deployment.
+  PRE-LAUNCH SAFETY:
+  Form, file and Turnstile integration is installed but LIVE_SUBMISSIONS
+  is false. Preview mode does NOT upload anything. Never enable it until
+  backend and admin dashboard are ready and the company approves launch.
 */
 
-function removeTurnstile(){}
-function mountTurnstile(){}
+let turnstileWidgetId = null;
+let turnstileToken = "";
+let turnstileScriptRequested = false;
+let submissionInFlight = false;
+
+function flowIsLive(){
+  return LIVE_SUBMISSIONS_ENABLED &&
+    (mode!=="renewal" || LIVE_KYC_SUBMISSIONS_ENABLED);
+}
+
+function removeTurnstile(){
+  if(turnstileWidgetId!==null && window.turnstile){
+    try{ window.turnstile.remove(turnstileWidgetId); }
+    catch(error){ console.warn("Turnstile removal unavailable"); }
+  }
+  turnstileWidgetId = null;
+  turnstileToken = "";
+}
+
+function mountTurnstile(){
+  if(!flowIsLive())return;
+  const container = $("turnstileWidget");
+  if(!container || turnstileWidgetId!==null)return;
+  if(window.turnstile && typeof window.turnstile.render==="function"){
+    try{
+      turnstileWidgetId = window.turnstile.render(container,{
+        sitekey:TURNSTILE_SITE_KEY,
+        theme:"light",
+        callback:token=>{turnstileToken=token;},
+        "expired-callback":()=>{turnstileToken="";},
+        "error-callback":()=>{turnstileToken="";}
+      });
+    }catch(error){
+      notify("Verification widget could not load. Please refresh the page.");
+    }
+    return;
+  }
+  if(!turnstileScriptRequested){
+    turnstileScriptRequested = true;
+    const script=document.createElement("script");
+    script.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async=true;
+    script.onload=()=>mountTurnstile();
+    script.onerror=()=>{
+      turnstileScriptRequested=false;
+      notify("Security verification could not load. Check your connection.");
+    };
+    document.head.appendChild(script);
+  }
+}
 
 /* =========================================
    INDEPENDENT FORM STATE
@@ -2052,7 +2103,7 @@ const renewalSections = [
 
       {
         name:"declarationPrivacy",
-        label:"I acknowledge the processing of renewal information when the live system is launched.",
+        label:"I acknowledge the processing of renewal information for company KYC verification and record keeping.",
         type:"checkbox",
         required:true,
         wide:true
@@ -3382,6 +3433,7 @@ function validateSection(sectionIndex,showError=false){
 ========================================= */
 
 function render(){
+  removeTurnstile();
   closeCalendar();
 
   sections = allSections[mode];
@@ -3514,7 +3566,9 @@ function render(){
               Selected: ${fileSize(totalFileBytes())}
               of 10 MB.
 
-              Files remain in this browser tab only.
+              ${flowIsLive()
+                ?"Files will upload securely after final submission."
+                :"Files remain in this browser tab only."}
             </span>
           </div>
         `
@@ -3577,8 +3631,9 @@ function render(){
           <div class="info">
             Bank details are sensitive.
 
-            No information is sent or saved
-            during this frontend design preview.
+            ${flowIsLive()
+              ?"Bank details will be transferred to the secure management system only when you submit the registration."
+              :"No information is sent or saved during this frontend design preview."}
           </div>
         `
         :""
@@ -3977,7 +4032,7 @@ function renderReview(){
 
     <p class="introtext">
       Please check each section and selected document
-      before completing the design preview.
+      before ${flowIsLive()?"submitting your information":"completing the design preview"}.
 
       Use Edit section to make changes.
     </p>
@@ -3986,16 +4041,12 @@ function renderReview(){
 
     <div class="info">
       <strong>
-        Frontend design preview only.
+        ${flowIsLive()?"Secure registration submission":"Frontend design preview only"}.
       </strong>
 
-      Your information and files have not been uploaded
-      or saved to SHEILD BOOST systems.
-
-      The secure backend will generate and store a unique reference
-      when registration and documents have been saved successfully.
-      A registration acknowledgment email will then be sent to the
-      registered company address once outbound email is configured.
+      ${flowIsLive()
+        ?"Your information and uploaded documents will be sent to SHEILD BOOST only when you click Submit. A unique reference is issued after the database and documents are successfully saved. Email confirmation is not guaranteed unless a sender has been configured."
+        :"Your information and files have not been uploaded or saved to SHEILD BOOST systems. The secure backend will generate and store a unique reference after successful live submission; email acknowledgments require an approved email sender."}
 
       ${
         mode==="renewal"
@@ -4010,12 +4061,11 @@ function renderReview(){
       </div>
 
       <p class="turnstile-note">
-        Cloudflare Turnstile will be connected
-        to the server-side submission process
-        for the live release.
-
-        It is inactive here.
+        ${flowIsLive()
+          ?"Complete the Cloudflare security verification below before submitting."
+          :"Cloudflare Turnstile will be connected when live submissions are enabled. It is inactive in design preview."}
       </p>
+      ${flowIsLive()?'<div id="turnstileWidget" style="margin-top:14px;min-height:67px"></div>':""}
     </div>
 
     <div class="actions">
@@ -4032,7 +4082,7 @@ function renderReview(){
         class="btn primary"
         id="demoSubmit"
       >
-        Finish Design Preview →
+        ${flowIsLive()?"Submit Registration →":LIVE_SUBMISSIONS_ENABLED?"Renewals Not Yet Available":"Finish Design Preview →"}
       </button>
     </div>
   `;
@@ -4063,32 +4113,29 @@ function renderReview(){
     focusCard();
   };
 
-  /* PREVIEW SUBMISSION */
+  /* FINAL REVIEW -> PREVIEW OR API SUBMISSION */
 
-  $("demoSubmit").onclick = ()=>{
-
-    for(
-      let index=0;
-      index<sections.length;
-      index++
-    ){
+  $("demoSubmit").onclick = async ()=>{
+    if(submissionInFlight)return;
+    for(let index=0;index<sections.length;index++){
       if(!validateSection(index,false)){
-        step = index;
-
+        step=index;
         syncFlow();
         render();
         focusCard();
-
-        notify(
-          "Complete the required information and documents first."
-        );
-
+        notify("Complete the required information and documents first.");
         return;
       }
     }
-
-    showPreviewSuccess();
+    if(!LIVE_SUBMISSIONS_ENABLED){
+      showPreviewSuccess();
+    }else if(!flowIsLive()){
+      notify("Annual KYC Renewal is not open yet.");
+    }else{
+      await submitLiveRegistration();
+    }
   };
+  mountTurnstile();
 }
 
 /* =========================================
@@ -4237,13 +4284,143 @@ function showPreviewSuccess(){
   });
 }
 
-/* BACKEND CONNECTION CONTRACT (NOT ACTIVE IN THIS PREVIEW):
-   After the Cloudflare Worker confirms a registration save, it returns
-   { reference, registeredEmail, emailStatus: 'sent'|'accepted'|'queued'|'failed' }.
-   The Worker—not browser HTML—must send the email and handle retries.
-   Call showSubmissionDialog({reference, email:registeredEmail, emailStatus})
-   ONLY after the server confirms saved data. Never invent a reference or
-   report successful email delivery from browser code alone. */
+/* =========================================
+   LIVE CLOUDFlARE API CONNECTION — opt-in
+   Public API accepts multipart/form-data:
+     payload: {kind,submissionId,data,turnstileToken}
+     file:<documentFieldName>: original selected File objects
+   No public records are read back. Email status is server supplied.
+========================================= */
+
+function collectSubmissionData(){
+  // Only visible, approved fields. Ignore hidden/stale values and file metadata.
+  const output={};
+  for(const section of sections){
+    for(const field of section.fields){
+      if(!visible(field))continue;
+      if(["file","linkedFile","referenceHelp"].includes(field.type))continue;
+      const value=data[field.name];
+      if(typeof value==="string")output[field.name]=value.trim();
+    }
+  }
+  return output;
+}
+
+function collectSubmissionFiles(form){
+  for(const section of sections){
+    for(const field of section.fields){
+      if(field.type!=="file" || !visible(field))continue;
+      for(const chosen of filesFor(field.name)){
+        form.append("file:"+field.name,chosen,chosen.name);
+      }
+    }
+  }
+}
+
+function showRenewalAcknowledgement(email, message){
+  const dialog=$("submissionDialog");
+  // A blind KYC response is intentionally not a saved-record confirmation.
+  dialog.innerHTML=`
+    <div class="confirm-inner">
+      <span class="confirm-icon" aria-hidden="true">✓</span>
+      <div class="confirm-kicker">ANNUAL KYC REQUEST</div>
+      <h2>Request received</h2>
+      <p>${esc(message || "Your renewal request has been received for verification.")}</p>
+      <div class="confirm-detail">
+        <b>Submitted registered email</b>
+        <span>${esc(email)}</span>
+      </div>
+      <div class="confirm-detail">
+        <b>Privacy protection</b>
+        <span>This acknowledgment does not confirm whether a company record or reference exists. No previously stored confidential information has been disclosed, and no confirmation email has been sent.</span>
+      </div>
+      <div class="confirm-actions">
+        <button type="button" class="btn primary" id="closeRenewalDialog">Close</button>
+      </div>
+    </div>`;
+  dialog.querySelector("#closeRenewalDialog").onclick=()=>dialog.close();
+  if(!dialog.open)dialog.showModal();
+}
+
+function resetTurnstileAfterAttempt(){
+  turnstileToken="";
+  if(turnstileWidgetId!==null&&window.turnstile){
+    try{window.turnstile.reset(turnstileWidgetId);}catch{}
+  }
+}
+
+async function submitLiveRegistration(){
+  if(submissionInFlight)return;
+  if(!flowIsLive())return;
+  if(!turnstileToken){
+    notify("Complete the Cloudflare security verification before submitting.");
+    return;
+  }
+  if(!window.crypto?.randomUUID){
+    notify("Secure submission requires HTTPS. Open the official portal URL.");
+    return;
+  }
+
+  const flowName=mode;
+  const form=new FormData();
+  const submissionId=flow.submissionId || crypto.randomUUID();
+  flow.submissionId=submissionId;
+  const kind=flowName==="registration"?"supplier":flowName;
+  const submittedEmail=kind==="renewal"?data.registeredEmail:data.contactEmail;
+  form.append("payload",JSON.stringify({
+    kind,
+    submissionId,
+    data:collectSubmissionData(),
+    turnstileToken
+  }));
+  collectSubmissionFiles(form);
+
+  const button=$("demoSubmit");
+  const originalLabel=button?.textContent||"Submit Registration →";
+  submissionInFlight=true;
+  if(button){button.disabled=true;button.textContent="Submitting securely…";}
+  document.querySelectorAll(".mode").forEach(el=>el.disabled=true);
+
+  let succeeded=false;
+  try{
+    const response=await fetch(SUPPLIER_API_URL.replace(/\/+$/,"")+"/api/submissions",{
+      method:"POST",
+      body:form,
+      mode:"cors",
+      credentials:"omit",
+      cache:"no-store",
+      redirect:"error"
+      // Do not set Content-Type; browser generates multipart boundary.
+    });
+    let result;
+    try{result=await response.json();}catch{result=null;}
+    if(!response.ok||result?.success!==true){
+      throw new Error(result?.error || "The registration could not be submitted. Please try again.");
+    }
+    if(kind==="renewal"){
+      if(response.status!==202){throw new Error("Unexpected renewal response. Contact management before retrying.");}
+      showRenewalAcknowledgement(submittedEmail,result?.message);
+    }else{
+      if(response.status!==201 || typeof result.reference!=="string" ||
+        typeof result.registeredEmail!=="string"){
+        throw new Error("Unable to verify the registration receipt. Please contact management before retrying.");
+      }
+      showSubmissionDialog({
+        reference:result.reference,
+        email:result.registeredEmail,
+        emailStatus:result.emailStatus||"not_configured"
+      });
+    }
+    succeeded=true;
+  }catch(error){
+    notify(error?.message || "Network error. Please check your connection and try again.");
+  }finally{
+    submissionInFlight=false;
+    if(button&&button.isConnected){button.disabled=false;button.textContent=originalLabel;}
+    document.querySelectorAll(".mode").forEach(el=>el.disabled=false);
+    if(!succeeded)resetTurnstileAfterAttempt();
+  }
+}
 
 /* =========================================
    MODE BUTTON STATES
