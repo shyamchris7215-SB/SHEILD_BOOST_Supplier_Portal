@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -941,7 +940,8 @@ input[type=checkbox]{
   max-width:480px;
 }
 .existing-note button,
-.reference-help button{
+.reference-help button,
+.reference-help a.reference-action{
   border:0;
   background:transparent;
   padding:5px 0;
@@ -951,7 +951,8 @@ input[type=checkbox]{
   text-align:left;
 }
 .existing-note button:hover,
-.reference-help button:hover{
+.reference-help button:hover,
+.reference-help a.reference-action:hover{
   text-decoration:underline;
 }
 
@@ -980,6 +981,7 @@ input[type=checkbox]{
 .reference-help .reference-action{
   margin-top:9px;
   display:inline-block;
+  overflow-wrap:anywhere;
 }
 .reference-help--active{
   background:#fffaf0;
@@ -1305,9 +1307,9 @@ input[type=checkbox]{
         <h4>Keep your company documents ready.</h4>
 
         <p>
-          Keep your Trade Licence and VAT Certificate ready.
-          Both are required for new registrations.
-          Other supporting documents are optional.
+          Keep your Trade Licence ready and, if VAT registered,
+          your VAT Certificate. Other supporting documents may be
+          requested during our internal verification process.
         </p>
       </div>
     </aside>
@@ -1372,6 +1374,10 @@ input[type=checkbox]{
 
 const GROUP_WEBSITE_URL = "";
 
+/* Management will provide the official address before launch.
+   Leave blank to prevent sending recovery requests to a sample mailbox. */
+const KYC_REFERENCE_SUPPORT_EMAIL = "";
+
 const SUPPLIER_API_URL =
   "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
 
@@ -1400,7 +1406,7 @@ const FILE_ACCEPT =
   No real registrations, files or emails are submitted.
   No reference number is generated locally.
 
-  Backend integration will follow management approval.
+  Backend integration will follow management sign-off on the deployment.
 */
 
 function removeTurnstile(){}
@@ -1545,368 +1551,216 @@ const availability = [
   "Not applicable"
 ];
 
-/* =========================================
-   SUPPLIER REGISTRATION SECTIONS
-========================================= */
-
-const supplierSections = [
+/* SEVEN SECTIONS — 2026 MANAGEMENT KYS & E-INVOICING UPDATE.
+   Supplier-only fields are hidden from the customer journey. Internal
+   compliance checks, spend thresholds and approval remain admin-only. */
+const SUPPLIER_ONLY=(_d,currentMode)=>currentMode==="registration";
+const UAE_COUNTRY="United Arab Emirates";
+const COUNTRIES=[UAE_COUNTRY,"Oman","India","Saudi Arabia","Qatar","Bahrain","Kuwait","Other"];
+const UAE_ENTITY=d=>d.registrationCountry===UAE_COUNTRY;
+const supplierSections=[
   {
     name:"Company & Legal Information",
     kicker:"SECTION 01 / COMPANY PROFILE",
-    description:
-      "Provide your official company registration and primary business contact information.",
-
+    description:"Provide your legal registration, e-invoicing address and official business contact information.",
     fields:[
-      text("legalName","Registered legal entity name",true,{
-        wide:true
-      }),
-
+      text("legalName","Registered legal entity name (as on licence)",true,{wide:true}),
+      text("tradeName","Trading name (if different)"),
       select("entityType","Entity type",[
-        "Limited Liability Company (LLC)",
-        "Free Zone Company",
-        "Sole Establishment",
-        "Partnership",
-        "Branch Office",
-        "Other"
+        "Limited Liability Company (LLC)","Free Zone Company",
+        "Sole Establishment","Partnership","Branch Office","Individual / Freelancer","Other"
       ],true),
-
-      text("licenceAuthority","Trade licence issuing authority",true),
-
-      text("licenceNumber","Trade licence number",true),
-
-      {
-        ...text("licenceIssue","Licence issue date",true),
-        type:"date"
-      },
-
-      {
-        ...text("licenceExpiry","Licence expiry date",true),
-        type:"date"
-      },
-
-      area("registeredAddress","Registered business address",true),
-
-      {
-        name:"sameAddress",
-        label:"Actual business address is the same as the registered address",
-        type:"checkbox",
-        wide:true
-      },
-
-      area("actualAddress","Actual business address",true,{
+      select("registrationCountry","Country of incorporation / registration",COUNTRIES,true),
+      text("registrationCountryOther","Other registration country",true,{
+        show:d=>d.registrationCountry==="Other"
+      }),
+      select("supplierType","Supplier type",["Goods","Services","Both"],true,{
+        show:SUPPLIER_ONLY
+      }),
+      select("registrationType","Legal registration document type",[
+        "Trade Licence","Commercial Registration","Certificate of Incorporation","Other"
+      ],true),
+      text("registrationTypeOther","Other registration document type",true,{
+        show:d=>d.registrationType==="Other"
+      }),
+      text("licenceAuthority","Trade licence / registration issuing authority",true),
+      text("licenceNumber","Trade licence / legal registration number",true),
+      {...text("licenceIssue","Licence / registration issue date",true),type:"date"},
+      {...text("licenceExpiry","Licence / registration expiry date",true),type:"date"},
+      text("buildingStreet","Registered address — building number/name & street",true,{wide:true}),
+      text("district","Area / district"),
+      text("cityEmirate","City / Emirate",true),
+      select("addressCountry","Registered address country",COUNTRIES,true),
+      text("addressCountryOther","Other registered address country",true,{
+        show:d=>d.addressCountry==="Other"
+      }),
+      text("countryCode","Registered address country code (ISO, e.g. AE)",true,{
+        maxLength:2,help:"Enter the two-letter country code, such as AE, OM or IN."
+      }),
+      text("poBox","Postal code / PO Box"),
+      area("registeredAddress","Additional registered address details"),
+      {name:"sameAddress",label:"Actual business address is the same as the registered address",type:"checkbox",wide:true},
+      area("actualAddress","Actual place of business / operating address",true,{
         show:d=>d.sameAddress!=="Yes"
       }),
-
       area("activities","Licensed business activities",true),
-
-      text("website","Company website",false,{
-        wide:true
-      }),
-
+      text("website","Company website",false,{wide:true}),
       text("contactName","Primary contact person name",true),
-
-      {
-        ...text("contactEmail","Business email address",true),
-        type:"email"
-      },
-
-      {
-        ...text("contactMobile","Mobile / telephone",true),
-        type:"tel"
-      }
+      text("contactTitle","Primary contact designation",true),
+      {...text("contactEmail","Registered business email address",true),type:"email"},
+      {...text("contactMobile","Mobile / telephone (with country code)",true),type:"tel"}
     ]
   },
-
   {
     name:"Tax Registration & E-Invoicing",
     kicker:"SECTION 02 / REGULATORY INFORMATION",
-
-    description:
-      "Provide tax details only where they apply to your business.",
-
+    description:"Provide UAE e-invoicing identifiers and your applicable tax registration details.",
     fields:[
-      select("vatStatus","VAT registration status",[
-        "Registered",
-        "Not registered"
-      ],true),
-
-      text("trn","VAT Tax Registration Number (TRN)",true,{
-        show:d=>d.vatStatus==="Registered"
+      select("vatStatus","VAT registration status",["Registered","Not registered"],true),
+      text("trn","UAE VAT TRN / Tax Registration Number",true,{
+        show:d=>d.vatStatus==="Registered",
+        maxLength:25,
+        help:"For UAE entities, enter the 15-digit VAT TRN."
       }),
-
+      text("einvoiceTin","UAE E-Invoicing TIN (if applicable)",false,{
+        show:SUPPLIER_ONLY,
+        requiredWhen:d=>UAE_ENTITY(d)&&d.vatStatus==="Registered",
+        maxLength:10,
+        help:"For a VAT-registered UAE supplier, enter the first 10 digits of your own 15-digit TRN. If not VAT registered, provide a TIN only if one has been issued."
+      }),
+      select("designatedZone","Designated Zone / Free Zone entity?",yesNo,true,{
+        show:d=>UAE_ENTITY(d)
+      }),
       select("ctStatus","Corporate Tax registration",[
-        "Registered",
-        "Not registered",
-        "Exempt / not applicable",
-        "In progress"
+        "Registered","Not registered","Exempt / not applicable","In progress"
       ],true),
-
       text("ctNumber","Corporate Tax registration number",true,{
         show:d=>d.ctStatus==="Registered"
       }),
-
-      select("taxCert","Tax registration certificate",availability),
-
-      select("vatGroup","VAT group membership",[
-        "Yes",
-        "No",
-        "Not applicable"
-      ]),
-
-      text("vatGroupTrn","VAT Group TRN",true,{
-        show:d=>d.vatGroup==="Yes"
+      select("taxCert","Tax registration certificate availability",availability),
+      select("vatGroup","VAT group membership",["Yes","No","Not applicable"]),
+      text("vatGroupTrn","VAT Group TRN",true,{show:d=>d.vatGroup==="Yes"}),
+      text("peppol","PEPPOL ID / electronic invoice address",false,{
+        wide:true,help:"Enter only if assigned."
       }),
-
-      text("einvoiceTin","E-Invoicing TIN"),
-
-      text("peppol","Peppol Participant ID"),
-
-      text("asp","Accredited Service Provider (ASP) details",false,{
-        wide:true
-      })
+      {...text("invoiceEmail","Dedicated e-invoice email address",false,{
+        wide:true,show:SUPPLIER_ONLY,
+        help:"Recommended for exchanging invoice documents and related status messages."
+      }),type:"email"},
+      text("asp","Accredited Service Provider (ASP) details",false,{wide:true})
     ]
   },
-
   {
     name:"Authorized Representative",
     kicker:"SECTION 03 / REPRESENTATIVE DETAILS",
-
-    description:
-      "Identify the person authorized to act on behalf of your company.",
-
+    description:"Identify the person authorized to act for your company and provide an optional identity document for verification.",
     fields:[
-      text("repName","Director / authorized representative name",true,{
-        wide:true
-      }),
-
+      text("repName","Director / authorized representative name",true,{wide:true}),
       text("repTitle","Designation",true),
-
-      {
-        ...text("repEmail","Email address",true),
-        type:"email"
-      },
-
-      {
-        ...text("repPhone","Mobile / telephone",true),
-        type:"tel"
-      },
-
-      select("idType","Identification document type",[
-        "Emirates ID",
-        "Passport",
-        "Other"
-      ],true),
-
-      {
-        ...text("eidNumber","Emirates ID number",true,{
-          show:d=>d.idType==="Emirates ID",
-          wide:true
-        }),
-        type:"eid"
-      },
-
+      {...text("repEmail","Email address",true),type:"email"},
+      {...text("repPhone","Mobile / telephone",true),type:"tel"},
+      select("idType","Identification document type",["Emirates ID","Passport","Other"],true),
+      {...text("eidNumber","Emirates ID number",true,{
+        show:d=>d.idType==="Emirates ID",wide:true
+      }),type:"eid"},
       file("idDoc","Emirates ID document",false,{
-        show:d=>d.idType==="Emirates ID"
+        show:d=>d.idType==="Emirates ID",
+        requiredWhen:d=>d.entityType==="Individual / Freelancer" && d.idType==="Emirates ID",
+        help:"Optional for company representatives; required for individual suppliers under the KYS procedure."
       }),
-
       text("otherIdNumber","Passport / other ID number",false,{
-        show:d=>
-          d.idType==="Passport" ||
-          d.idType==="Other",
-        wide:true
+        show:d=>d.idType==="Passport"||d.idType==="Other",wide:true
       }),
-
       file("idDocOther","Passport / other identity document",false,{
-        show:d=>
-          d.idType==="Passport" ||
-          d.idType==="Other"
+        show:d=>d.idType==="Passport"||d.idType==="Other",
+        requiredWhen:d=>d.entityType==="Individual / Freelancer",
+        help:"Optional for company representatives; required for individual suppliers under the KYS procedure."
       }),
-
-      select(
-        "authorization",
-        "Authorization letter / power of attorney available?",
-        ["Yes","No","Not applicable"],
-        false,
-        {wide:true}
-      )
+      select("authorization","Authorization letter / power of attorney available?",[
+        "Yes","No","Not applicable"
+      ],false,{wide:true})
     ]
   },
-
   {
     name:"Bank & Payment Details",
     kicker:"SECTION 04 / PAYMENT PROFILE",
-
-    description:
-      "Provide beneficiary and payment information. This section must be protected by the live database access rules.",
-
+    description:"Provide bank and payment information for secure internal review. Bank evidence may be requested during KYS verification.",
     fields:[
       text("bankName","Bank name",true),
-
       text("beneficiary","Beneficiary / account holder name",true),
-
       text("iban","IBAN",true),
-
       text("swift","SWIFT / BIC code",true),
-
-      select("bankLetter","Bank account confirmation letter",availability),
-
+      select("bankLetter","Bank account confirmation letter available?",availability),
       select("currency","Preferred payment currency",[
-        "AED",
-        "USD",
-        "EUR",
-        "GBP",
-        "INR",
-        "OMR",
-        "Other"
+        "AED","USD","EUR","GBP","INR","OMR","Other"
       ],true),
-
-      select("paymentTerms","Payment terms",[
-        "Advance Payment",
-        "On Delivery",
-        "Net 15 Days",
-        "Net 30 Days",
-        "Net 45 Days",
-        "Net 60 Days",
-        "Other / To be agreed"
+      select("paymentTerms","Standard payment terms",[
+        "Advance Payment","On Delivery","Net 15 Days","Net 30 Days",
+        "Net 45 Days","Net 60 Days","Other / To be agreed"
       ],true),
-
       select("thirdParty","Third-party payment arrangement?",yesNo),
-
       select("overseas","Overseas payment arrangement?",yesNo),
-
-      area("paymentDetails","Please explain the payment arrangement",true,{
-        show:d=>
-          d.thirdParty==="Yes" ||
-          d.overseas==="Yes"
+      area("paymentDetails","Explain the payment arrangement",true,{
+        show:d=>d.thirdParty==="Yes"||d.overseas==="Yes"
       })
     ]
   },
-
   {
     name:"Business & Risk Declaration",
     kicker:"SECTION 05 / BUSINESS DUE DILIGENCE",
-
-    description:
-      "Tell us about your operations and any recent material changes.",
-
+    description:"Describe operations and recent changes so the SHEILD BOOST team can perform its internal supplier checks.",
     fields:[
       area("goodsServices","Nature of goods or services supplied",true),
-
-      {
-        ...text("yearsOperating","Years in operation",true),
-        type:"number"
-      },
-
+      {...text("yearsOperating","Years in operation",true),type:"number"},
       select("premises","Business premises type",[
-        "Owned",
-        "Rented",
-        "Shared office",
-        "Remote / virtual",
-        "Other"
+        "Owned","Rented","Shared office","Remote / virtual","Other"
       ]),
-
       area("premisesDetails","Business premises details"),
-
-      select(
-        "addressChange",
-        "Address changes in the previous 12 months?",
-        yesNo,
-        true
-      ),
-
-      select(
-        "managementChange",
-        "Key management or contact changes in the previous 12 months?",
-        yesNo,
-        true
-      ),
-
+      select("addressChange","Business address changed in the last 12 months?",yesNo,true),
+      {...text("addressChangeCount","Number of address changes in last 12 months",true,{
+        show:d=>d.addressChange==="Yes"
+      }),type:"number"},
+      select("managementChange","Key management or contacts changed in last 12 months?",yesNo,true),
+      {...text("managementChangeCount","Number of key management/contact changes",true,{
+        show:d=>d.managementChange==="Yes"
+      }),type:"number"},
       area("changes","Describe the changes",true,{
-        show:d=>
-          d.addressChange==="Yes" ||
-          d.managementChange==="Yes"
+        show:d=>d.addressChange==="Yes"||d.managementChange==="Yes"
       }),
-
-      select("unusual","Any unusual transaction arrangements?",yesNo,true),
-
+      select("unusual","Unusual transaction arrangements?",yesNo,true),
       select("subcontractors","Any subcontractor arrangements?",yesNo,true),
-
       area("riskDetails","Explain the arrangements",true,{
-        show:d=>
-          d.unusual==="Yes" ||
-          d.subcontractors==="Yes"
+        show:d=>d.unusual==="Yes"||d.subcontractors==="Yes"
       })
     ]
   },
-
   {
     name:"Supporting Document Details",
     kicker:"SECTION 06 / SUPPORTING RECORDS",
-
-    description:
-      "Upload your company documents. Trade Licence and VAT Certificate are required.",
-
+    description:"Attach your trade registration and supporting records. A VAT Certificate is required only when VAT registered.",
     fields:[
       file("docTrade","Trade Licence / Incorporation Document",true),
-
-      file("docVAT","VAT Registration Certificate",true),
-
-      file("docCT","Corporate Tax Document"),
-
-      {
-        name:"idDocLink",
-        label:"Representative Identification Document",
-        type:"linkedFile",
-        wide:true
-      },
-
-      file("docAuthorization","Authorization Letter"),
-
-      file("docBank","Bank Confirmation Letter"),
-
-      file("otherDocs","Other Supporting Records",false,{
-        multiple:true
+      file("docVAT","VAT Registration Certificate",true,{
+        show:d=>d.vatStatus==="Registered"
       }),
-
+      file("docCT","Corporate Tax Document"),
+      {name:"idDocLink",label:"Representative Identification Document",type:"linkedFile",wide:true},
+      file("docAuthorization","Signatory Authorization Letter / Power of Attorney"),
+      file("docBank","UAE Bank Confirmation Letter / Cancelled Cheque"),
+      file("otherDocs","Other Supporting Records",false,{multiple:true}),
       area("otherDocsNotes","Other supporting records description")
     ]
   },
-
   {
     name:"Declaration & Submission",
     kicker:"SECTION 07 / FINAL DECLARATION",
-
-    description:
-      "Confirm the details are accurate before reviewing your complete registration.",
-
+    description:"Confirm the details and attached documents are accurate before reviewing the registration.",
     fields:[
       text("signatoryName","Authorized signatory name",true),
-
-      text("signatoryTitle","Signatory designation",true),
-
-      {
-        name:"declarationAccuracy",
-        label:"I confirm the information provided is accurate and complete.",
-        type:"checkbox",
-        required:true,
-        wide:true
-      },
-
-      {
-        name:"declarationChange",
-        label:"I agree to notify SHEILD BOOST Group of Companies of material changes.",
-        type:"checkbox",
-        required:true,
-        wide:true
-      },
-
-      {
-        name:"declarationPrivacy",
-        label:"I acknowledge the processing of my information for supplier registration and verification purposes.",
-        type:"checkbox",
-        required:true,
-        wide:true
-      }
+      text("signatoryTitle","Authorized signatory designation",true),
+      {name:"declarationAccuracy",label:"I confirm the information provided is accurate and complete.",type:"checkbox",required:true,wide:true},
+      {name:"declarationChange",label:"I agree to notify SHEILD BOOST Group of material changes.",type:"checkbox",required:true,wide:true},
+      {name:"declarationPrivacy",label:"I acknowledge processing of my information and documents for supplier registration, verification and compliance purposes.",type:"checkbox",required:true,wide:true}
     ]
   }
 ];
@@ -1921,7 +1775,7 @@ const customerSections = supplierSections.map((section,index)=>{
     return {
       ...section,
       description:
-        "Provide legal company information and the primary customer contact."
+        "Provide legal company registration, business address and the primary customer contact."
     };
   }
 
@@ -2053,7 +1907,7 @@ const renewalSections = [
     kicker:"SECTION 01 / EXISTING COMPANY",
 
     description:
-      "Enter your existing registration details. Your reference and email do not provide access to stored company data.",
+      "Enter your existing registration reference and company email. The backend will locate the record internally; private details remain protected until identity is independently verified.",
 
     fields:[
       select("recordType","Renewal for",[
@@ -2061,10 +1915,7 @@ const renewalSections = [
         "Customer"
       ],true),
 
-      text("reference","Existing registration reference number",true,{
-        wide:true,
-        show:d=>d.referenceMissing!=="Yes"
-      }),
+      text("reference","Existing registration reference number",true,{wide:true}),
 
       {
         name:"referenceHelp",
@@ -2080,14 +1931,7 @@ const renewalSections = [
         type:"email"
       },
 
-      text("renewalCompany","Registered legal entity name",true,{
-        wide:true
-      }),
-
-      text("renewalLicenceNumber","Trade Licence number",true,{
-        wide:true,
-        show:d=>d.referenceMissing==="Yes"
-      })
+      text("renewalCompany","Registered legal entity name",true,{wide:true})
     ]
   },
 
@@ -2183,7 +2027,7 @@ const renewalSections = [
     kicker:"SECTION 04 / FINAL DECLARATION",
 
     description:
-      "Confirm that proposed changes are accurate and subject to management review.",
+      "Confirm that the updated information and documents are accurate.",
 
     fields:[
       text("signatoryName","Authorized signatory name",true),
@@ -2200,7 +2044,7 @@ const renewalSections = [
 
       {
         name:"declarationChange",
-        label:"I understand that changes are subject to management verification.",
+        label:"I confirm the updated information is correct and may be verified for record accuracy.",
         type:"checkbox",
         required:true,
         wide:true
@@ -2230,7 +2074,15 @@ let sections = supplierSections;
 ========================================= */
 
 function visible(field){
-  return !field.show || field.show(data);
+  return !field.show || field.show(data,mode);
+}
+
+function isRequired(field){
+  if(!visible(field))return false;
+  if(typeof field.requiredWhen==="function"){
+    return Boolean(field.requiredWhen(data,mode));
+  }
+  return Boolean(field.required);
 }
 
 /* =========================================
@@ -2798,16 +2650,16 @@ function fileHTML(field){
         <label for="${id}">
           ${esc(field.label)}
           ${
-            field.required
+            isRequired(field)
               ?'<span class="required"> *</span>'
               :""
           }
         </label>
 
         <span class="doc-tag ${
-          field.required?"mandatory":""
+          isRequired(field)?"mandatory":""
         }">
-          ${field.required?"REQUIRED":"OPTIONAL"}
+          ${isRequired(field)?"REQUIRED":"OPTIONAL"}
         </span>
       </div>
 
@@ -2831,6 +2683,7 @@ function fileHTML(field){
         <span class="doc-help">
           PDF, JPG or PNG · Max 5 MB each
           ${field.multiple?" · Up to 5 files":""}
+          ${field.help?`<span style="display:block">${esc(field.help)}</span>`:""}
         </span>
       </div>
 
@@ -2853,7 +2706,7 @@ function fieldHTML(field){
   const label = esc(field.label);
   const val = esc(data[field.name] ?? "");
 
-  const required = field.required
+  const required = isRequired(field)
     ?'<span class="required"> *</span>'
     :"";
 
@@ -2861,90 +2714,40 @@ function fieldHTML(field){
     return fileHTML(field);
   }
 
-  /* NEW: FORGOT REFERENCE NUMBER */
-
+  /* FORGOT REFERENCE: manual prepared email to company's Outlook inbox. */
   if(field.type==="referenceHelp"){
-    if(data.referenceMissing==="Yes"){
-      return `
-        <div class="field wide">
-          <div class="reference-help reference-help--active">
-
-            <strong>
-              Continuing without your reference number
-            </strong>
-
-            <p>
-              Please first check the inbox or spam folder
-              of your registered company email for the
-              original SHEILD BOOST registration
-              acknowledgment, which contains your
-              reference number.
-            </p>
-
-            <p>
-              If you still cannot find it, supply the
-              registered company name, email and Trade
-              Licence number below.
-
-              Management must verify the request before
-              linking it to an existing record.
-
-              No existing private information will be
-              displayed here.
-            </p>
-
-            <button
-              type="button"
-              data-use-reference
-            >
-              ← I found my reference number
-            </button>
-
-          </div>
-        </div>
-      `;
-    }
-
+    const subject=encodeURIComponent(
+      "Annual KYC Renewal - Registration Reference Request"
+    );
+    const body=encodeURIComponent(
+      "Dear SHEILD BOOST Team,\n\n"+
+      "Please help us recover our registration reference for Annual KYC Renewal.\n\n"+
+      "Registered Company Name: \n"+
+      "Trade Licence Number: \n"+
+      "Registered Company Email: \n"+
+      "Registration Type (Supplier / Customer): \n\n"+
+      "Thank you."
+    );
     return `
       <div class="field wide">
-
         <details class="reference-help">
-
-          <summary>
-            Forgot your reference number?
-          </summary>
-
-          <p>
-            Please check your
-            <strong>registered company email inbox</strong>
-            and spam folder.
-
-            Search for the registration acknowledgment
-            from SHEILD BOOST Group of Companies.
-
-            Your reference number is included in that
-            email once live notifications are enabled.
-          </p>
-
-          <p>
-            If you still cannot find it, you can submit
-            your updated information without the number.
-
-            Management will verify and link your renewal
-            manually. No existing company records will
-            be exposed.
-          </p>
-
-          <button
-            type="button"
-            class="reference-action"
-            data-forgot-reference
-          >
-            Continue without reference →
-          </button>
-
+          <summary>Forgot your registration reference number?</summary>
+          <p>Please check the reference you saved from the original
+          registration confirmation or any previous correspondence
+          from SHEILD BOOST Group.</p>
+          <p>If you cannot find it, request help from SHEILD BOOST.
+          Our team will verify the requester against the previously
+          registered company contact before sharing the reference.</p>
+          ${KYC_REFERENCE_SUPPORT_EMAIL
+            ?`<p><strong>${esc(KYC_REFERENCE_SUPPORT_EMAIL)}</strong></p>
+               <a class="reference-action"
+                  href="mailto:${encodeURIComponent(KYC_REFERENCE_SUPPORT_EMAIL)}?subject=${subject}&body=${body}">
+                  Open prepared reference request email →
+               </a>
+               <p>This opens your email application; review the message and press Send.</p>`
+            :`<p><strong>Support email will be added after management confirms the official address.</strong></p>`}
+          <p>No private company records are displayed from a reference number and email alone.</p>
         </details>
-
       </div>
     `;
   }
@@ -2961,7 +2764,7 @@ function fieldHTML(field){
 
     return `
       <div class="field wide">
-        <label>${label} (optional)</label>
+        <label>${label} (uploaded in Section 03)</label>
 
         <div class="linked-document">
           <strong>
@@ -3004,7 +2807,7 @@ function fieldHTML(field){
                 ?"checked"
                 :""
             }
-            ${field.required?"required":""}
+            ${isRequired(field)?"required":""}
           >
 
           <span>
@@ -3035,7 +2838,7 @@ function fieldHTML(field){
           aria-controls="sbCalendar"
           aria-expanded="false"
           value="${esc(prettyISODate(data[field.name]))}"
-          ${field.required?"required":""}
+          ${isRequired(field)?"required":""}
         >
 
         <button
@@ -3074,7 +2877,7 @@ function fieldHTML(field){
         class="input"
         id="${id}"
         name="${id}"
-        ${field.required?"required":""}
+        ${isRequired(field)?"required":""}
       >
         <option value="">
           Select an option
@@ -3106,7 +2909,7 @@ function fieldHTML(field){
         id="${id}"
         name="${id}"
         maxlength="1200"
-        ${field.required?"required":""}
+        ${isRequired(field)?"required":""}
         placeholder="Enter details"
       >${val}</textarea>
     `;
@@ -3124,7 +2927,7 @@ function fieldHTML(field){
         pattern="784-[0-9]{4}-[0-9]{7}-[0-9]"
         placeholder="784-XXXX-XXXXXXX-X"
         value="${val}"
-        ${field.required?"required":""}
+        ${isRequired(field)?"required":""}
       >
 
       <small class="doc-help">
@@ -3141,13 +2944,15 @@ function fieldHTML(field){
         name="${id}"
         type="${field.type}"
         value="${val}"
-        ${field.required?"required":""}
+        ${isRequired(field)?"required":""}
         ${
           field.type==="number"
-            ?'min="0" max="300"'
+            ?(["addressChangeCount","managementChangeCount"].includes(field.name)
+              ?'min="1" max="300"'
+              :'min="0" max="300"')
             :""
         }
-        maxlength="200"
+        maxlength="${field.maxLength||200}"
         placeholder="Enter ${label.toLowerCase()}"
       >
     `;
@@ -3160,6 +2965,7 @@ function fieldHTML(field){
       </label>
 
       ${control}
+      ${field.help?`<small class="doc-help">${esc(field.help)}</small>`:""}
     </div>
   `;
 }
@@ -3385,7 +3191,7 @@ function validateSection(sectionIndex,showError=false){
 
     if(field.type==="file"){
       if(
-        field.required &&
+        isRequired(field) &&
         !filesFor(field.name).length
       ){
         return fail(
@@ -3402,7 +3208,7 @@ function validateSection(sectionIndex,showError=false){
     ).trim();
 
     if(
-      field.required &&
+      isRequired(field) &&
       (
         field.type==="checkbox"
           ?value!=="Yes"
@@ -3424,6 +3230,36 @@ function validateSection(sectionIndex,showError=false){
         field,
         "Enter a valid 15-digit Emirates ID number beginning with 784."
       );
+    }
+
+    if(
+      field.name==="trn" && value &&
+      data.registrationCountry===UAE_COUNTRY &&
+      !/^\d{15}$/.test(value)
+    ){
+      return fail(field,"For UAE-registered entities, enter the 15-digit VAT TRN.");
+    }
+
+    if(
+      field.name==="einvoiceTin" && value &&
+      data.registrationCountry===UAE_COUNTRY &&
+      !/^\d{10}$/.test(value)
+    ){
+      return fail(field,"For UAE suppliers, enter the 10-digit TIN from your VAT TRN.");
+    }
+
+    if(
+      field.name==="countryCode" && value &&
+      !/^[A-Za-z]{2}$/.test(value)
+    ){
+      return fail(field,"Please use a two-letter country code such as AE, OM or IN.");
+    }
+
+    if(
+      ["addressChangeCount","managementChangeCount"].includes(field.name) &&
+      value && (!/^\d+$/.test(value) || Number(value)<1)
+    ){
+      return fail(field,"Enter a valid number of changes (1 or more).");
     }
 
     if(
@@ -3524,7 +3360,7 @@ function validateSection(sectionIndex,showError=false){
   if(
     mode==="renewal" &&
     sectionIndex===0 &&
-    data.referenceMissing!=="Yes"
+    true
   ){
     const ref = String(
       data.reference||""
@@ -3533,7 +3369,7 @@ function validateSection(sectionIndex,showError=false){
     if(!/^[A-Za-z0-9_-]{5,100}$/.test(ref)){
       return fail(
         {name:"reference"},
-        "Enter a valid reference number, or choose Forgot Reference Number."
+        "Enter your reference number, or use the request-by-email option to recover it."
       );
     }
   }
@@ -3602,7 +3438,7 @@ function render(){
     .textContent =
       mode==="renewal"
         ?"Have your reference number, registered company email and updated records ready."
-        :"Trade Licence and VAT Certificate uploads are mandatory. Other documents are optional.";
+        :"Trade Licence is required. VAT Certificate is required only when VAT registered; other evidence may be requested by the KYS reviewer.";
 
   updateNav();
 
@@ -3749,18 +3585,35 @@ function render(){
     }
 
     ${
-      mode!=="renewal" && step===5
-        ?`
-          <div class="preview-note">
-            For management review:
-            a VAT Certificate is currently mandatory
-            even if VAT status is marked
-            "Not registered".
+      mode==="registration" && step===4
+        ?`<div class="preview-note">
+            SHEILD BOOST's internal reviewer will complete the KYS
+            identity, official registration, TRN, supplier risk and
+            spending checks separately. This public form does not
+            approve the supplier automatically.
+          </div>`
+        :""
+    }
 
-            Management should confirm whether an
-            exemption is needed before launch.
-          </div>
-        `
+    ${
+      mode==="registration" && step===5
+        ?`<div class="preview-note">
+            A VAT Certificate is required only when you select
+            VAT Registered. Bank verification or further evidence may
+            be requested later by SHEILD BOOST compliance.
+          </div>`
+        :""
+    }
+
+    ${
+      mode==="renewal" && step===0
+        ?`<div class="preview-note">
+            In the live portal, previously approved details can be
+            pre-filled for review and editing only after a secure
+            authorization check. Reference + email alone do not grant
+            access to private company records. Until that backend is
+            connected, this preview accepts proposed updates only.
+          </div>`
         :""
     }
   `;
@@ -3782,33 +3635,6 @@ function render(){
   /* FORM CLICK EVENTS */
 
   form.addEventListener("click",event=>{
-
-    /* FORGOT REFERENCE NUMBER */
-
-    if(
-      event.target.closest("[data-forgot-reference]")
-    ){
-      store();
-
-      data.referenceMissing = "Yes";
-      data.reference = "";
-
-      render();
-      return;
-    }
-
-    /* RETURN TO NORMAL REFERENCE ENTRY */
-
-    if(
-      event.target.closest("[data-use-reference]")
-    ){
-      store();
-
-      data.referenceMissing = "No";
-
-      render();
-      return;
-    }
 
     /* DATE CALENDAR */
 
@@ -3897,6 +3723,17 @@ function render(){
 
     store();
 
+    if(event.target.name==="trn" && mode==="registration" &&
+       data.registrationCountry===UAE_COUNTRY &&
+       data.vatStatus==="Registered"){
+      const trn=String(data.trn||"").replace(/\D/g,"");
+      if(trn.length===15){
+        data.einvoiceTin=trn.slice(0,10);
+        const tinInput=$("einvoiceTin");
+        if(tinInput)tinInput.value=data.einvoiceTin;
+      }
+    }
+
     event.target.classList.remove("error");
   });
 
@@ -3914,8 +3751,25 @@ function render(){
 
     store();
 
+    if(event.target.name==="vatStatus" && data.vatStatus!=="Registered"){
+      flow.files.docVAT=[];
+      if(mode==="registration")data.einvoiceTin="";
+    }
+
+    if(event.target.name==="addressCountry"){
+      const codes={
+        "United Arab Emirates":"AE","Oman":"OM","India":"IN",
+        "Saudi Arabia":"SA","Qatar":"QA","Bahrain":"BH","Kuwait":"KW"
+      };
+      if(codes[data.addressCountry])data.countryCode=codes[data.addressCountry];
+    }
+
     const conditional = [
       "sameAddress",
+      "registrationCountry",
+      "registrationType",
+      "addressCountry",
+      "entityType",
       "vatStatus",
       "ctStatus",
       "vatGroup",
@@ -4034,10 +3888,7 @@ function reviewRows(section){
       }
 
       else if(field.type==="referenceHelp"){
-        value =
-          data.referenceMissing==="Yes"
-            ?"Reference unavailable — manual management verification required"
-            :"Reference provided";
+        value = "Help link available if reference is lost";
       }
 
       else if(field.type==="date"){
@@ -4050,9 +3901,8 @@ function reviewRows(section){
         field.name==="actualAddress" &&
         data.sameAddress==="Yes"
       ){
-        value =
-          data.registeredAddress ||
-          "—";
+        value = [data.buildingStreet,data.district,data.cityEmirate,data.addressCountry]
+          .filter(Boolean).join(", ") || data.registeredAddress || "—";
       }
 
       else{
@@ -4142,14 +3992,15 @@ function renderReview(){
       Your information and files have not been uploaded
       or saved to SHEILD BOOST systems.
 
-      The actual submission time and reference number
-      will be generated by the secure backend
-      after approval.
+      The secure backend will generate and store a unique reference
+      when registration and documents have been saved successfully.
+      A registration acknowledgment email will then be sent to the
+      registered company address once outbound email is configured.
 
       ${
         mode==="renewal"
-          ?"Your company reference and email do not authenticate you or expose existing records."
-          :"Potential duplicate registrations will be checked server-side after launch. No company registration status is exposed through public email or licence lookups."
+        ?"Reference and email locate a record for secure renewal processing; they do not authorize access to confidential company details."
+        :"Potential duplicate registrations will be checked privately on the backend after launch. Public lookups must not expose company existence or confidential details."
       }
     </div>
 
@@ -4266,249 +4117,133 @@ function maskEmail(value){
 }
 
 /* =========================================
-   NEW: SUBMISSION CONFIRMATION DIALOG
+   SUBMISSION CONFIRMATION DIALOG
 
-   LIVE INTEGRATION RULE:
-   Only call this as a real submission after
-   the backend confirms the registration and
-   all required files have been stored.
-
-   Never create fake official references.
+   A real registration confirmation requires:
+   1. Server saves the company data and documents.
+   2. Server generates and stores its unique reference.
+   3. Server triggers an acknowledgment email to the
+      registered email; email status is returned.
+   No approval/rejection workflow is required here.
+   The frontend must never claim an email was sent
+   without server confirmation.
 ========================================= */
 
 function showSubmissionDialog({
   preview=false,
   reference="",
   email="",
-  emailStatus="not-sent"
+  emailStatus="not-configured"
 }={}){
-
   const dialog = $("submissionDialog");
+  const name = mode==="registration"
+    ?"Supplier Registration"
+    :mode==="customer"
+      ?"Customer Registration"
+      :"Annual KYC Renewal";
 
-  const name =
-    mode==="registration"
-      ?"Supplier Registration"
-      :mode==="customer"
-        ?"Customer Registration"
-        :"Annual KYC Renewal";
-
-  const safeRef = reference
-    ?esc(reference)
-    :"Issued after successful submission";
-
-  const emailMessage = preview
-    ?"This is a frontend preview. No files or information have been uploaded, and no email has been sent."
-    :emailStatus==="sent"
-      ?"An acknowledgment has been accepted for delivery to "+maskEmail(email)+". Please check your inbox and spam folder."
-      :"Your registration is recorded, but email delivery is not confirmed. Please save your reference number.";
+  const displayEmail = email ? esc(email.trim()) : "Not entered";
+  const displayRef = reference ? esc(reference) : "Generated after live registration";
+  const confirmedStatuses = new Set(["sent","accepted"]);
+  const label = preview ? "FRONTEND PREVIEW" : "REGISTRATION CONFIRMED";
+  const emailFeedback = preview
+    ?"Preview only. No data was saved and no email was sent."
+    :confirmedStatuses.has(emailStatus)
+      ?"The confirmation email was accepted by the email service. Delivery to the inbox is not guaranteed."
+      :emailStatus==="queued"
+        ?"Your registration is saved. The confirmation email is queued for sending."
+        :emailStatus==="failed"
+          ?"Your registration is saved, but the confirmation email could not be sent. Save your reference number here."
+          :"Your registration is saved. Email delivery is not yet confirmed. Please save your reference number.";
 
   dialog.innerHTML = `
     <div class="confirm-inner">
-
-      <span
-        class="confirm-icon"
-        aria-hidden="true"
-      >✓</span>
-
-      <div class="confirm-kicker">
-        ${
-          preview
-            ?"DESIGN PREVIEW"
-            :"REGISTRATION RECEIVED"
-        }
-      </div>
-
-      <h2>
-        ${
-          preview
-            ?"Preview completed"
-            :"Submission received!"
-        }
-      </h2>
-
-      <p>
-        ${
-          preview
-            ?"You have reviewed the "+esc(name)+" workflow. This is not an official submission."
-            :"Thank you for submitting your "+esc(name)+" to SHEILD BOOST Group of Companies."
-        }
+      <span class="confirm-icon" aria-hidden="true">✓</span>
+      <div class="confirm-kicker">${label}</div>
+      <h2>${preview?"Preview completed":"Registration successful!"}</h2>
+      <p>${preview
+        ?`You have completed the ${esc(name)} design preview. Nothing was submitted.`
+        :`Thank you. Your ${esc(name)} has been recorded successfully with SHEILD BOOST Group of Companies.`}
       </p>
 
       <div class="confirm-ref">
-
-        <small>
-          ${
-            preview
-              ?"REFERENCE NUMBER PREVIEW"
-              :"YOUR SUBMISSION REFERENCE"
-          }
-        </small>
-
-        <strong>
-          ${safeRef}
-        </strong>
-
-        ${
-          reference && !preview
-            ?`
-              <button
-                class="btn"
-                type="button"
-                id="copySubmissionReference"
-              >
-                Copy Reference
-              </button>
-            `
-            :`
-              <small>
-                No official reference generated in preview mode
-              </small>
-            `
-        }
-
+        <small>REGISTRATION REFERENCE NUMBER</small>
+        <strong>${displayRef}</strong>
+        ${reference && !preview
+          ?`<button type="button" class="btn" id="copySubmissionReference">Copy Reference</button>`
+          :`<small>No official reference number is created in preview mode.</small>`}
       </div>
 
       <div class="confirm-detail">
-        <b>
-          ${
-            preview
-              ?"Preview status"
-              :"Application status: Pending Review"
-          }
-        </b>
-
-        <span>
-          ${
-            preview
-              ?"Design preview only. No submission is stored."
-              :"Our management team will review your company information and certificates."
-          }
-        </span>
+        <b>Registered company email address</b>
+        <span style="font-weight:600;overflow-wrap:anywhere">${displayEmail}</span>
       </div>
 
       <div class="confirm-detail">
-        <b>
-          Confirmation email
-        </b>
-
-        <span>
-          ${esc(emailMessage)}
-        </span>
+        <b>Automatic confirmation email</b>
+        <span>${esc(emailFeedback)}</span>
       </div>
 
       <div class="confirm-detail">
-        <b>
-          Keep your reference number safe
-        </b>
-
-        <span>
-          You may need it for future Annual KYC Renewal.
-
-          If you forget it, check the original registration
-          email or continue with manual management verification.
-        </span>
+        <b>Keep both details for Annual KYC Renewal</b>
+        <span>Save the reference number and registered company email.
+        You will need them when renewing or updating your company record.
+        If the reference is lost, use the reference-recovery option.</span>
       </div>
 
       <div class="confirm-actions">
-
-        <button
-          type="button"
-          class="btn"
-          id="closeSubmissionDialog"
-        >
-          Close
-        </button>
-
-        ${
-          preview
-            ?`
-              <button
-                type="button"
-                class="btn primary"
-                id="restartPreview"
-              >
-                Start New Preview →
-              </button>
-            `
-            :""
-        }
-
+        <button type="button" class="btn" id="closeSubmissionDialog">Close</button>
+        ${preview
+          ?`<button type="button" class="btn primary" id="restartPreview">Start New Preview →</button>`
+          :""}
       </div>
+    </div>`;
 
-    </div>
-  `;
+  dialog.querySelector("#closeSubmissionDialog").onclick=()=>dialog.close();
 
-  /* CLOSE DIALOG */
-
-  dialog.querySelector(
-    "#closeSubmissionDialog"
-  ).onclick = ()=>{
-    dialog.close();
-  };
-
-  /* COPY ACTUAL BACKEND REFERENCE */
-
-  const copy = dialog.querySelector(
-    "#copySubmissionReference"
-  );
-
+  const copy = dialog.querySelector("#copySubmissionReference");
   if(copy){
-    copy.onclick = async ()=>{
+    copy.onclick = async()=>{
       try{
-        await navigator.clipboard.writeText(
-          reference
-        );
-
-        copy.textContent = "Copied ✓";
+        await navigator.clipboard.writeText(reference);
+        copy.textContent="Copied ✓";
       }catch{
-        notify(
-          "Copy unavailable. Please select the reference number manually."
-        );
+        notify("Copy unavailable. Please select the reference number manually.");
       }
     };
   }
 
-  /* RESTART PREVIEW */
-
-  const restart = dialog.querySelector(
-    "#restartPreview"
-  );
-
+  const restart = dialog.querySelector("#restartPreview");
   if(restart){
-    restart.onclick = ()=>{
+    restart.onclick=()=>{
       dialog.close();
-
-      flows[mode] = {
-        data:{},
-        files:{},
-        step:0,
-        maximumStep:0
-      };
-
-      flow = flows[mode];
-      data = flow.data;
-      step = 0;
-      maximumStep = 0;
-
+      flows[mode]={data:{},files:{},step:0,maximumStep:0};
+      flow=flows[mode];
+      data=flow.data;
+      step=0;
+      maximumStep=0;
       render();
       focusCard();
     };
   }
 
-  if(!dialog.open){
-    dialog.showModal();
-  }
+  if(!dialog.open)dialog.showModal();
 }
 
 function showPreviewSuccess(){
   showSubmissionDialog({
     preview:true,
-    email:
-      mode==="renewal"
-        ?data.registeredEmail
-        :data.contactEmail
+    email:mode==="renewal"?data.registeredEmail:data.contactEmail
   });
 }
+
+/* BACKEND CONNECTION CONTRACT (NOT ACTIVE IN THIS PREVIEW):
+   After the Cloudflare Worker confirms a registration save, it returns
+   { reference, registeredEmail, emailStatus: 'sent'|'accepted'|'queued'|'failed' }.
+   The Worker—not browser HTML—must send the email and handle retries.
+   Call showSubmissionDialog({reference, email:registeredEmail, emailStatus})
+   ONLY after the server confirms saved data. Never invent a reference or
+   report successful email delivery from browser code alone. */
 
 /* =========================================
    MODE BUTTON STATES
