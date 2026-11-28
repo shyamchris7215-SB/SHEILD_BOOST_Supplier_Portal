@@ -86,11 +86,19 @@ export async function onRequestPost({ request, env }) {
   }
 
   const headers = new Headers({
-    "Content-Type": contentType,
-    "Origin": PRODUCTION_ORIGIN,
-    "X-Production-Proxy-Token":
-      env.PRODUCTION_PROXY_TOKEN
-  });
+  "Content-Type": contentType,
+  "Origin": PRODUCTION_ORIGIN,
+  "X-Production-Proxy-Token":
+    env.PRODUCTION_PROXY_TOKEN
+});
+
+// Forward the original visitor IP from Cloudflare.
+// Never use an IP value supplied by the frontend.
+const clientIP = request.headers.get("CF-Connecting-IP");
+
+if (clientIP && clientIP.length <= 64) {
+  headers.set("X-Portal-Client-IP", clientIP);
+}
 
   try {
     const upstreamRequest = new Request(
