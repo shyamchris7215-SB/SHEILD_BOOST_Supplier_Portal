@@ -1382,13 +1382,13 @@ const GROUP_WEBSITE_URL = "";
    Leave blank to prevent sending recovery requests to a sample mailbox. */
 const KYC_REFERENCE_SUPPORT_EMAIL = "";
 
-const SUPPLIER_API_URL =
-  "https://sheildboost-supplier-api-staging.shyamchris7215.workers.dev";
+const SUPPLIER_API_URL = window.location.origin;
 
 /*
   Staging-only user interface switches.
-  The backend still blocks submissions until secure staging
-  authorization has been configured and deliberately activated.
+  Submit requests use the same-origin /api/submissions Pages Function.
+  The backend still blocks registrations until the staging proxy is
+  configured and the staging API is explicitly opened.
   Never copy this file to the main production branch.
 */
 const LIVE_SUBMISSIONS_ENABLED = true;
@@ -4391,7 +4391,7 @@ async function submitLiveRegistration(){
       method:"POST",
       body:form,
       mode:"cors",
-      credentials:"omit",
+      credentials:"same-origin",
       cache:"no-store",
       redirect:"error"
       // Do not set Content-Type; browser generates multipart boundary.
