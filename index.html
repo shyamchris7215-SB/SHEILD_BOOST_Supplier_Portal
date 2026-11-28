@@ -1378,8 +1378,8 @@ const GROUP_WEBSITE_URL = "";
    Leave blank to prevent sending recovery requests to a sample mailbox. */
 const KYC_REFERENCE_SUPPORT_EMAIL = "";
 
-const SUPPLIER_API_URL =
-  "https://sheildboost-supplier-api.shyamchris7215.workers.dev";
+// Production submissions use the same-origin Pages Function, not the public Worker URL.
+const SUPPLIER_API_URL = "/api/submissions";
 
 /*
   Deployment safety switches. Do NOT change these to true until the
@@ -4383,7 +4383,7 @@ async function submitLiveRegistration(){
 
   let succeeded=false;
   try{
-    const response=await fetch(SUPPLIER_API_URL.replace(/\/+$/,"")+"/api/submissions",{
+    const response=await fetch(SUPPLIER_API_URL,{
       method:"POST",
       body:form,
       mode:"cors",
