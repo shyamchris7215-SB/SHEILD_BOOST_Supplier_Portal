@@ -1,3 +1,4 @@
 # SHEILD_BOOST_Supplier_Portal
 SHEILD_BOOST_Supplier_Portal
 Admin login integration - deployment verification
+Staging environment - deployment verification
